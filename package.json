@@ -1,0 +1,66 @@
+{
+  "name": "ivanrice-react-template",
+  "version": "1.0.0",
+  "description": "Repositorio plantilla con configuracion básica de webppack y babel",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
+    "dev": "webpack serve --mode development",
+    "format": "prettier --write {*.js,src/**/*.{js,jsx}}",
+    "lint": "eslint src/ --ext jsx,js --fix",
+    "server": "json-server -p3200 --watch db.json",
+    "prepare": "npx simple-pre-commit"
+  },
+  "keywords": [],
+  "author": "ivanrice",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/eslint-parser": "^7.16.3",
+    "@babel/preset-env": "^7.16.0",
+    "@babel/preset-react": "^7.16.0",
+    "babel-loader": "^8.2.3",
+    "babel-plugin-styled-components": "^1.13.3",
+    "css-loader": "^6.5.1",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb": "^19.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.27.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "html-loader": "^3.0.1",
+    "html-webpack-plugin": "^5.5.0",
+    "husky": "^7.0.0",
+    "json-server": "^0.17.0",
+    "lint-staged": "^11.2.6",
+    "mini-css-extract-plugin": "^2.4.4",
+    "prettier": "^2.4.1",
+    "simple-pre-commit": "^1.2.1",
+    "webpack": "^5.63.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.4.0"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "history": "^5.1.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-helmet": "^6.1.0",
+    "react-redux": "^7.2.6",
+    "react-router-dom": "^6.0.2",
+    "redux": "^4.1.2",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.4.0",
+    "styled-components": "^5.3.3"
+  },
+  "lint-staged": {
+    "src/**/*.{html,js,jsx,json}": [
+      "eslint --cache --fix",
+      "prettier --write"
+    ]
+  },
+  "simple-pre-commit": "npx lint-staged"
+}
