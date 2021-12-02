@@ -1,7 +1,7 @@
 {
-  "name": "ivanrice-react-template",
+  "name": "community-chat",
   "version": "1.0.0",
-  "description": "Repositorio plantilla con configuracion básica de webppack y babel",
+  "description": "Community chat, basado en el diseño de leonidasesteban.com",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -36,7 +36,6 @@
     "husky": "^7.0.0",
     "json-server": "^0.17.0",
     "lint-staged": "^11.2.6",
-    "mini-css-extract-plugin": "^2.4.4",
     "prettier": "^2.4.1",
     "simple-pre-commit": "^1.2.1",
     "webpack": "^5.63.0",

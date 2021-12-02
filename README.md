@@ -1,4 +1,5 @@
-# Plantilla ivanrice
+# Community chat basado en los proyectos de
+https://leonidasesteban.com/
 ## Configuracion básica
 ## Installación
 
