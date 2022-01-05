@@ -1,11 +1,15 @@
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
+import LeftMenu from '../LeftMenu'
 import { GlobalStyles } from './GlobalStyles'
 import { darkTheme } from './theme'
 
-export const Layout = ({ children }) => (
-  <ThemeProvider theme={darkTheme}>
-    <GlobalStyles />
-    {children}
-  </ThemeProvider>
-)
+export const Layout = ({ children }) => {
+  return (
+    <ThemeProvider theme={darkTheme}>
+      <GlobalStyles />
+      <LeftMenu />
+      {children}
+    </ThemeProvider>
+  )
+}
