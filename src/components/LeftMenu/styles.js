@@ -10,6 +10,9 @@ export const StyledLeftMenu = styled.nav`
   &::-webkit-scrollbar {
     display: none;
   }
+  & p {
+    color: white;
+  }
   scrollbar-width: none; /* Firefox */
 `
 export const StyledItemWrapper = styled(ItemWrapper)`

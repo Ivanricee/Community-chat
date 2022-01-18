@@ -6,10 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
-    "dev": "webpack serve --mode development",
+    "dev": "webpack serve --mode development && npm run server",
     "format": "prettier --write {*.js,src/**/*.{js,jsx}}",
     "lint": "eslint src/ --ext jsx,js --fix",
-    "server": "json-server -p3200 --watch db.json",
+    "server": "json-server -p3200 --watch src/utils/db.json",
     "prepare": "npx simple-pre-commit"
   },
   "keywords": [],
@@ -43,7 +43,9 @@
     "webpack-dev-server": "^4.4.0"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.7",
     "axios": "^0.24.0",
+    "graphql": "^16.2.0",
     "history": "^5.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

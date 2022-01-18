@@ -11,6 +11,7 @@ export const Home = () => {
     useEffect(() => {
         if (channel === undefined) navigate('1')
     }, [channel, navigate, server])
+
     return (
         <>
             <Helmet>
