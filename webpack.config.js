@@ -1,4 +1,6 @@
+/* eslint-disable prettier/prettier */
 const path = require('path')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = (env, argv) => {
@@ -45,6 +47,13 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         template: './public/index.html',
         filename: './index.html',
+      }),
+      new webpack.DefinePlugin({
+        'process.env.URL_API': JSON.stringify(
+          isProduction
+            ? 'https://community-chat-api.vercel.app/graphql'
+            : 'http://localhost:4000/graphql'
+        ),
       }),
     ],
     devServer: {
