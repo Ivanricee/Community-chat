@@ -19,7 +19,7 @@ export const Home = () => {
                 <meta name="description" content="Home del template" />
             </Helmet>
             <Outlet />
-            <Main />
+            <Main params={{ server, channel }} />
             <User />
             {/*
                  mientras obtiene datos (servers con data) con redux thunk

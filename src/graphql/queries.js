@@ -30,3 +30,20 @@ export const FIND_SERVER = gql`
     }
   }
 `
+// hace una busqueda por channel - comments
+
+export const FIND_COMMENTS = gql`
+  query findComment($idServer: ID!, $idChannel: ID!) {
+    findComment(_id_server: $idServer, _id_channel: $idChannel) {
+      _id_channel
+      title
+      comments {
+        _id
+        texto
+        img
+        url
+        react
+      }
+    }
+  }
+`

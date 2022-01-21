@@ -17,6 +17,7 @@ export const darkTheme = {
   grey2: '#b9bbbe',
   grey3: '#dfe3e0',
   gray4: '#C7C9CB',
+  gray5: '#40444B',
   headline1: '600 1.75rem/normal "Poppins", sans-serif',
   headline2: '600 1.5rem/normal "Poppins", sans-serif',
   headline3: '600 1.25rem/1.375rem "Poppins", sans-serif',

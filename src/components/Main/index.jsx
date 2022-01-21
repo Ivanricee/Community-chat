@@ -1,16 +1,57 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useChannelComment } from '../../graphql/custom-hook'
 
-import { StyledMain } from './styles'
+import {
+    StyledMain,
+    StyledHeader,
+    StyledComment,
+    StyledFooter,
+    StyledInputWrapper,
+} from './styles'
 
-const Main = () => {
-    const params = useParams()
-    const { channel, server } = params
+const Main = ({ params }) => {
+    const { server, channel } = params
+    const { data } = useChannelComment(server, channel)
+    if (channel && server && data) {
+        console.log('result ', data)
+    }
+
     return (
         <StyledMain>
-            <h1>MAIN</h1>
-            <h1>{channel}</h1>
-            <h2>{server}</h2>
+            <StyledHeader># extra-roles</StyledHeader>
+            <StyledComment>
+                <h1>{channel}</h1>
+                <h1>{channel}</h1> <h1>{channel}</h1> <h1>{channel}</h1>{' '}
+                <h1>{channel}</h1>
+                <h1>{channel}</h1> <h1>{channel}</h1>
+                <h1>{channel}</h1>
+                <h1>{channel}</h1>
+                <h1>{channel}</h1>
+                <h1>{channel}</h1>
+                <h1>{channel}</h1>v v<h1>{channel}</h1> <h1>{channel}</h1>
+                <h1>{channel}</h1>
+            </StyledComment>
+            <StyledFooter>
+                <StyledInputWrapper>
+                    <div>
+                        <i className="ico-addFile" />
+                    </div>
+                    <div>
+                        <input
+                            type="text"
+                            id="comment"
+                            name="comment"
+                            placeholder="la reconcha de mi perro"
+                        />
+                    </div>
+                    <div>
+                        <i className="ico-gift" />
+                        <i className="ico-gif" />
+                        <i className="ico-sticker" />
+                        <i className="ico-emoji" />
+                    </div>
+                </StyledInputWrapper>
+            </StyledFooter>
         </StyledMain>
     )
 }
