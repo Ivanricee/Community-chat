@@ -10,7 +10,7 @@ export const useServer = idServer => {
   const [getServerChannel, result] = useLazyQuery(FIND_SERVER, {
     variables: { id: idServer },
     fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
+    nextFetchPolicy: 'cache-only',
   })
   if (!result.called) {
     getServerChannel()
@@ -22,8 +22,8 @@ export const useChannelComment = (idServer, idChannel) => {
   const result = useQuery(FIND_COMMENTS, {
     variables: { idServer, idChannel },
     fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
+    nextFetchPolicy: 'cache-only',
   })
-
+  console.log("it's been called?")
   return result
 }

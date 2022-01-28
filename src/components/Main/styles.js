@@ -15,8 +15,7 @@ export const StyledHeader = styled.header`
   box-sizing: border-box;
 `
 
-export const StyledComment = styled.section`
-  background-color: blueviolet;
+export const StyledCommentList = styled.section`
   block-size: calc(100vh - 7rem);
   scrollbar-width: thin; /* Firefox */
 
