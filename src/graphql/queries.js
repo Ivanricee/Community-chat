@@ -41,8 +41,16 @@ export const FIND_COMMENTS = gql`
         _id
         texto
         img
+        date
+        _id_comment_reply
+        img
         url
         react
+        user {
+          img
+          name
+          role
+        }
       }
     }
   }

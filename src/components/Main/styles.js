@@ -14,7 +14,6 @@ export const StyledHeader = styled.header`
   border-block-end: 1px solid ${p => p.theme.black};
   box-sizing: border-box;
 `
-
 export const StyledCommentList = styled.section`
   block-size: calc(100vh - 7rem);
   scrollbar-width: thin; /* Firefox */
@@ -69,25 +68,27 @@ export const StyledInputWrapper = styled.div`
     }
   }
   & div:nth-child(3) {
-    ${p => console.log('url ', p.urlEmoji)}
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     background-color: transparent;
     box-sizing: border-box;
-    padding-inline-start: 1rem;
-    inline-size: 11rem;
-    text-align: center;
-    line-height: 0;
+    inline-size: 10.8rem;
     i {
       padding: 0.35rem;
       &.ico-Grin {
-        display: inline-block;
-        block-size: 0.77rem;
-        padding-inline-start: 2rem;
-        background-color: red;
-        background: no-repeat url(${p => p.urlEmoji});
-        background-position-x: 0.35rem;
+        display: block;
+        inline-size: 1.5rem;
+        block-size: 1.5rem;
+        padding-inline-end: 0;
+        transition: transform 0.17s ease-in-out;
         filter: grayscale(100%);
+        img {
+          inline-size: 100%;
+        }
         :hover {
           filter: grayscale(10%);
+          transform: scale(1.2);
         }
       }
     }

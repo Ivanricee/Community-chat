@@ -26,7 +26,7 @@ const Main = ({ params }) => {
     const [arrayEmojis, setArrayEmojis] = useState([])
 
     if (channel && server && data) {
-        console.log('result ', data)
+        // console.log('result ', data)
     }
 
     // preload and store an emojis array
@@ -64,13 +64,17 @@ const Main = ({ params }) => {
                 ) : (
                     <div>
                         {data.findComment.comments.map(comment => {
-                            console.log('id: ', comment._id)
                             return (
                                 <Comment
+                                    key={comment._id}
+                                    date={comment.date}
                                     img={comment.img}
                                     texto={comment.texto}
                                     react={comment.react}
-                                    key={comment._id}
+                                    reply={comment._id_comment_reply}
+                                    nombre={comment.user.name}
+                                    userImg={comment.user.img}
+                                    role={comment.user.role}
                                 />
                             )
                         })}
@@ -78,7 +82,7 @@ const Main = ({ params }) => {
                 )}
             </StyledCommentList>
             <StyledFooter>
-                <StyledInputWrapper urlEmoji={urlEmoji}>
+                <StyledInputWrapper>
                     <div>
                         <i className="ico-addFile" />
                     </div>
@@ -106,7 +110,9 @@ const Main = ({ params }) => {
                                     handleEmojiHover(arrayEmojis, urlEmoji)
                                 )
                             }
-                        />
+                        >
+                            <img src={urlEmoji} alt="emoji" />
+                        </i>
                     </div>
                 </StyledInputWrapper>
             </StyledFooter>

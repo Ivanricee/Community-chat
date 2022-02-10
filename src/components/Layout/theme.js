@@ -1,4 +1,5 @@
 import { css } from 'styled-components'
+// import { scale } from './animation'
 
 export const darkTheme = {
   black: '#202225',
@@ -10,7 +11,8 @@ export const darkTheme = {
   red: '#ed4245',
   black1: '#2f3136',
   blackHover: '#3a3c42',
-  bg: '#37393e',
+  blackHover2: '#32353c',
+  bg: '#36393F',
   yellow: '#eac645',
   black2: '#292b2f',
   purple: '#414672',
@@ -43,4 +45,21 @@ export const darkTheme = {
     inset-block-start: 1.78rem;
     inset-inline-start: 1.78rem;
   `,
+  colorRole(role) {
+    switch (role) {
+      case '1': // admin
+        return this.yellow
+      case '2': // menber
+        return this.green
+      case '3': // twitch
+        return this.pink
+      case '4': // no rol
+        return this.grey2
+      default:
+        return this.grey2
+    }
+  },
+  /* scale: css`
+    ${scale} .3s;
+  `, */
 }

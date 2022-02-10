@@ -5,7 +5,6 @@ import iconDiscordsvg from '../../assets/icon/fonts/iconDiscord.svg'
 
 export const GlobalStyles = createGlobalStyle`
 :root{
-  background-color: azure;
   font-size: 16px;
   font-family: sans-serif;
 }

@@ -24,6 +24,5 @@ export const useChannelComment = (idServer, idChannel) => {
     fetchPolicy: 'network-only',
     nextFetchPolicy: 'cache-only',
   })
-  console.log("it's been called?")
   return result
 }
