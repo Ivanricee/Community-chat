@@ -1,4 +1,11 @@
-export const setRedBullet = contenido => {
+/**
+ * Returna
+ * content: contenido
+ * inlinesize: si es menor de 3 digitos establece una longitud del contenedor
+ * translatex: segun crece la longitud el contenido se centra
+ * En caso de no necesitar el bullet se usa el display none
+ */
+export const setBullet = contenido => {
   let content = ''
   let inlineSize = 1
   let translateX = 0

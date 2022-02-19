@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+
 import { StyledComment, StyledMediaImg, StyledDialogImg } from './style'
 import { ImgContainer } from '../ImgContainer'
 
@@ -43,7 +44,7 @@ export const Comment = ({ img, texto, react, nombre, date, userImg, role }) => {
         widthSize: 37.5,
         heightSize: 31,
     })
-    console.log('valor de show img', showDialogImg)
+
     return (
         <StyledComment role={role}>
             <div className="comment__wrapper">

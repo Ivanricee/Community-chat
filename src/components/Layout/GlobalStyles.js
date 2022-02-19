@@ -11,6 +11,7 @@ export const GlobalStyles = createGlobalStyle`
 body{
   margin:0px;
   padding:0px;
+  color:white;
 }
 #app{
   background-color: ${props => props.theme.bg};

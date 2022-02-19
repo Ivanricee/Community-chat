@@ -1,5 +1,6 @@
 const INITIAL_STATE = {
-  templateInit: 'Ivanrice Template',
+  templateInit: 'Ivanrice Discord',
+  channel: '',
 }
 
 // eslint-disable-next-line default-param-last
@@ -8,7 +9,9 @@ export const appReducer = (state = INITIAL_STATE, action) => {
   // console.log('Action reducer: ', action)
   switch (action.type) {
     case '@app/init':
-      return [...state, action.payload]
+      return { ...state, templateInit: action.payload }
+    case '@channel/title':
+      return { ...state, channel: action.payload }
     default:
       return state
   }

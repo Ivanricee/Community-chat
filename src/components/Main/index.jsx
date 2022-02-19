@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { useChannelComment } from '../../graphql/custom-hook'
 import {
     StyledMain,
@@ -18,17 +19,13 @@ const handleEmojiHover = (arrayEmojis, urlEmoji) => {
 
 const Main = ({ params }) => {
     const { server, channel } = params
+    const storedChannelTitle = useSelector(state => state.app.channel)
     const { data, loading } = useChannelComment(server, channel)
 
     const [urlEmoji, setUrlEmoji] = useState(
         'https://res.cloudinary.com/ivanrice-c/image/upload/v1642795216/discord-clone/fonts/emojis/05_Laugh_rzq4mh.png'
     )
     const [arrayEmojis, setArrayEmojis] = useState([])
-
-    if (channel && server && data) {
-        // console.log('result ', data)
-    }
-
     // preload and store an emojis array
     useEffect(() => {
         const rootPath =
@@ -53,71 +50,76 @@ const Main = ({ params }) => {
         setArrayEmojis(imgEmoji)
     }, [])
 
-    return (
-        <StyledMain>
-            <StyledHeader>
-                {loading ? 'Loading...' : data.findComment.title}
-            </StyledHeader>
-            <StyledCommentList>
-                {loading ? (
-                    <div>Loading...</div>
-                ) : (
-                    <div>
-                        {data.findComment.comments.map(comment => {
-                            return (
-                                <Comment
-                                    key={comment._id}
-                                    date={comment.date}
-                                    img={comment.img}
-                                    texto={comment.texto}
-                                    react={comment.react}
-                                    reply={comment._id_comment_reply}
-                                    nombre={comment.user.name}
-                                    userImg={comment.user.img}
-                                    role={comment.user.role}
-                                />
-                            )
-                        })}
-                    </div>
-                )}
-            </StyledCommentList>
-            <StyledFooter>
-                <StyledInputWrapper>
-                    <div>
-                        <i className="ico-addFile" />
-                    </div>
-                    <div>
-                        <input
-                            type="text"
-                            id="comment"
-                            name="comment"
-                            placeholder="la reconcha de mi perro"
-                        />
-                    </div>
-                    <div>
-                        <i className="ico-gift" />
-                        <i className="ico-gif" />
-                        <i className="ico-sticker" />
-                        <i
-                            className="ico-Grin"
-                            onMouseOver={() =>
-                                setUrlEmoji(
-                                    handleEmojiHover(arrayEmojis, urlEmoji)
+    if (channel && server && data) {
+        return (
+            <StyledMain>
+                <StyledHeader>
+                    {storedChannelTitle
+                        ? `# ${storedChannelTitle}`
+                        : 'Loading...'}
+                </StyledHeader>
+                <StyledCommentList>
+                    {loading || data.findComment === null ? (
+                        <div>Loading...</div>
+                    ) : (
+                        <div>
+                            {data.findComment.comments.map(comment => {
+                                return (
+                                    <Comment
+                                        key={comment._id}
+                                        date={comment.date}
+                                        img={comment.img}
+                                        texto={comment.texto}
+                                        react={comment.react}
+                                        reply={comment._id_comment_reply}
+                                        nombre={comment.user.name}
+                                        userImg={comment.user.img}
+                                        role={comment.user.role}
+                                    />
                                 )
-                            }
-                            onFocus={() =>
-                                setUrlEmoji(
-                                    handleEmojiHover(arrayEmojis, urlEmoji)
-                                )
-                            }
-                        >
-                            <img src={urlEmoji} alt="emoji" />
-                        </i>
-                    </div>
-                </StyledInputWrapper>
-            </StyledFooter>
-        </StyledMain>
-    )
+                            })}
+                        </div>
+                    )}
+                </StyledCommentList>
+                <StyledFooter>
+                    <StyledInputWrapper>
+                        <div>
+                            <i className="ico-addFile" />
+                        </div>
+                        <div>
+                            <input
+                                type="text"
+                                id="comment"
+                                name="comment"
+                                placeholder="la reconcha de mi perro"
+                            />
+                        </div>
+                        <div>
+                            <i className="ico-gift" />
+                            <i className="ico-gif" />
+                            <i className="ico-sticker" />
+                            <i
+                                className="ico-Grin"
+                                onMouseOver={() =>
+                                    setUrlEmoji(
+                                        handleEmojiHover(arrayEmojis, urlEmoji)
+                                    )
+                                }
+                                onFocus={() =>
+                                    setUrlEmoji(
+                                        handleEmojiHover(arrayEmojis, urlEmoji)
+                                    )
+                                }
+                            >
+                                <img src={urlEmoji} alt="emoji" />
+                            </i>
+                        </div>
+                    </StyledInputWrapper>
+                </StyledFooter>
+            </StyledMain>
+        )
+    }
+    return <div>Redirecting to a channel</div>
 }
 
 export default Main

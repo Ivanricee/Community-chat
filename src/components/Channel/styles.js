@@ -1,4 +1,3 @@
-import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
 export const StyledChannel = styled.section`
@@ -63,7 +62,7 @@ export const StyledChannelDetails = styled.section`
     transition: 0.15s padding-inline-end ease-out;
   }
 `
-export const StyledNavlink = styled(NavLink)`
+export const StyledLink = styled.a`
   padding: 0.3rem;
   padding-inline-start: 0.5rem;
   padding-inline-end: 0.5rem;

@@ -4,7 +4,7 @@ import {
     StyledNavlinkServerItem,
     StyledItemWrapper,
 } from './styles'
-import { setRedBullet } from '../../utils'
+import { setBullet } from '../../utils'
 import { ImgContainer } from '../ImgContainer'
 import { useServers } from '../../graphql/custom-hook'
 
@@ -24,7 +24,7 @@ const LeftMenu = () => {
                 <p>Loading...</p>
             ) : (
                 data.servers.map(item => {
-                    const redBullet = setRedBullet(item.content)
+                    const redBullet = setBullet(item.content)
                     return (
                         <StyledNavlinkServerItem
                             aria-label={item.alt}

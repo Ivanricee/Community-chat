@@ -1,71 +1,76 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
-
+import React, { useRef, useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import {
     StyledChannel,
     StyledHeader,
     StyledChannelDetails,
     StyledDetails,
-    StyledNavlink,
+    StyledLink,
     StyledFooter,
 } from './styles'
-import { setRedBullet } from '../../utils'
+import { setBullet } from '../../utils'
 import { ImgContainer } from '../ImgContainer'
 
 import { useServer } from '../../graphql/custom-hook'
+import { getChannel } from '../../store/actions/AppActions'
 
 const Channel = () => {
     const params = useParams()
-    const { server } = params
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const { server, channel } = params
+
     const channelDetailsRef = useRef(null)
     const [detailListPadding, setDetailListPadding] = useState(0)
-    const [serverChannels, setServerChannels] = useState(null)
+    let channelTitle = ''
 
     // graphql hook
     const { data, error, loading } = useServer(server)
-
+    // onToggle datail, arregla la longituz del element
     const handleResize = () => {
-        const { scrollHeight } = channelDetailsRef.current
-        const { clientHeight } = channelDetailsRef.current
+        const { scrollHeight, clientHeight } = channelDetailsRef.current
         if (scrollHeight > clientHeight) {
             setDetailListPadding(1)
         } else {
             setDetailListPadding(0)
         }
     }
+    // setbullet
+    const greenBullet = setBullet('1')
 
-    // set greenbullet
-    // despues del primer pintado:
-    // se realiza la llamada a apollo
-    // el estado local sigue siendo el anterior por lo que pinta eso
-    // se ejecuta useEffect (porque cambio el server) para cambiar el estado local
-    // SE realiza otro render para cambiar el estado local y pintar el nuevo estado
-    const greenBullet = setRedBullet('1')
-
+    // navigate on click
+    const handleNavigation = (e, idChannel, titleChannel) => {
+        e.preventDefault()
+        dispatch(getChannel(titleChannel))
+        navigate(`/${server}/${idChannel}`)
+    }
+    // Navigate on refresh
     useEffect(() => {
-        if (serverChannels) setServerChannels(null)
-        if (data) setServerChannels(data.findServer)
+        if (channel === undefined) navigate('1')
+        if (channelTitle) {
+            dispatch(getChannel(channelTitle))
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [server, data])
+    }, [loading])
 
     if (error) return <span>Error de conexión</span>
+
     return (
         <StyledChannel aria-label="channel">
             <StyledHeader>
-                {loading || serverChannels === null
-                    ? 'Loading'
-                    : serverChannels.title}
+                {loading ? 'Loading' : data.findServer.title}
             </StyledHeader>
             <StyledChannelDetails
                 aria-label="channel-details"
                 paddingLeft={detailListPadding}
                 ref={channelDetailsRef}
             >
-                {loading || serverChannels === null ? (
+                {loading ? (
                     <p>Loading...</p>
                 ) : (
                     <div>
-                        {serverChannels.channels.map(detail => (
+                        {data.findServer.channels.map(detail => (
                             <StyledDetails
                                 open
                                 key={detail._id}
@@ -75,21 +80,33 @@ const Channel = () => {
                                 <nav aria-label={detail.title}>
                                     <ul>
                                         {detail.summary.map(channelItem => {
-                                            const redBullet = setRedBullet(
+                                            const redBullet = setBullet(
                                                 channelItem.notification
                                             )
+                                            const classNotification =
+                                                channelItem.notification !== '0'
+                                                    ? 'notification'
+                                                    : ''
+                                            let classActive = ''
+                                            if (channelItem._id === channel) {
+                                                classActive = 'active'
+                                                channelTitle = channelItem.title
+                                            }
+                                            const className = `${classNotification} ${classActive}`
                                             return (
                                                 <li key={channelItem._id}>
-                                                    <StyledNavlink
-                                                        to={channelItem.to}
-                                                        className={
-                                                            channelItem.notification !==
-                                                            '0'
-                                                                ? 'notification'
-                                                                : ''
-                                                        }
+                                                    <StyledLink
+                                                        href={channelItem.to}
+                                                        className={className}
                                                         inlinesize={
                                                             redBullet.inlineSize
+                                                        }
+                                                        onClick={e =>
+                                                            handleNavigation(
+                                                                e,
+                                                                channelItem._id,
+                                                                channelItem.title
+                                                            )
                                                         }
                                                         color={
                                                             channelItem.notification !==
@@ -105,7 +122,7 @@ const Channel = () => {
                                                         <span>
                                                             {redBullet.content}
                                                         </span>
-                                                    </StyledNavlink>
+                                                    </StyledLink>
                                                 </li>
                                             )
                                         })}
