@@ -1,5 +1,21 @@
 import styled from 'styled-components'
 
+export const StyledDate = styled.div`
+  //position: relative;
+  border-block-start: 1px solid ${p => p.theme.separatorDate};
+  margin-block-start: 0.5rem;
+  text-align: center;
+  font: ${p => p.theme.body2Regular};
+  small {
+    background-color: ${p => p.theme.bg};
+    display: inline-block;
+    color: ${p => p.theme.grey};
+    transform: translateY(-50%);
+    padding-inline-start: 0.5rem;
+    padding-inline-end: 0.5rem;
+  }
+`
+
 export const StyledComment = styled.div`
   inline-size: 100%;
   padding-block-start: 0.3rem;
@@ -40,9 +56,24 @@ export const StyledComment = styled.div`
         }
       }
       & .comment__message {
+        font: ${p => p.theme.captionRegular};
+        line-height: 1.3rem;
+        font-size: 0.87rem;
+        color: ${p => p.theme.grey3};
         margin-inline-end: 4.5rem;
-        font: ${p => p.theme.body2Regular};
-        color: ${p => p.theme.white};
+        padding-block-end: 0.28rem;
+        span {
+          font: ${p => p.theme.body2Semibold};
+          padding-inline-start: 0.2rem;
+          padding-inline-end: 0.2rem;
+
+          background-color: ${p => p.theme.purple};
+          border-radius: 0.25rem;
+          :hover {
+            cursor: pointer;
+            background-color: ${p => p.theme.purpleHover};
+          }
+        }
       }
     }
   }
@@ -57,7 +88,56 @@ export const StyledMediaImg = styled.div`
     vertical-align: middle;
     cursor: pointer;
   }
-  ${p => console.log('array result ', p.isInline[0])}
+`
+export const StyledUrl = styled.div`
+  color: ${p => p.theme.blue};
+  font: ${p => p.theme.captionRegular};
+  font-size: 0.87rem;
+  margin-block-start: 0.25rem;
+  margin-block-end: 0.25rem;
+  margin-inline-end: 4.5rem;
+  overflow-wrap: anywhere;
+  a:visited,
+  a:active {
+    color: ${p => p.theme.blue};
+  }
+`
+export const StyledReact = styled.div`
+  display: inline-flex;
+  margin-inline-end: 4.5rem;
+  margin-block-start: 0.5rem;
+  div {
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color: ${p => p.theme.bgReact};
+    color: ${p => p.theme.grey3};
+    padding: 0.3rem;
+    padding-inline-end: 0.4rem;
+    margin-inline-end: 0.22rem;
+    border-radius: 0.3rem;
+    font: ${p => p.theme.captionRegular};
+    font-size: 1rem;
+    transition: box-shadow 0.18s, background-color 0.15s;
+    span {
+      font-size: 0.9rem;
+      padding-inline-start: 0.2rem;
+    }
+    :hover {
+      background-color: ${p => p.theme.bg};
+      box-shadow: 0px 0px 0px 1.5px ${p => p.theme.purple};
+    }
+  }
+  .ico-add {
+    font-size: 1.2rem;
+    line-height: 1.4rem;
+    cursor: pointer;
+    visibility: hidden;
+  }
+  :hover {
+    .ico-select {
+      visibility: visible;
+    }
+  }
 `
 export const StyledDialogImg = styled.div`
   background-color: rgba(13, 14, 14, 0.9);

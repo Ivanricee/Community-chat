@@ -1,7 +1,15 @@
 import React, { useRef, useState } from 'react'
 
-import { StyledComment, StyledMediaImg, StyledDialogImg } from './style'
+import {
+    StyledComment,
+    StyledMediaImg,
+    StyledDialogImg,
+    StyledUrl,
+    StyledReact,
+    StyledDate,
+} from './style'
 import { ImgContainer } from '../ImgContainer'
+import { useUsers } from '../../graphql/custom-hook'
 
 const handleImgDimension = (width, height) => {
     let isInline = true
@@ -30,8 +38,63 @@ const handleShowDialog = imgDimensionSize => {
         heightSize,
     }
 }
-export const Comment = ({ img, texto, react, nombre, date, userImg, role }) => {
-    console.log(react)
+
+const styleTextMarks = (texto, data) => {
+    const regex = /@.[a-zA-Z\u00C0-\u00FF\s]{1,32}/gi
+    const usersRaw = texto.match(regex)
+    if (usersRaw !== null) {
+        let usersFiltered = []
+        // let regexFilter = ""
+        if (data) {
+            for (let j = 0; j < usersRaw.length; j += 1) {
+                const matchedusersk = data.getUsers.filter(user => {
+                    // eslint-disable-next-line prefer-regex-literals
+                    const regexMatch = new RegExp(`@${user.name}`, 'i').test(
+                        usersRaw[j]
+                    )
+                    return regexMatch
+                })
+
+                if (matchedusersk.length === 1) {
+                    usersFiltered = [
+                        ...usersFiltered,
+                        `@${matchedusersk[0].name}`,
+                    ]
+                }
+            }
+
+            // Nuevo regex para los usuarios encontrados
+            const regexFilter = usersFiltered.join('|')
+            const regexDos = new RegExp(`^${regexFilter}`, 'gi')
+            const usersInText = texto.match(regexDos)
+            const textArraySplit = texto.split(regexDos)
+
+            return textArraySplit.map((mark, i) => (
+                <>
+                    {mark}
+                    {i + 1 <= usersInText.length && (
+                        // eslint-disable-next-line react/no-array-index-key
+                        <span key={i}>{usersInText[i]}</span>
+                    )}
+                </>
+            ))
+        }
+    } else {
+        return texto
+    }
+
+    return 'loading comment..'
+}
+export const Comment = ({
+    img,
+    url,
+    texto,
+    react,
+    nombre,
+    date,
+    userImg,
+    role,
+}) => {
     const imgRef = useRef(null)
     const [imgDimensionSize, setImgDimensionSize] = useState({
         isInline: true,
@@ -45,67 +108,97 @@ export const Comment = ({ img, texto, react, nombre, date, userImg, role }) => {
         heightSize: 31,
     })
 
-    return (
-        <StyledComment role={role}>
-            <div className="comment__wrapper">
-                <div className="comment__perfil-wrapper">
-                    <div className="comment__perfil">
-                        <ImgContainer display="none" img={userImg} />
-                    </div>
-                </div>
+    const { data } = useUsers()
 
-                <div className="comment__message-content">
-                    <div className="comment__user-date">
-                        <p type="button">{nombre}</p>
-                        <span>
-                            <small>{date}</small>
-                        </span>
+    return (
+        <>
+            <StyledDate>
+                <small>28 de enero de 2022</small>
+            </StyledDate>
+            <StyledComment role={role}>
+                <div className="comment__wrapper">
+                    <div className="comment__perfil-wrapper">
+                        <div className="comment__perfil">
+                            <ImgContainer display="none" img={userImg} />
+                        </div>
                     </div>
-                    <div className="comment__message">{texto}</div>
-                    {img !== '' && (
-                        <StyledMediaImg
-                            isInline={imgDimensionSize.isInline}
-                            inline={imgDimensionSize.widthSize}
-                            block={imgDimensionSize.heightSize}
-                        >
-                            <img
-                                ref={imgRef}
-                                src={img}
-                                alt=""
-                                onClick={() =>
-                                    setShowDialogImg(
-                                        handleShowDialog(imgDimensionSize)
-                                    )
-                                }
-                                role="presentation"
-                                onLoad={() =>
-                                    setImgDimensionSize(
-                                        handleImgDimension(
-                                            imgRef.current.naturalWidth,
-                                            imgRef.current.naturalHeight
+
+                    <div className="comment__message-content">
+                        <div className="comment__user-date">
+                            <p type="button">{nombre}</p>
+                            <span>
+                                <small>{date}</small>
+                            </span>
+                        </div>
+                        <div className="comment__message">
+                            {styleTextMarks(texto, data)}
+                        </div>
+
+                        {img !== '' && (
+                            <StyledMediaImg
+                                isInline={imgDimensionSize.isInline}
+                                inline={imgDimensionSize.widthSize}
+                                block={imgDimensionSize.heightSize}
+                            >
+                                <img
+                                    ref={imgRef}
+                                    src={img}
+                                    alt=""
+                                    onClick={() =>
+                                        setShowDialogImg(
+                                            handleShowDialog(imgDimensionSize)
                                         )
+                                    }
+                                    role="presentation"
+                                    onLoad={() =>
+                                        setImgDimensionSize(
+                                            handleImgDimension(
+                                                imgRef.current.naturalWidth,
+                                                imgRef.current.naturalHeight
+                                            )
+                                        )
+                                    }
+                                />
+                            </StyledMediaImg>
+                        )}
+                        {url !== '' && (
+                            <StyledUrl>
+                                <a href={url} target="_blank" rel="noreferrer">
+                                    {url}
+                                </a>
+                            </StyledUrl>
+                        )}
+                        {react.length >= 0 && (
+                            <StyledReact>
+                                {react.map(emojis => {
+                                    return (
+                                        <div key={emojis.unicode}>
+                                            {emojis.emoji}
+                                            <span>{emojis.count}</span>
+                                        </div>
                                     )
-                                }
-                            />
-                        </StyledMediaImg>
-                    )}
+                                })}
+                                <i className="ico-add ico-select" />
+                            </StyledReact>
+                        )}
+                    </div>
                 </div>
-            </div>
-            {showDialogImg.isOpen && (
-                <StyledDialogImg
-                    onClick={() =>
-                        setShowDialogImg({
-                            ...showDialogImg,
-                            isOpen: false,
-                        })
-                    }
-                    isInline={showDialogImg.isInline}
-                    inline={showDialogImg.widthSize}
-                    block={showDialogImg.heightSize}
-                >
-                    {imgRef.current !== null && <img src={img} alt="" />}
-                </StyledDialogImg>
-            )}
-        </StyledComment>
+                {showDialogImg.isOpen && (
+                    <StyledDialogImg
+                        onClick={() =>
+                            setShowDialogImg({
+                                ...showDialogImg,
+                                isOpen: false,
+                            })
+                        }
+                        isInline={showDialogImg.isInline}
+                        inline={showDialogImg.widthSize}
+                        block={showDialogImg.heightSize}
+                    >
+                        {imgRef.current !== null && <img src={img} alt="" />}
+                    </StyledDialogImg>
+                )}
+            </StyledComment>
+        </>
     )
 }

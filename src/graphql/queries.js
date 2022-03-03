@@ -12,6 +12,17 @@ export const SERVERS = gql`
     }
   }
 `
+export const USERS = gql`
+  query getUsers {
+    getUsers {
+      _id
+      img
+      name
+      role
+    }
+  }
+`
+
 // hacer una busqueda por server
 export const FIND_SERVER = gql`
   query findServer($id: ID!) {
@@ -31,7 +42,6 @@ export const FIND_SERVER = gql`
   }
 `
 // hace una busqueda por channel - comments
-
 export const FIND_COMMENTS = gql`
   query findComment($idServer: ID!, $idChannel: ID!) {
     findComment(_id_server: $idServer, _id_channel: $idChannel) {
@@ -45,13 +55,26 @@ export const FIND_COMMENTS = gql`
         _id_comment_reply
         img
         url
-        react
+        react {
+          unicode
+          count
+          emoji
+        }
         user {
           img
           name
           role
         }
       }
+    }
+  }
+`
+export const FIND_EMOJIS = gql`
+  query findEmojis($id: Int) {
+    findEmojis(id: $id) {
+      id
+      emoji
+      unicode
     }
   }
 `

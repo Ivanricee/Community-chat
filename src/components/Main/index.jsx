@@ -69,6 +69,7 @@ const Main = ({ params }) => {
                                         key={comment._id}
                                         date={comment.date}
                                         img={comment.img}
+                                        url={comment.url}
                                         texto={comment.texto}
                                         react={comment.react}
                                         reply={comment._id_comment_reply}

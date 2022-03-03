@@ -1,9 +1,19 @@
 /* eslint-disable prettier/prettier */
 import { useQuery } from '@apollo/client'
-import { FIND_SERVER, SERVERS, FIND_COMMENTS } from './queries'
+import {
+  FIND_SERVER,
+  SERVERS,
+  FIND_COMMENTS,
+  FIND_EMOJIS,
+  USERS,
+} from './queries'
 
 export const useServers = () => {
   return useQuery(SERVERS)
+}
+
+export const useUsers = () => {
+  return useQuery(USERS)
 }
 
 export const useServer = (idServer, clientCache) => {
@@ -28,6 +38,13 @@ export const useChannelComment = (idServer, idChannel) => {
     variables: { idServer, idChannel },
     fetchPolicy: 'network-only',
     nextFetchPolicy: 'cache-only',
+  })
+  return result
+}
+
+export const useEmojis = id => {
+  const result = useQuery(FIND_EMOJIS, {
+    variables: { id },
   })
   return result
 }
