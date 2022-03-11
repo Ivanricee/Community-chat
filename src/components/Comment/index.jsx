@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useRef, useState } from 'react'
 
 import {
@@ -69,13 +70,12 @@ const styleTextMarks = (texto, data) => {
             const textArraySplit = texto.split(regexDos)
 
             return textArraySplit.map((mark, i) => (
-                <>
+                <React.Fragment key={i}>
                     {mark}
                     {i + 1 <= usersInText.length && (
-                        // eslint-disable-next-line react/no-array-index-key
                         <span key={i}>{usersInText[i]}</span>
                     )}
-                </>
+                </React.Fragment>
             ))
         }
     } else {
@@ -117,7 +117,6 @@ export const Comment = ({
     })
 
     const { data } = useUsers()
-    console.log('fecha', dateFormat)
     return (
         <>
             {showLine && (
