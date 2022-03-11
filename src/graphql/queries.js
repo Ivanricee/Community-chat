@@ -52,7 +52,6 @@ export const FIND_COMMENTS = gql`
         texto
         img
         date
-        _id_comment_reply
         img
         url
         react {
@@ -60,10 +59,17 @@ export const FIND_COMMENTS = gql`
           count
           emoji
         }
+        _id_user
         user {
           img
           name
           role
+        }
+        comment_reply {
+          _id
+          img
+          texto
+          url
         }
       }
     }

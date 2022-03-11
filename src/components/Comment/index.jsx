@@ -38,7 +38,6 @@ const handleShowDialog = imgDimensionSize => {
         heightSize,
     }
 }
-
 const styleTextMarks = (texto, data) => {
     const regex = /@.[a-zA-Z\u00C0-\u00FF\s]{1,32}/gi
     const usersRaw = texto.match(regex)
@@ -85,13 +84,22 @@ const styleTextMarks = (texto, data) => {
 
     return 'loading comment..'
 }
+const dateFormatted = (date, type) => {
+    let options = {}
+    if (type === 'long') {
+        options = { year: 'numeric', month: 'long', day: 'numeric' }
+    } else {
+        options = { year: 'numeric', month: 'numeric', day: 'numeric' }
+    }
+    return date.toLocaleDateString(navigator.language, options)
+}
 export const Comment = ({
     img,
     url,
     texto,
     react,
     nombre,
-    date,
+    date: { dateFormat, showLine },
     userImg,
     role,
 }) => {
@@ -109,12 +117,15 @@ export const Comment = ({
     })
 
     const { data } = useUsers()
-
+    console.log('fecha', dateFormat)
     return (
         <>
-            <StyledDate>
-                <small>28 de enero de 2022</small>
-            </StyledDate>
+            {showLine && (
+                <StyledDate>
+                    <small>{dateFormatted(dateFormat, 'long')}</small>
+                </StyledDate>
+            )}
+
             <StyledComment role={role}>
                 <div className="comment__wrapper">
                     <div className="comment__perfil-wrapper">
@@ -127,7 +138,9 @@ export const Comment = ({
                         <div className="comment__user-date">
                             <p type="button">{nombre}</p>
                             <span>
-                                <small>{date}</small>
+                                <small>
+                                    {dateFormatted(dateFormat, 'short')}
+                                </small>
                             </span>
                         </div>
                         <div className="comment__message">

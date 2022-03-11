@@ -51,6 +51,7 @@ const Main = ({ params }) => {
     }, [])
 
     if (channel && server && data) {
+        let AccDate = 0
         return (
             <StyledMain>
                 <StyledHeader>
@@ -64,10 +65,25 @@ const Main = ({ params }) => {
                     ) : (
                         <div>
                             {data.findComment.comments.map(comment => {
+                                let showLine = true
+                                const dateFormat = new Date(comment.date)
+                                if (AccDate !== 0) {
+                                    if (
+                                        dateFormat.getTime() > AccDate.getTime()
+                                    ) {
+                                        AccDate = new Date(comment.date)
+                                        showLine = true
+                                    } else {
+                                        showLine = false
+                                    }
+                                } else {
+                                    AccDate = new Date(comment.date)
+                                    showLine = true
+                                }
                                 return (
                                     <Comment
                                         key={comment._id}
-                                        date={comment.date}
+                                        date={{ dateFormat, showLine }}
                                         img={comment.img}
                                         url={comment.url}
                                         texto={comment.texto}
