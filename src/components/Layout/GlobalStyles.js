@@ -17,7 +17,7 @@ body{
   background-color: ${props => props.theme.bg};
   block-size: 100vh;
   display: grid;
-  grid-template-columns: 4.5rem 15rem 1fr 15rem;
+  grid-template-columns: 4.5rem 15rem calc(100% - 34.5rem) 15rem;
   grid-template-rows:  1fr;
   grid-template-areas: "left-menu channel main user"
 }

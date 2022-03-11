@@ -21,12 +21,39 @@ export const StyledComment = styled.div`
   padding-block-start: 0.3rem;
   padding-block-end: 0.3rem;
   margin-block-end: 1rem;
+  & .comment__submenu {
+    position: relative;
+    visibility: hidden;
+    div {
+      cursor: pointer;
+      color: ${p => p.theme.grey2};
+      font-size: 1.2rem;
+      background-color: ${p => p.theme.bg};
+      position: absolute;
+      right: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #292c31;
+      border-radius: 0.35rem;
+      transform: translateY(-50%);
+      * {
+        padding: 0.4rem;
+        :hover {
+          background-color: #3b3f46;
+        }
+      }
+    }
+  }
+  :hover {
+    background-color: ${p => p.theme.blackHover2};
+    & .comment__submenu {
+      visibility: visible;
+    }
+  }
   & .comment__wrapper {
     display: flex;
     box-sizing: border-box;
-    :hover {
-      background-color: ${p => p.theme.blackHover2};
-    }
     & .comment__perfil-wrapper {
       margin-inline-end: 1rem;
       margin-inline-start: 1rem;

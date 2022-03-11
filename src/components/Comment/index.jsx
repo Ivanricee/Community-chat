@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useRef, useState } from 'react'
-
+import { BsFillReplyFill, BsThreeDots } from 'react-icons/bs'
 import {
     StyledComment,
     StyledMediaImg,
@@ -126,6 +126,13 @@ export const Comment = ({
             )}
 
             <StyledComment role={role}>
+                <div className="comment__submenu">
+                    <div>
+                        <i className="ico-add ico-select" />
+                        <BsFillReplyFill />
+                        <BsThreeDots />
+                    </div>
+                </div>
                 <div className="comment__wrapper">
                     <div className="comment__perfil-wrapper">
                         <div className="comment__perfil">
