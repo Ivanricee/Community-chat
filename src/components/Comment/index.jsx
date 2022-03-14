@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useRef, useState } from 'react'
-import { BsFillReplyFill, BsThreeDots } from 'react-icons/bs'
+import { BsFillReplyFill, BsThreeDots, BsFillImageFill } from 'react-icons/bs'
 import {
     StyledComment,
     StyledMediaImg,
@@ -8,6 +8,7 @@ import {
     StyledUrl,
     StyledReact,
     StyledDate,
+    StyledReply,
 } from './style'
 import { ImgContainer } from '../ImgContainer'
 import { useUsers } from '../../graphql/custom-hook'
@@ -39,7 +40,7 @@ const handleShowDialog = imgDimensionSize => {
         heightSize,
     }
 }
-const styleTextMarks = (texto, data) => {
+const styleTextMarks = (texto, data, replyClass) => {
     const regex = /@.[a-zA-Z\u00C0-\u00FF\s]{1,32}/gi
     const usersRaw = texto.match(regex)
     if (usersRaw !== null) {
@@ -73,7 +74,9 @@ const styleTextMarks = (texto, data) => {
                 <React.Fragment key={i}>
                     {mark}
                     {i + 1 <= usersInText.length && (
-                        <span key={i}>{usersInText[i]}</span>
+                        <span className={replyClass} key={i}>
+                            {usersInText[i]}
+                        </span>
                     )}
                 </React.Fragment>
             ))
@@ -98,6 +101,7 @@ export const Comment = ({
     url,
     texto,
     react,
+    reply,
     nombre,
     date: { dateFormat, showLine },
     userImg,
@@ -133,6 +137,23 @@ export const Comment = ({
                         <BsThreeDots />
                     </div>
                 </div>
+                {reply._id !== null && (
+                    <StyledReply role={reply.role}>
+                        <div className="comment__message">
+                            <div>
+                                <p className="comment__reply-user">
+                                    {reply.nombre}
+                                </p>
+                                {styleTextMarks(reply.texto, data, 'reply')}
+                            </div>
+                            {reply.img && (
+                                <div className="comment__reply-img">
+                                    <BsFillImageFill />
+                                </div>
+                            )}
+                        </div>
+                    </StyledReply>
+                )}
                 <div className="comment__wrapper">
                     <div className="comment__perfil-wrapper">
                         <div className="comment__perfil">

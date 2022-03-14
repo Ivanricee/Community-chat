@@ -67,9 +67,11 @@ export const FIND_COMMENTS = gql`
         }
         comment_reply {
           _id
-          img
+          role
+          nombre
           texto
           url
+          img
         }
       }
     }

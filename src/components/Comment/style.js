@@ -15,15 +15,85 @@ export const StyledDate = styled.div`
     padding-inline-end: 0.5rem;
   }
 `
-
+export const StyledReply = styled.div`
+  position: relative;
+  & .comment__message {
+    display: flex;
+    margin-inline-end: 0rem;
+  }
+  & .comment__reply-user {
+    display: inline-block;
+    margin: 0;
+    font: ${p => p.theme.body2Bold};
+    font-size: 0.8rem;
+    color: ${p => p.theme.colorRole(p.role)};
+    cursor: pointer;
+    padding: 0;
+    flex: 1;
+    :hover {
+      text-decoration: underline;
+    }
+  }
+  & div {
+    font: ${p => p.theme.body2Semibold};
+    font-size: 0.7rem;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-inline-start: 2.2rem;
+    opacity: 0.8;
+    cursor: pointer;
+    :hover {
+      opacity: 1;
+    }
+  }
+  .comment__reply-img {
+    width: 5rem;
+  }
+  :before {
+    position: absolute;
+    content: '';
+    inline-size: 2rem;
+    display: inline-flex;
+    border-block-start: 0.13rem solid #64686f;
+    border-inline-start: 0.13rem solid #64686f;
+    inset-block-start: 0.75rem;
+    inset-block-end: 0.2rem;
+    inset-inline-start: 2.1rem;
+    inset-inline-end: 0;
+    border-start-start-radius: 0.28rem;
+  }
+`
 export const StyledComment = styled.div`
   inline-size: 100%;
   padding-block-start: 0.3rem;
   padding-block-end: 0.3rem;
   margin-block-end: 1rem;
+  & .comment__message {
+    font: ${p => p.theme.captionRegular};
+    line-height: 1.3rem;
+    font-size: 0.87rem;
+    color: ${p => p.theme.grey3};
+    margin-inline-end: 4.5rem;
+    padding-block-end: 0.28rem;
+    span {
+      //font: ${p => p.theme.body2Semibold};
+      padding-inline-start: 0.2rem;
+      padding-inline-end: 0.2rem;
+
+      background-color: ${p => p.theme.purple};
+      border-radius: 0.25rem;
+      :hover {
+        cursor: pointer;
+        background-color: ${p => p.theme.purpleHover};
+      }
+    }
+  }
   & .comment__submenu {
     position: relative;
     visibility: hidden;
+    z-index: 1;
     div {
       cursor: pointer;
       color: ${p => p.theme.grey2};
@@ -80,26 +150,6 @@ export const StyledComment = styled.div`
         span {
           font: ${p => p.theme.captionRegular};
           color: ${p => p.theme.grey};
-        }
-      }
-      & .comment__message {
-        font: ${p => p.theme.captionRegular};
-        line-height: 1.3rem;
-        font-size: 0.87rem;
-        color: ${p => p.theme.grey3};
-        margin-inline-end: 4.5rem;
-        padding-block-end: 0.28rem;
-        span {
-          font: ${p => p.theme.body2Semibold};
-          padding-inline-start: 0.2rem;
-          padding-inline-end: 0.2rem;
-
-          background-color: ${p => p.theme.purple};
-          border-radius: 0.25rem;
-          :hover {
-            cursor: pointer;
-            background-color: ${p => p.theme.purpleHover};
-          }
         }
       }
     }

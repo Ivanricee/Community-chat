@@ -88,7 +88,7 @@ const Main = ({ params }) => {
                                         url={comment.url}
                                         texto={comment.texto}
                                         react={comment.react}
-                                        reply={comment._id_comment_reply}
+                                        reply={comment.comment_reply}
                                         nombre={comment.user.name}
                                         userImg={comment.user.img}
                                         role={comment.user.role}
