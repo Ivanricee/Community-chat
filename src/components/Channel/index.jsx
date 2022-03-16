@@ -143,8 +143,8 @@ const Channel = () => {
                             img="https://res.cloudinary.com/ivanrice-c/image/upload/f_auto,q_auto:good/v1642023517/discord-clone/server/ivnrice_logo_grzmki.png"
                             alt="perfil de usuario"
                             content=""
-                            inlineSize="0.7"
-                            blockSize="0.7"
+                            inlineSize="0.58"
+                            blockSize="0.58"
                             greenBullet="1"
                             borderColor="black2"
                             display={greenBullet.display}

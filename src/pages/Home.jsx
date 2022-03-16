@@ -16,7 +16,7 @@ export const Home = () => {
             </Helmet>
             <Outlet />
             <Main params={{ server, channel }} />
-            <User />
+            <User server={server} />
         </>
     )
 }

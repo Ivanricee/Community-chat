@@ -22,7 +22,6 @@ export const USERS = gql`
     }
   }
 `
-
 // hacer una busqueda por server
 export const FIND_SERVER = gql`
   query findServer($id: ID!) {
@@ -84,5 +83,28 @@ export const FIND_EMOJIS = gql`
       emoji
       unicode
     }
+  }
+`
+export const FIND_USERS_AND_USERS_IN_ROLES = gql`
+  query findUsersRoles($idServer: ID!) {
+    findUsersRoles(_id_server: $idServer) {
+      _id
+      _id_server
+      name
+      users {
+        _id
+        hash
+        img
+        name
+        role
+        state
+      }
+    }
+    # getUsers {
+    #   _id
+    #   img
+    #   name
+    #   role
+    # }
   }
 `

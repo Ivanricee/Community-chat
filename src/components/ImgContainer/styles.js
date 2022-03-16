@@ -17,8 +17,8 @@ export const StyledImgContainer = styled.div`
       p.borderColor === 'black'
         ? props => props.theme.black
         : props => props.theme.black2};
-    ${p => p.greenBullet === '1' && `inset-block-start: 1.08rem;`}
-    ${p => p.greenBullet === '1' && `inset-inline-start: 1.08rem;`}
+    ${p => p.greenBullet === '1' && `inset-block-start: 1.21rem;`}
+    ${p => p.greenBullet === '1' && `inset-inline-start: 1.23rem;`}
     content: ${p => `"${p.content}"`};
     inline-size: ${p => p.inlineSize}rem;
     block-size: ${p => p.blockSize}rem;
