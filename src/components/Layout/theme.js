@@ -5,7 +5,7 @@ export const darkTheme = {
   black: '#202225',
   blue: '#288fea',
   green: '#2bac76',
-  white: '#ffffff',
+  white: '#e3e9ec',
   grey: '#8f9296',
   separatorDate: '#44464a',
   pink: '#d63864',

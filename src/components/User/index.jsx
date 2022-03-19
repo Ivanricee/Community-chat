@@ -1,34 +1,20 @@
 import React from 'react'
-import { BsSearch } from 'react-icons/bs'
-import { CgInbox } from 'react-icons/cg'
-import { IoMdHelpCircle } from 'react-icons/io'
-import {
-    StyledUser,
-    StyledUserProfileItem,
-    StyledUserHeader,
-    StyledUserList,
-} from './styles'
+import { useSelector } from 'react-redux'
+import { StyledUser, StyledUserProfileItem, StyledUserList } from './styles'
 import { useUsersInRoles } from '../../graphql/custom-hook'
 import { ImgContainer } from '../ImgContainer'
 
 const User = ({ server }) => {
     const { loading, data, error } = useUsersInRoles(server)
-    console.table('user roles', data)
+    const storedUserMenu = useSelector(state => state.app.userMenu)
+
     if (error) {
         return <h1>error</h1>
     }
     return loading ? (
         <h2>Loading</h2>
     ) : (
-        <StyledUser>
-            <StyledUserHeader>
-                <div className="user__header-wrapper-input">
-                    <input type="text" placeholder="Buscar" />
-                    <BsSearch />
-                </div>
-                <CgInbox />
-                <IoMdHelpCircle />
-            </StyledUserHeader>
+        <StyledUser showUserMenu={storedUserMenu}>
             <StyledUserList>
                 {data.findUsersRoles.map(usersRole => {
                     return (

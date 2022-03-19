@@ -3,17 +3,6 @@ import styled from 'styled-components'
 export const StyledMain = styled.main`
   grid-area: main;
 `
-export const StyledHeader = styled.header`
-  background-color: ${p => p.theme.bg};
-  block-size: 3rem;
-  padding-inline-start: 0.75rem;
-  font: ${p => p.theme.body1Bold};
-  line-height: 3rem;
-  font-size: 0.9rem;
-  color: ${p => p.theme.white};
-  border-block-end: 1px solid ${p => p.theme.black};
-  box-sizing: border-box;
-`
 export const StyledCommentList = styled.section`
   block-size: calc(100vh - 7rem);
   scrollbar-width: thin; /* Firefox */

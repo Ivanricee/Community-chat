@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 import { useChannelComment } from '../../graphql/custom-hook'
 import {
     StyledMain,
-    StyledHeader,
     StyledCommentList,
     StyledFooter,
     StyledInputWrapper,
@@ -54,11 +53,6 @@ const Main = ({ params }) => {
         let AccDate = 0
         return (
             <StyledMain>
-                <StyledHeader>
-                    {storedChannelTitle
-                        ? `# ${storedChannelTitle}`
-                        : 'Loading...'}
-                </StyledHeader>
                 <StyledCommentList>
                     {loading || data.findComment === null ? (
                         <div>Loading...</div>
@@ -108,7 +102,7 @@ const Main = ({ params }) => {
                                 type="text"
                                 id="comment"
                                 name="comment"
-                                placeholder="la reconcha de mi perro"
+                                placeholder={`Enviar mensaje a #${storedChannelTitle}`}
                             />
                         </div>
                         <div>

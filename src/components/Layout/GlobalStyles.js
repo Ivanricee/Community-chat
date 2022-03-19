@@ -18,8 +18,11 @@ body{
   block-size: 100vh;
   display: grid;
   grid-template-columns: 4.5rem 15rem calc(100% - 34.5rem) 15rem;
-  grid-template-rows:  1fr;
-  grid-template-areas: "left-menu channel main user"
+  grid-template-rows:  3rem 1fr ;
+  grid-template-areas: "left-menu channel top-menu top-menu"
+                       "left-menu channel   main     ${p =>
+                         p.showUserMenu ? `user` : `main`}"
+
 }
 @font-face {
   font-family: 'iconDiscord';

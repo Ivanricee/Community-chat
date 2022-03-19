@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const StyledUser = styled.aside`
   grid-area: user;
-
+  ${p => !p.showUserMenu && `display:none;`}
   background-color: ${p => p.theme.black1};
   & h2 {
     font: ${p => p.theme.body2Semibold};

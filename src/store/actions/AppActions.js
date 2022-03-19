@@ -6,3 +6,8 @@ export const getChannel = payload => ({
   type: '@channel/title',
   payload,
 })
+
+export const setUserMenu = payload => ({
+  type: '@user/userMenu',
+  payload,
+})
