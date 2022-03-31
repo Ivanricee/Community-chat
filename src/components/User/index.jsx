@@ -1,8 +1,12 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { StyledUser, StyledUserProfileItem, StyledUserList } from './styles'
+import {
+    StyledUser,
+    StyledUserProfileItem,
+    StyledUserList,
+    StyledUserDetail,
+} from './styles'
 import { useUsersInRoles } from '../../graphql/custom-hook'
-import { ImgContainer } from '../ImgContainer'
 
 const User = ({ server }) => {
     const { loading, data, error } = useUsersInRoles(server)
@@ -25,21 +29,12 @@ const User = ({ server }) => {
                             {usersRole.users.map(user => {
                                 return (
                                     <StyledUserProfileItem
+                                        StyledUserDetail={StyledUserDetail}
                                         key={user._id}
                                         role={user.role}
-                                    >
-                                        <div className="user__image-wrapper">
-                                            <ImgContainer
-                                                img={user.img}
-                                                greenBullet="1"
-                                                content=""
-                                                inlineSize={0.58}
-                                                blockSize={0.58}
-                                                borderColor="black2"
-                                            />
-                                        </div>
-                                        <span>{user.name}</span>
-                                    </StyledUserProfileItem>
+                                        user={user}
+                                        userRoleName={usersRole.name}
+                                    />
                                 )
                             })}
                         </React.Fragment>
