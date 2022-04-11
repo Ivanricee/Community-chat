@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
 import { ImgContainer } from '../ImgContainer'
 
@@ -9,8 +9,11 @@ export const UserDetail = ({
     userHash,
     userRoleName,
 }) => {
+    const refElement = useRef(null)
+
     return (
         <div
+            ref={refElement}
             role="button"
             tabIndex={-1}
             className={className}

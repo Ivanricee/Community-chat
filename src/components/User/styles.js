@@ -6,6 +6,15 @@ export const StyledUser = styled.aside`
   grid-area: user;
   ${p => !p.showUserMenu && `display:none;`}
   background-color: ${p => p.theme.black1};
+  overflow: auto;
+  scrollbar-width: thin; /* Firefox */
+  &::-webkit-scrollbar {
+    width: 0.35em;
+    background-color: ${p => p.theme.black2};
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${p => p.theme.black};
+  }
   & h2 {
     font: ${p => p.theme.body2Semibold};
     font-size: 0.83rem;
@@ -171,12 +180,11 @@ export const StyledUserDetail = styled(UserDetail)`
     border-radius: 0.2rem;
     input {
       color: ${p => p.theme.white};
-      background-color: goldenrod;
+      background-color: transparent;
       box-sizing: border-box;
       inline-size: 100%;
       padding-inline-start: 0.8rem;
       padding-inline-end: 0.8rem;
-      background-color: transparent;
       block-size: inherit;
       border: 0;
       ::placeholder {

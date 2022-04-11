@@ -109,10 +109,10 @@ const Channel = () => {
                                                                 channelItem.title
                                                             )
                                                         }
-                                                        color={
+                                                        color_active={
                                                             channelItem.notification !==
                                                             '0'
-                                                                ? 'true'
+                                                                ? true
                                                                 : ''
                                                         }
                                                     >

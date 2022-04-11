@@ -58,6 +58,12 @@ export const darkTheme = {
         return this.pink
       case '4': // no rol
         return this.grey2
+      case '5': // ivanrice
+        return '#afea0e'
+      case '6': // admin
+        return '#eab30e'
+      case '7': // vip
+        return '#0eeac1'
       default:
         return this.grey2
     }

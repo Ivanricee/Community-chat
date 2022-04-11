@@ -68,13 +68,11 @@ export const StyledLink = styled.a`
   padding-inline-end: 0.5rem;
   border-radius: 0.25rem;
   text-decoration: none;
-  color: inherit;
   margin-block-start: 0.08rem;
   margin-block-end: 0.08rem;
   display: flex;
   position: relative;
-  color: ${p =>
-    p.color === 'true' ? pr => pr.theme.white : pr => pr.theme.body2Regular};
+  color: ${p => (p.color_active ? p.theme.white : `inherit`)};
 
   &:hover {
     color: ${p => p.theme.white};
@@ -162,8 +160,6 @@ export const StyledFooter = styled.footer`
     align-items: center;
     justify-content: space-between;
     font-size: 1.3rem;
-
-    color: red !important;
     div {
       cursor: pointer;
       line-height: 1rem;

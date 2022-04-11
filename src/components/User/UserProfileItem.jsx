@@ -36,7 +36,6 @@ export const UserProfileItem = ({
                     showDetail: true,
                 }
             }
-
             setInsetBlockStart({
                 ...insetBlockStart,
                 ...detailData,
@@ -47,27 +46,36 @@ export const UserProfileItem = ({
 
     return (
         <div
+            hidden
             role="button"
             tabIndex={0}
             className={className}
-            onClick={e => {
-                handleUserItemClick(e)
-            }}
             onKeyDown={e => {
                 handleUserItemClick(e)
             }}
+            onFocus={e => {
+                handleUserItemClick(e)
+            }}
+            onBlur={() => {
+                const detailData = {
+                    blockStart: 0,
+                    showDetail: false,
+                }
+                if (insetBlockStart.showDetail === true)
+                    setInsetBlockStart({ ...insetBlockStart, ...detailData })
+            }}
         >
-            {insetBlockStart.showDetail && (
-                <StyledUserDetail
-                    role={user.role}
-                    insetBlockStart={insetBlockStart.blockStart}
-                    img={user.img}
-                    userName={user.name}
-                    userHash={user.hash}
-                    userRoleName={userRoleName}
-                />
-            )}
-            <div className="user__image-wrapper">
+            <StyledUserDetail
+                role={user.role}
+                displayShow={insetBlockStart.showDetail}
+                insetBlockStart={insetBlockStart.blockStart}
+                img={user.img}
+                userName={user.name}
+                userHash={user.hash}
+                userRoleName={userRoleName}
+            />
+
+            <div className="user__image-wrapper" tabIndex="-1">
                 <ImgContainer
                     img={user.img}
                     greenBullet="1"
