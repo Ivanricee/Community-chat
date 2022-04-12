@@ -51,18 +51,12 @@ export const UserProfileItem = ({
             tabIndex={0}
             className={className}
             onKeyDown={e => {
+                e.stopPropagation()
                 handleUserItemClick(e)
             }}
             onFocus={e => {
+                e.stopPropagation()
                 handleUserItemClick(e)
-            }}
-            onBlur={() => {
-                const detailData = {
-                    blockStart: 0,
-                    showDetail: false,
-                }
-                if (insetBlockStart.showDetail === true)
-                    setInsetBlockStart({ ...insetBlockStart, ...detailData })
             }}
         >
             <StyledUserDetail

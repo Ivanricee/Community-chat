@@ -17,10 +17,7 @@ export const UserDetail = ({
             role="button"
             tabIndex={-1}
             className={className}
-            onClick={e => {
-                e.stopPropagation()
-            }}
-            onKeyDown={e => {
+            onFocus={e => {
                 e.stopPropagation()
             }}
         >
