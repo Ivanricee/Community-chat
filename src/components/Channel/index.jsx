@@ -48,7 +48,7 @@ const Channel = () => {
     }
     // Navigate on refresh
     useEffect(() => {
-        if (channel === undefined) navigate('1')
+        // if (channel === undefined) navigate('1')
         if (channelTitle) {
             dispatch(getChannel(channelTitle))
         }

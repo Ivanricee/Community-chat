@@ -27,15 +27,15 @@ export const App = () => {
         <ApolloProvider client={client}>
             <Provider store={store}>
                 <BrowserRouter>
-                    <Layout>
-                        <Routes>
+                    <Routes>
+                        <Route path="/" element={<Layout />}>
                             <Route path="/:server" element={<Home />}>
                                 <Route index element={<Channel />} />
                                 <Route path=":channel" element={<Channel />} />
                             </Route>
                             <Route path="*" element={<NotFound />} />
-                        </Routes>
-                    </Layout>
+                        </Route>
+                    </Routes>
                 </BrowserRouter>
             </Provider>
         </ApolloProvider>

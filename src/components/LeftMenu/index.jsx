@@ -1,4 +1,5 @@
 import React from 'react'
+import { useParams } from 'react-router-dom'
 import {
     StyledLeftMenu,
     StyledNavlinkServerItem,
@@ -9,15 +10,17 @@ import { ImgContainer } from '../ImgContainer'
 import { useServers } from '../../graphql/custom-hook'
 
 const LeftMenu = () => {
+    const params = useParams()
+    const { server } = params
     // realiza peticion asyncrona del query
     const { data, error, loading } = useServers()
-
     if (error)
         return (
             <pre>
                 <span>Error</span>
             </pre>
         )
+
     return (
         <StyledLeftMenu aria-label="primary">
             {loading ? (
@@ -31,6 +34,9 @@ const LeftMenu = () => {
                             role="menuitem"
                             key={item._id}
                             to={item.path}
+                            className={`${
+                                item.path === `/${server}/1` ? 'active' : ''
+                            }`}
                         >
                             <StyledItemWrapper>
                                 <ImgContainer

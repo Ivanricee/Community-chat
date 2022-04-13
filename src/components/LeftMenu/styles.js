@@ -30,7 +30,7 @@ export const StyledItemWrapper = styled(ItemWrapper)`
     inset-inline-end: 4.23rem;
     border-start-end-radius: 0.2rem;
     border-end-end-radius: 0.2rem;
-    transition: inset-block-start 0.2s, inset-block-end 0.2s;
+    transition: inset-block-start 0.4s, inset-block-end 0.4s;
   }
   &:hover {
     &:before {
