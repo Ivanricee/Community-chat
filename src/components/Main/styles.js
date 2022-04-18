@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Introduction } from './Indroduction'
 
 export const StyledMain = styled.main`
   grid-area: main;
@@ -89,5 +90,32 @@ export const StyledInputWrapper = styled.div`
         color: ${p => p.theme.white};
       }
     }
+  }
+`
+export const StyledIntroduction = styled(Introduction)`
+  margin: 1.2rem;
+  margin-block-end: 4rem;
+  & div > h1 {
+    border-radius: 50%;
+    inline-size: 4.25rem;
+    block-size: 4.25rem;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    font: ${p => p.theme.captionRegular};
+    font-size: 2.8rem;
+    background-color: #4d5159;
+    color: ${p => p.theme.white};
+  }
+  & > h1 {
+    font: ${p => p.theme.body1Bold};
+    line-height: 2.5rem;
+    font-size: 2rem;
+    margin-block-start: 0.5rem;
+    margin-block-end: 0.5rem;
+    color: ${p => p.theme.white};
+  }
+  & > span {
+    color: ${p => p.theme.grey2};
   }
 `

@@ -6,6 +6,7 @@ import {
     StyledCommentList,
     StyledFooter,
     StyledInputWrapper,
+    StyledIntroduction,
 } from './styles'
 import { Comment } from '../Comment'
 
@@ -55,9 +56,12 @@ const Main = ({ params }) => {
             <StyledMain>
                 <StyledCommentList>
                     {loading || data.findComment === null ? (
-                        <div>Loading...</div>
+                        <StyledIntroduction channelTitle={storedChannelTitle} />
                     ) : (
                         <div>
+                            <StyledIntroduction
+                                channelTitle={storedChannelTitle}
+                            />
                             {data.findComment.comments.map(comment => {
                                 let showLine = true
                                 const dateFormat = new Date(comment.date)
@@ -130,7 +134,7 @@ const Main = ({ params }) => {
             </StyledMain>
         )
     }
-    return <div>Redirecting to a channel</div>
+    return <div>Loading channel</div>
 }
 
 export default Main
