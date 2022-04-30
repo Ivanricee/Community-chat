@@ -3,6 +3,23 @@ import { Introduction } from './Indroduction'
 
 export const StyledMain = styled.main`
   grid-area: main;
+  position: relative;
+  z-index: 2;
+  background: black;
+
+  @media ${p => p.theme.breakPointsDevice.tablet} {
+    ${p => p.showHeaderAndComments && 'transform: translateX(-19.5rem);'}
+    ${p => p.storedUserMenu && 'transform: translateX(-34.5rem);'}
+    inline-size: 100vw;
+    & .main__wrapper-enable {
+      position: absolute;
+      inset: 0;
+      background: rgba(64, 53, 104, 0.8);
+      ${p => p.showHeaderAndComments && 'display: none;'}
+      ${p => p.storedUserMenu && 'display: block;'}
+      z-index: 1;
+    }
+  }
 `
 export const StyledCommentList = styled.section`
   block-size: calc(100vh - 7rem);

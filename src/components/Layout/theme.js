@@ -49,24 +49,22 @@ export const darkTheme = {
     inset-inline-start: 1.78rem;
   `,
   colorRole(role) {
-    switch (role) {
-      case '1': // admin
-        return this.yellow
-      case '2': // menber
-        return this.green
-      case '3': // twitch
-        return this.pink
-      case '4': // no rol
-        return this.grey2
-      case '5': // ivanrice
-        return '#afea0e'
-      case '6': // admin
-        return '#eab30e'
-      case '7': // vip
-        return '#0eeac1'
-      default:
-        return this.grey2
-    }
+    return (
+      {
+        1: this.yellow,
+        2: this.green,
+        3: this.pink,
+        4: this.grey2,
+        5: '#afea0e',
+        6: '#eab30e',
+        7: '#0eeac1',
+      }[role] || this.grey2
+    )
+  },
+  breakPointsDevice: {
+    mobileL: 'screen and (max-width: 929px)',
+    // tablet: 'screen and (min-width: 930px) and (max-width: 1023px)',
+    tablet: 'screen and (max-width: 1023px)',
   },
   /* scale: css`
     ${scale} .3s;

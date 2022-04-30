@@ -8,6 +8,7 @@ export const StyledUser = styled.aside`
   background-color: ${p => p.theme.black1};
   overflow: auto;
   scrollbar-width: thin; /* Firefox */
+  z-index: 0;
   &::-webkit-scrollbar {
     width: 0.35em;
     background-color: ${p => p.theme.black2};
@@ -23,6 +24,13 @@ export const StyledUser = styled.aside`
     margin-inline-start: 0.25rem;
     margin-block-start: 1rem;
   }
+  @media ${p => p.theme.breakPointsDevice.tablet} {
+    display: block;
+    ${p => p.showUserMenu && `z-index: 2;`}
+  }
+  /*@media ${p => p.theme.breakPointsDevice.mobileL} {
+
+  }*/
 `
 export const StyledUserHeader = styled.header`
   display: flex;

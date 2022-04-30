@@ -3,7 +3,6 @@ import styled from 'styled-components'
 export const StyledHeader = styled.header`
   grid-area: top-menu;
   background-color: ${p => p.theme.bg};
-
   padding-inline-start: 0.75rem;
   font: ${p => p.theme.body1Bold};
   font-size: 0.9rem;
@@ -12,6 +11,37 @@ export const StyledHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-sizing: border-box;
+  align-items: center;
+
+  & .haeder__title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & svg[ismenu] {
+      cursor: pointer;
+      display: none;
+      font-size: 1.2rem;
+      margin-inline-end: 0.5rem;
+      @media ${p => p.theme.breakPointsDevice.tablet} {
+        display: block;
+      }
+    }
+  }
+  & .header__icons {
+    display: flex;
+  }
+  @media ${p => p.theme.breakPointsDevice.tablet} {
+    ${p =>
+      p.showHeaderAndComments
+        ? 'transform: translateX(-19.5rem);'
+        : 'transform: translateX(0rem);'}
+    ${p => p.storedUserMenu && 'transform: translateX(-34.5rem);'}
+    inline-size: 100vw;
+    .header__icons-shift {
+      display: none;
+    }
+  }
 `
 export const StyledHeaderSearchHelp = styled.div`
   display: flex;
@@ -60,6 +90,9 @@ export const StyledHeaderSearchHelp = styled.div`
       padding-inline-end: 0.5rem;
       padding-inline-start: 0.5rem;
       cursor: text;
+    }
+    @media ${p => p.theme.breakPointsDevice.tablet} {
+      display: none;
     }
   }
 `

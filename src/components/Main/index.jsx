@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { useChannelComment } from '../../graphql/custom-hook'
+import {
+    setShowHeaderAndComments,
+    setUserMenu,
+} from '../../store/actions/AppActions'
 import {
     StyledMain,
     StyledCommentList,
@@ -19,13 +23,31 @@ const handleEmojiHover = (arrayEmojis, urlEmoji) => {
 
 const Main = ({ params }) => {
     const { server, channel } = params
+    const dispatch = useDispatch()
     const storedChannelTitle = useSelector(state => state.app.channel)
+    const storedUserMenu = useSelector(state => state.app.userMenu)
+    const showHeaderAndComments = useSelector(
+        state => state.app.showHeaderAndComments
+    )
     const { data, loading } = useChannelComment(server, channel)
 
     const [urlEmoji, setUrlEmoji] = useState(
         'https://res.cloudinary.com/ivanrice-c/image/upload/v1642795216/discord-clone/fonts/emojis/05_Laugh_rzq4mh.png'
     )
+
     const [arrayEmojis, setArrayEmojis] = useState([])
+    /*
+     *Al click on the blocked comments:
+     * cambia el css para mostrar los comentarios y el header por completo
+     * si detecta que se estan mostrando los usuarios simplemente los esconde de nuevo.
+     * para que se muestren los comentarios y el header por completo de nuevo
+     */
+    const handleClickEnableComments = useCallback(() => {
+        dispatch(setShowHeaderAndComments(!showHeaderAndComments))
+        if (storedUserMenu) dispatch(setUserMenu(!storedUserMenu))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     // preload and store an emojis array
     useEffect(() => {
         const rootPath =
@@ -53,7 +75,18 @@ const Main = ({ params }) => {
     if (channel && server && data) {
         let AccDate = 0
         return (
-            <StyledMain>
+            <StyledMain
+                showHeaderAndComments={showHeaderAndComments}
+                storedUserMenu={storedUserMenu}
+            >
+                <div
+                    role="button"
+                    aria-label="Enable comments"
+                    className="main__wrapper-enable"
+                    onClick={handleClickEnableComments}
+                    onKeyDown={handleClickEnableComments}
+                    tabIndex={0}
+                />
                 <StyledCommentList>
                     {loading || data.findComment === null ? (
                         <StyledIntroduction channelTitle={storedChannelTitle} />

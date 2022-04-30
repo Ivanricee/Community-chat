@@ -17,14 +17,33 @@ body{
   background-color: ${props => props.theme.bg};
   block-size: 100vh;
   display: grid;
+
   overflow: hidden;
-  grid-template-columns: 4.5rem 15rem minmax(23rem, calc(100% - 34.5rem)) 15rem;
+  grid-template-columns: 4.5rem 15rem minmax(23rem, calc(100vw - 34.5rem)) 15rem;
   grid-template-rows:  3rem 1fr ;
   grid-template-areas: "left-menu channel top-menu top-menu"
                        "left-menu channel   main     ${p =>
                          p.showUserMenu ? `user` : `main`}"
 
 }
+
+@media ${p => p.theme.breakPointsDevice.tablet} {
+  #app{
+    background-color:red;
+    position:relative;
+   // grid-template-columns: 4.5rem 15rem 100vw 15rem;
+    grid-template-areas: "left-menu channel top-menu user"
+                         "left-menu channel   main     user"
+  }
+}
+/*@media ${p => p.theme.breakPointsDevice.mobileL} {
+  #app{
+    background-color:blue;
+    grid-template-areas: "left-menu channel top-menu top-menu"
+                         "left-menu channel   main     main"
+  }
+}*/
+
 @font-face {
   font-family: 'iconDiscord';
   src:

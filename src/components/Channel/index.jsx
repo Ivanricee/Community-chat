@@ -1,7 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-
+import { useSelector, useDispatch } from 'react-redux'
+import {
+    setShowHeaderAndComments,
+    getChannel,
+} from '../../store/actions/AppActions'
 import {
     StyledChannel,
     StyledHeader,
@@ -14,10 +17,12 @@ import { setBullet } from '../../utils'
 import { ImgContainer } from '../ImgContainer'
 
 import { useServer } from '../../graphql/custom-hook'
-import { getChannel } from '../../store/actions/AppActions'
 
 const Channel = () => {
     const params = useParams()
+    const showHeaderAndComments = useSelector(
+        state => state.app.showHeaderAndComments
+    )
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { server, channel } = params
@@ -43,6 +48,9 @@ const Channel = () => {
     // navigate on click
     const handleNavigation = (e, idChannel, titleChannel) => {
         e.preventDefault()
+        // enable Comments and header
+        dispatch(setShowHeaderAndComments(!showHeaderAndComments))
+        // then display comments
         dispatch(getChannel(titleChannel))
         navigate(`/${server}/${idChannel}`)
     }
