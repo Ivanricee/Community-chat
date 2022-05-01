@@ -42,6 +42,10 @@ export const StyledHeader = styled.header`
       display: none;
     }
   }
+  @media ${p => p.theme.breakPointsDevice.mobileL} {
+    ${p => p.storedUserMenu && 'transform: translateX(-2rem);'}
+    ${p => p.storedUserMenu && 'inline-size: calc(100% + 2rem);'}
+  }
 `
 export const StyledHeaderSearchHelp = styled.div`
   display: flex;

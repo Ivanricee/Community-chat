@@ -14,6 +14,9 @@ export const StyledLeftMenu = styled.nav`
     color: white;
   }
   scrollbar-width: none; /* Firefox */
+  @media ${p => p.theme.breakPointsDevice.mobileL} {
+    ${p => p.storedUserMenu && 'display: none;'}
+  }
 `
 export const StyledItemWrapper = styled(ItemWrapper)`
   margin: 0 auto;

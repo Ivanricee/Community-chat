@@ -23,6 +23,7 @@ const Channel = () => {
     const showHeaderAndComments = useSelector(
         state => state.app.showHeaderAndComments
     )
+    const storedUserMenu = useSelector(state => state.app.userMenu)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { server, channel } = params
@@ -66,7 +67,7 @@ const Channel = () => {
     if (error) return <span>Error de conexión</span>
 
     return (
-        <StyledChannel aria-label="channel">
+        <StyledChannel aria-label="channel" storedUserMenu={storedUserMenu}>
             <StyledHeader>
                 {loading ? 'Loading' : data.findServer.title}
             </StyledHeader>

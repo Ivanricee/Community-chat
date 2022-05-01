@@ -5,6 +5,9 @@ export const StyledChannel = styled.section`
   flex-direction: column;
   background-color: ${p => p.theme.black1};
   inline-size: 100%;
+  @media ${p => p.theme.breakPointsDevice.mobileL} {
+    ${p => p.storedUserMenu && 'display: none;'}
+  }
 `
 export const StyledHeader = styled.header`
   box-sizing: border-box;

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import {
     StyledLeftMenu,
@@ -12,6 +13,7 @@ import { useServers } from '../../graphql/custom-hook'
 const LeftMenu = () => {
     const params = useParams()
     const { server } = params
+    const storedUserMenu = useSelector(state => state.app.userMenu)
     // realiza peticion asyncrona del query
     const { data, error, loading } = useServers()
     if (error)
@@ -22,7 +24,7 @@ const LeftMenu = () => {
         )
 
     return (
-        <StyledLeftMenu aria-label="primary">
+        <StyledLeftMenu aria-label="primary" storedUserMenu={storedUserMenu}>
             {loading ? (
                 <p>Loading...</p>
             ) : (

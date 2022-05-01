@@ -31,18 +31,26 @@ body{
   #app{
     background-color:red;
     position:relative;
-   // grid-template-columns: 4.5rem 15rem 100vw 15rem;
+    grid-template-columns: 4.5rem 15rem minmax(0rem, calc(100vw - 34.5rem)) 15rem;
     grid-template-areas: "left-menu channel top-menu user"
                          "left-menu channel   main     user"
   }
 }
-/*@media ${p => p.theme.breakPointsDevice.mobileL} {
+@media ${p => p.theme.breakPointsDevice.mobileL} {
   #app{
-    background-color:blue;
-    grid-template-areas: "left-menu channel top-menu top-menu"
-                         "left-menu channel   main     main"
+    background-color:red;
+    position:relative;
+    ${p => p.showUserMenu && 'justify-content: end;'}
+
+    grid-template-columns: 4.5rem 15rem minmax(0rem, calc(100vw - 34.5rem)) 15rem;
+     ${p =>
+       p.showUserMenu &&
+       `grid-template-areas:"top-menu  top-menu top-menu   user" "main main   main     user"`}
+
+
+
   }
-}*/
+}
 
 @font-face {
   font-family: 'iconDiscord';

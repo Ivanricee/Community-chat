@@ -62,7 +62,8 @@ export const darkTheme = {
     )
   },
   breakPointsDevice: {
-    mobileL: 'screen and (max-width: 929px)',
+    mobileL: 'screen and (max-width: 560px)',
+    // mobileL: 'screen and (max-width: 929px)',
     // tablet: 'screen and (min-width: 930px) and (max-width: 1023px)',
     tablet: 'screen and (max-width: 1023px)',
   },

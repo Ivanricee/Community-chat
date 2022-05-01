@@ -10,6 +10,7 @@ export const StyledMain = styled.main`
   @media ${p => p.theme.breakPointsDevice.tablet} {
     ${p => p.showHeaderAndComments && 'transform: translateX(-19.5rem);'}
     ${p => p.storedUserMenu && 'transform: translateX(-34.5rem);'}
+    ${p => p.showHeaderAndComments && 'transform: translateX(-19.5rem);'}
     inline-size: 100vw;
     & .main__wrapper-enable {
       position: absolute;
@@ -19,6 +20,10 @@ export const StyledMain = styled.main`
       ${p => p.storedUserMenu && 'display: block;'}
       z-index: 1;
     }
+  }
+  @media ${p => p.theme.breakPointsDevice.mobileL} {
+    ${p => p.storedUserMenu && 'transform: translateX(-2rem);'}
+    ${p => p.storedUserMenu && 'inline-size: calc(100% + 2rem);'}
   }
 `
 export const StyledCommentList = styled.section`
