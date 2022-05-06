@@ -8,9 +8,13 @@ export const UserDetail = ({
     userName,
     userHash,
     userRoleName,
+    handleCloseDetailProfileItem,
 }) => {
     const refElement = useRef(null)
-
+    const handleCloseDetailClick = e => {
+        e.stopPropagation()
+        handleCloseDetailProfileItem()
+    }
     return (
         <div
             ref={refElement}
@@ -21,6 +25,9 @@ export const UserDetail = ({
                 e.stopPropagation()
             }}
         >
+            <button onClick={handleCloseDetailClick} type="button">
+                boton
+            </button>
             <header>
                 <div className="user__detail-header-banner" />
                 <div className="user__detail-header-info">

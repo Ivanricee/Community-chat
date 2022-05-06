@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import {
     StyledUser,
@@ -8,10 +8,13 @@ import {
 } from './styles'
 import { useUsersInRoles } from '../../graphql/custom-hook'
 
+/* const handleCloseDetailUser = () => {
+    console.log('click')
+} */
 const User = ({ server }) => {
     const { loading, data, error } = useUsersInRoles(server)
     const storedUserMenu = useSelector(state => state.app.userMenu)
-
+    const [closeUserDetail, setCloseUserDetail] = useState(false)
     if (error) {
         return <h1>error</h1>
     }
@@ -19,6 +22,7 @@ const User = ({ server }) => {
         <h2>Loading</h2>
     ) : (
         <StyledUser showUserMenu={storedUserMenu}>
+            <button type="button">boton 222</button>
             <StyledUserList>
                 {data.findUsersRoles.map(usersRole => {
                     return (
@@ -30,10 +34,14 @@ const User = ({ server }) => {
                                 return (
                                     <StyledUserProfileItem
                                         StyledUserDetail={StyledUserDetail}
+                                        closeUserDetail={closeUserDetail}
                                         key={user._id}
                                         role={user.role}
                                         user={user}
                                         userRoleName={usersRole.name}
+                                        handleCloseDetailUser={() =>
+                                            setCloseUserDetail(true)
+                                        }
                                     />
                                 )
                             })}

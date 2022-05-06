@@ -17,7 +17,6 @@ body{
   background-color: ${props => props.theme.bg};
   block-size: 100vh;
   display: grid;
-
   overflow: hidden;
   grid-template-columns: 4.5rem 15rem minmax(23rem, calc(100vw - 34.5rem)) 15rem;
   grid-template-rows:  3rem 1fr ;
@@ -29,7 +28,6 @@ body{
 
 @media ${p => p.theme.breakPointsDevice.tablet} {
   #app{
-    background-color:red;
     position:relative;
     grid-template-columns: 4.5rem 15rem minmax(0rem, calc(100vw - 34.5rem)) 15rem;
     grid-template-areas: "left-menu channel top-menu user"
@@ -38,7 +36,6 @@ body{
 }
 @media ${p => p.theme.breakPointsDevice.mobileL} {
   #app{
-    background-color:red;
     position:relative;
     ${p => p.showUserMenu && 'justify-content: end;'}
 
@@ -46,9 +43,6 @@ body{
      ${p =>
        p.showUserMenu &&
        `grid-template-areas:"top-menu  top-menu top-menu   user" "main main   main     user"`}
-
-
-
   }
 }
 

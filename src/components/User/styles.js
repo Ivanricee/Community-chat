@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { UserDetail } from './UserDetail'
+// import { UserDetail } from './UserDetail'
 import { UserProfileItem } from './UserProfileItem'
 
 export const StyledUser = styled.aside`
@@ -8,7 +8,7 @@ export const StyledUser = styled.aside`
   background-color: ${p => p.theme.black1};
   overflow: auto;
   scrollbar-width: thin; /* Firefox */
-  z-index: 0;
+  z-index: 3;
   &::-webkit-scrollbar {
     width: 0.35em;
     background-color: ${p => p.theme.black2};
@@ -26,11 +26,9 @@ export const StyledUser = styled.aside`
   }
   @media ${p => p.theme.breakPointsDevice.tablet} {
     display: block;
+    z-index: 0;
     ${p => p.showUserMenu && `z-index: 2;`}
   }
-  /*@media ${p => p.theme.breakPointsDevice.mobileL} {
-
-  }*/
 `
 export const StyledUserHeader = styled.header`
   display: flex;
@@ -70,7 +68,8 @@ export const StyledUserList = styled.div`
     text-transform: uppercase;
   }
 `
-export const StyledUserDetail = styled(UserDetail)`
+export const StyledUserDetail = styled.div`
+  //${p => p.closeuserdetail === 1 && 'display: none !important;'}
   display: none;
   position: fixed;
   background: ${p => p.theme.black};
@@ -83,7 +82,7 @@ export const StyledUserDetail = styled(UserDetail)`
   min-block-size: 23.5rem;
   & header {
     & .user__detail-header-banner {
-      background-color: ${p => p.theme.colorRole(p.role)};
+      background-color: ${p => p.theme.colorRole(p.roleUser)};
       block-size: 3.75rem;
     }
     & .user__detail-header-info {
@@ -148,7 +147,7 @@ export const StyledUserDetail = styled(UserDetail)`
           inset-inline-start: 0.5rem;
           inset-block-start: 0.3rem;
           border-radius: 50%;
-          background-color: ${p => p.theme.colorRole(p.role)};
+          background-color: ${p => p.theme.colorRole(p.roleUser)};
         }
       }
     }
@@ -199,6 +198,9 @@ export const StyledUserDetail = styled(UserDetail)`
         color: ${p => p.theme.grey2};
       }
     }
+  }
+  @media ${p => p.theme.breakPointsDevice.tablet} {
+    inline-size: calc(100vw - 15rem);
   }
 `
 export const StyledUserProfileItem = styled(UserProfileItem)`

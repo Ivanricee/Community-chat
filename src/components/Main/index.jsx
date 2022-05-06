@@ -46,7 +46,7 @@ const Main = ({ params }) => {
         dispatch(setShowHeaderAndComments(!showHeaderAndComments))
         if (storedUserMenu) dispatch(setUserMenu(!storedUserMenu))
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [dispatch])
 
     // preload and store an emojis array
     useEffect(() => {
