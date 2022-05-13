@@ -11,6 +11,7 @@ import {
     StyledFooter,
     StyledInputWrapper,
     StyledIntroduction,
+    StyledCommentVideo,
 } from './styles'
 import { Comment } from '../Comment'
 
@@ -87,46 +88,75 @@ const Main = ({ params }) => {
                     onKeyDown={handleClickEnableComments}
                     tabIndex={0}
                 />
+
                 <StyledCommentList>
                     {loading || data.findComment === null ? (
                         <StyledIntroduction channelTitle={storedChannelTitle} />
                     ) : (
-                        <div>
-                            <StyledIntroduction
-                                channelTitle={storedChannelTitle}
-                            />
-                            {data.findComment.comments.map(comment => {
-                                let showLine = true
-                                const dateFormat = new Date(comment.date)
-                                if (AccDate !== 0) {
-                                    if (
-                                        dateFormat.getTime() > AccDate.getTime()
-                                    ) {
-                                        AccDate = new Date(comment.date)
-                                        showLine = true
-                                    } else {
-                                        showLine = false
-                                    }
-                                } else {
-                                    AccDate = new Date(comment.date)
-                                    showLine = true
-                                }
-                                return (
-                                    <Comment
-                                        key={comment._id}
-                                        date={{ dateFormat, showLine }}
-                                        img={comment.img}
-                                        url={comment.url}
-                                        texto={comment.texto}
-                                        react={comment.react}
-                                        reply={comment.comment_reply}
-                                        nombre={comment.user.name}
-                                        userImg={comment.user.img}
-                                        role={comment.user.role}
-                                    />
-                                )
-                            })}
-                        </div>
+                        // eslint-disable-next-line react/jsx-no-useless-fragment
+                        <>
+                            {data.findComment.title === 'video/audio' ? (
+                                <StyledCommentVideo />
+                            ) : (
+                                <>
+                                    <div>
+                                        <StyledIntroduction
+                                            channelTitle={storedChannelTitle}
+                                        />
+                                        {data.findComment.comments.map(
+                                            comment => {
+                                                let showLine = true
+                                                const dateFormat = new Date(
+                                                    comment.date
+                                                )
+                                                if (AccDate !== 0) {
+                                                    if (
+                                                        dateFormat.getTime() >
+                                                        AccDate.getTime()
+                                                    ) {
+                                                        AccDate = new Date(
+                                                            comment.date
+                                                        )
+                                                        showLine = true
+                                                    } else {
+                                                        showLine = false
+                                                    }
+                                                } else {
+                                                    AccDate = new Date(
+                                                        comment.date
+                                                    )
+                                                    showLine = true
+                                                }
+                                                return (
+                                                    <Comment
+                                                        key={comment._id}
+                                                        date={{
+                                                            dateFormat,
+                                                            showLine,
+                                                        }}
+                                                        img={comment.img}
+                                                        url={comment.url}
+                                                        texto={comment.texto}
+                                                        react={comment.react}
+                                                        reply={
+                                                            comment.comment_reply
+                                                        }
+                                                        nombre={
+                                                            comment.user.name
+                                                        }
+                                                        userImg={
+                                                            comment.user.img
+                                                        }
+                                                        role={comment.user.role}
+                                                    />
+                                                )
+                                            }
+                                        )}
+                                    </div>
+                                    <h1>sdfds</h1>
+                                </>
+                            )}
+                        </>
                     )}
                 </StyledCommentList>
                 <StyledFooter>

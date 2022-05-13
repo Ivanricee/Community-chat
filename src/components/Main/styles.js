@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Introduction } from './Indroduction'
+import { VideoRoom } from './Video'
 
 export const StyledMain = styled.main`
   grid-area: main;
@@ -38,6 +39,15 @@ export const StyledCommentList = styled.section`
     background: ${p => p.theme.black};
   }
   overflow-y: scroll;
+`
+export const StyledCommentVideo = styled(VideoRoom)`
+  background-color: chartreuse;
+  display: flex;
+  position: absolute;
+  inset: 0;
+  inset-block-start: -3rem;
+  inset-inline-end: -15rem;
+  z-index: inherit;
 `
 export const StyledFooter = styled.footer`
   block-size: 4rem;

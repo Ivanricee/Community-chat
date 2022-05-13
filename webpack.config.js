@@ -2,6 +2,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const Dotenv = require('dotenv-webpack')
 
 module.exports = (env, argv) => {
   const { mode } = argv
@@ -55,6 +56,7 @@ module.exports = (env, argv) => {
             : 'http://localhost:4000/graphql'
         ),
       }),
+      new Dotenv()
     ],
     devServer: {
       open: true,
