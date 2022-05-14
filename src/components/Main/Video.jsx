@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-
 import { Room } from './Room'
 
 export const VideoRoom = ({ className }) => {
@@ -8,7 +7,7 @@ export const VideoRoom = ({ className }) => {
     useEffect(() => {
         // crear token con nombre de la sala y las keys de twilio
         const handle = async () => {
-            const data = await fetch('http://localhost:4000/video/token', {
+            const data = await fetch(process.env.REACT_TWILIO_VIDEO, {
                 method: 'POST',
                 body: JSON.stringify({
                     identity: 'usernameIvnRice',
@@ -28,6 +27,7 @@ export const VideoRoom = ({ className }) => {
         // response: obj Room, participant list (change with time)
         // const participants =
     }, [])
+    console.log('path videio ', process.env.REACT_APOLO_API_URL)
     return (
         // eslint-disable-next-line react/jsx-no-useless-fragment
         <div className={className}>
