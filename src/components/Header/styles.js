@@ -33,7 +33,7 @@ export const StyledHeader = styled.header`
   }
   @media ${p => p.theme.breakPointsDevice.tablet} {
     ${p =>
-      p.showHeaderAndComments
+      p.showChnlCmntsToggleMenu
         ? 'transform: translateX(-19.5rem);'
         : 'transform: translateX(0rem);'}
     ${p => p.storedUserMenu && 'transform: translateX(-34.5rem);'}

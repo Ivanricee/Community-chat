@@ -1,35 +1,23 @@
 /* eslint-disable no-shadow */
 
-import React /* { useRef } */ from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-// import { BsSearch, BsFillPinAngleFill, BsFillBellFill } from 'react-icons/bs'
-// import { FaHashtag, FaUserFriends } from 'react-icons/fa'
-// import { CgInbox } from 'react-icons/cg'
-import { /* IoMdHelpCircle, */ IoMdMenu } from 'react-icons/io'
+import { IoMdMenu } from 'react-icons/io'
 import { HeaderSearchHelp } from '../HeaderSearchHelp'
-import {
-    // setUserMenu,
-    setShowHeaderAndComments,
-} from '../../store/actions/AppActions'
+import { setChnlCmntsToggleMenu } from '../../store/actions/AppActions'
 import { StyledHeader, StyledHeaderSearchHelp } from './styles'
-
-/* const handleShowSearch = showSearch => {
-    return !showSearch
-} */
 
 export const Header = () => {
     const dispatch = useDispatch()
     const storedChannelTitle = useSelector(state => state.app.channel)
     const storedUserMenu = useSelector(state => state.app.userMenu)
-    const showHeaderAndComments = useSelector(
-        state => state.app.showHeaderAndComments
+    const showChnlCmntsToggleMenu = useSelector(
+        state => state.app.showChnlCmntsToggleMenu
     )
-
-    // const refSearch = useRef([])
 
     return (
         <StyledHeader
-            showHeaderAndComments={showHeaderAndComments}
+            showChnlCmntsToggleMenu={showChnlCmntsToggleMenu}
             storedUserMenu={storedUserMenu}
         >
             <div className="haeder__title">
@@ -37,7 +25,7 @@ export const Header = () => {
                     ismenu="hamburg"
                     onClick={() =>
                         dispatch(
-                            setShowHeaderAndComments(!showHeaderAndComments)
+                            setChnlCmntsToggleMenu(!showChnlCmntsToggleMenu)
                         )
                     }
                 />
@@ -46,7 +34,7 @@ export const Header = () => {
             <StyledHeaderSearchHelp>
                 <HeaderSearchHelp
                     headerItems={
-                        showHeaderAndComments ? 'headerDesk' : 'userMobile'
+                        showChnlCmntsToggleMenu ? 'headerDesk' : 'userMobile'
                     }
                 />
             </StyledHeaderSearchHelp>

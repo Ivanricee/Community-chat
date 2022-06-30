@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+  body{
+    background: #130d17;
+    font-size: 16px;
+  }
+  .wrapper{
+    inline-size: 100vw;
+    block-size: 100vh;
+    display: inline-flex;
+    box-sizing: border-box;
+  }
+  .bloque{
+    display: inline-block;
+    flex-basis: 19.5rem;
+    background-color: #491524;
+    block-size: 100vh;
+    min-width: 19.5rem;
+    box-sizing: border-box;
+  }
+  main{
+    background-color: royalblue;
+    flex: 1;
+  }
+  .video_wrapper{
+    background-color: rgb(80, 105, 55);
+    display: flex;
+
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    box-sizing: border-box;
+
+    margin: 10px;
+    block-size: calc(100vh - 40px);
+    inline-size: calc(100% - 50px);
+    max-block-size: 92vh;
+    /*max-inline-size: calc(100vw - 19.5rem);*/
+      max-inline-size: 100vw;
+      overflow: hidden;
+    }
+
+  .video_wrapper > div {
+    border: 2px solid whitesmoke;
+    background: transparent;
+    box-sizing: border-box;
+    aspect-ratio: 16/9;
+    min-height: 0;
+    transition: inline-size .15s;
+    display: inline-block;
+
+    }
+
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <!--<div class="bloque" ></div>-->
+  <main>
+    <div class="video_wrapper">
+      <div class="video-item"></div>
+    <div class="video-item"></div>
+    <div class="video-item"></div>
+    <div class="video-item"></div>
+
+
+  </main>
+</div>
+<script>
+
+  // Debounce
+  function debounce(callback, delay = 100) {
+    var timerId;
+    return function (event) {
+      if (timerId) clearTimeout(timerId);
+      timerId = setTimeout(callback, delay, event);
+    };
+  }
+
+
+  const container = document.querySelector('.video_wrapper')
+  const containerBlock = container.getBoundingClientRect().height
+  const containerInline = container.getBoundingClientRect().width
+  const item = container.querySelector('div:first-of-type')
+  const items = container.querySelectorAll('div')
+  const totalItems = container.children.length
+
+
+  /*
+  * Accurate inline size, measuring block free space of container against item block size
+  * item block is calculated based in aspect ratio 16/9
+  */
+  function getAspectRatioHeight(width){
+    const aspectRatio = 16 / 9
+    const height = width / aspectRatio
+    return height
+  }
+  function getAspectRatioWidth(height) {
+    const aspectRatio = 16 / 9
+    const width = height * aspectRatio
+    return width
+  }
+  function getRowsCount(totalItems, columns){
+    // Rows que se van formando al hacer wrap
+    let rowsCount = totalItems / columns
+    if (totalItems % columns !== 0) {
+      // si la division tiene decimales, truncar numero y sumarle uno,
+      // ya que significa que esta haciendo un nuevo row, pero incompleto
+      return  Math.trunc(rowsCount) + 1
+    } else {
+      // si no tiene decimales es porque es un row completo
+      return  rowsCount
+    }
+  }
+  function renderGrid(totalItems, containerInline, containerBlock){
+    //inicializa
+  let preItemBlockSize = 0
+  let preItemInlineSize= 0
+  let itemsBlockSize = 0
+  let preRowsCount = 0
+
+  let data = {}
+  for(let i=totalItems; i>0; i -= 1){
+    let totalItemsBlockSize = 0
+    // create/update Columns
+    preItemInlineSize = containerInline / i
+    //update height
+    preItemBlockSize = getAspectRatioHeight(preItemInlineSize)
+    //get rowscount
+    preRowsCount = getRowsCount(totalItems,i)
+    // calcula el height size total de los items, multiplicando height x rows
+    totalItemsBlockSize = preItemBlockSize * preRowsCount
+    // mientras haya espacio en height seguir dividiendo los items inline y block.
+    if(totalItemsBlockSize < containerBlock){
+      itemsBlockSize = totalItemsBlockSize
+      data = { itemInlineSize:preItemInlineSize, preItemBlockSize, itemsBlockSize, columns:i, rows: preRowsCount}
+    }else{
+      //verificar si con el tamaño anterior (heigh) se puede hacer
+      //wrap por ultima vez, o solo tomar el espacio restante en height
+
+      //se crea item desde su height
+      const previousData = data?.preItemBlockSize || 0
+      let prevTotalBlockSize = itemsBlockSize + previousData
+      let columns = data.columns || i
+      let rows = data.rows || preRowsCount
+
+      const  noPreviousData = prevTotalBlockSize === 0
+      //Se realizo un wrap, sin necesidad de crear un nuevo row
+      const equalRows = data.rows === preRowsCount
+
+      if (equalRows || noPreviousData) {
+        preItemBlockSize = containerBlock / rows
+        preItemInlineSize = getAspectRatioWidth(preItemBlockSize)
+        data = { ...data, itemInlineSize:preItemInlineSize, preItemBlockSize, columns, rows }
+      }
+
+      if(prevTotalBlockSize < containerBlock && prevTotalBlockSize !== 0){
+        //calumns -1, rows +1 por hacer un ultimo wrap.
+        columns -= 1
+        rows += 1
+
+        // Si solo queda una columna:
+        // saber si puede crear una columna sin que se desborde
+        if(columns === 1 ){
+          //dividir container block entre total de items
+          //y obtener el width
+          let preSingleColumnHeightFit = containerBlock / totalItems
+          let preSingleItemInlineSize = getAspectRatioWidth(preSingleColumnHeightFit)
+          //Verificar que con el nuevo tamaño, solo haya una columna
+          let fitSingleItemInline = (preSingleItemInlineSize * 2) > containerInline
+
+          if(fitSingleItemInline){
+            preItemInlineSize = preSingleItemInlineSize
+          }else{
+            //si cabe mas de 1 columna usar el tamaño guardado
+            preItemInlineSize = data.itemInlineSize
+          }
+        }else{
+          //tomar todo el height disponible
+          let containerItemBlockSize = containerBlock / rows
+          preItemInlineSize = getAspectRatioWidth(containerItemBlockSize)
+        }
+        data = { ...data, itemInlineSize:preItemInlineSize, columns, rows}
+      }
+
+        break
+    }
+  }
+  return data
+  }
+
+  const data = renderGrid(totalItems, containerInline, containerBlock)
+  items.forEach(item =>{
+          item.style.inlineSize  = `${data.itemInlineSize}px`
+          })
+
+  window.addEventListener("resize", debounce(() => {
+    const actualContainerBlock = container.offsetHeight
+    const actualContainerInline = container.offsetWidth
+
+    const data = renderGrid(totalItems, actualContainerInline, actualContainerBlock)
+
+    items.forEach(item => {
+      item.style.inlineSize = `${data.itemInlineSize}px`
+    })
+    console.log("data ", data)
+  }, 300))
+</script>
+</body>
+</html>

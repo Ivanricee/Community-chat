@@ -1,8 +1,9 @@
 const INITIAL_STATE = {
   templateInit: 'Ivanrice Discord',
+  server: '',
   channel: '',
   userMenu: true,
-  showHeaderAndComments: false,
+  showChnlCmntsToggleMenu: false,
 }
 
 // eslint-disable-next-line default-param-last
@@ -17,7 +18,9 @@ export const appReducer = (state = INITIAL_STATE, action) => {
     case '@user/userMenu':
       return { ...state, userMenu: action.payload }
     case '@header-comments/showFullLength':
-      return { ...state, showHeaderAndComments: action.payload }
+      return { ...state, showChnlCmntsToggleMenu: action.payload }
+    case '@server/name':
+      return { ...state, server: action.payload }
     default:
       return state
   }

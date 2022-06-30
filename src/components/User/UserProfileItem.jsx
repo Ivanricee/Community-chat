@@ -66,17 +66,6 @@ export const UserProfileItem = ({
                 handleUserItemClick(e)
             }}
         >
-            {/* <StyledUserDetail
-                handleCloseDetailProfileItem={handleCloseDetail}
-                closeuserdetail={closeUserDetail ? 1 : 0}
-                role={user.role}
-                displayShow={insetBlockStart.showDetail}
-                insetBlockStart={insetBlockStart.blockStart}
-                img={user.img}
-                userName={user.name}
-                userHash={user.hash}
-                userRoleName={userRoleName}
-        /> */}
             <StyledUserDetail
                 displayShow={insetBlockStart.showDetail}
                 insetBlockStart={insetBlockStart.blockStart}

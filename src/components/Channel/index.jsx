@@ -2,8 +2,9 @@ import React, { useRef, useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-    setShowHeaderAndComments,
+    setChnlCmntsToggleMenu,
     getChannel,
+    getServer,
 } from '../../store/actions/AppActions'
 import {
     StyledChannel,
@@ -31,6 +32,7 @@ const Channel = () => {
     const channelDetailsRef = useRef(null)
     const [detailListPadding, setDetailListPadding] = useState(0)
     let channelTitle = ''
+    let serverName = ''
 
     // graphql hook
     const { data, error, loading } = useServer(server)
@@ -47,12 +49,13 @@ const Channel = () => {
     const greenBullet = setBullet('1')
 
     // navigate on click
-    const handleNavigation = (e, idChannel, titleChannel) => {
+    const handleNavigation = (e, idChannel, titleChannel, nameServer) => {
         e.preventDefault()
         // enable Comments and header
-        dispatch(setShowHeaderAndComments(!showHeaderAndComments))
+        dispatch(setChnlCmntsToggleMenu(!showHeaderAndComments))
         // then display comments
         dispatch(getChannel(titleChannel))
+        dispatch(getServer(nameServer))
         navigate(`/${server}/${idChannel}`)
     }
     // Navigate on refresh
@@ -60,6 +63,7 @@ const Channel = () => {
         // if (channel === undefined) navigate('1')
         if (channelTitle) {
             dispatch(getChannel(channelTitle))
+            dispatch(getServer(serverName))
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loading])
@@ -101,6 +105,8 @@ const Channel = () => {
                                             if (channelItem._id === channel) {
                                                 classActive = 'active'
                                                 channelTitle = channelItem.title
+                                                serverName =
+                                                    data.findServer.title
                                             }
                                             const className = `${classNotification} ${classActive}`
                                             return (
@@ -115,7 +121,9 @@ const Channel = () => {
                                                             handleNavigation(
                                                                 e,
                                                                 channelItem._id,
-                                                                channelItem.title
+                                                                channelItem.title,
+                                                                data.findServer
+                                                                    .title
                                                             )
                                                         }
                                                         color_active={

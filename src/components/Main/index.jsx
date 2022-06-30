@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Portal } from '../Portal'
 import { useChannelComment } from '../../graphql/custom-hook'
 import {
-    setShowHeaderAndComments,
+    setChnlCmntsToggleMenu,
     setUserMenu,
 } from '../../store/actions/AppActions'
 import {
@@ -11,8 +12,8 @@ import {
     StyledFooter,
     StyledInputWrapper,
     StyledIntroduction,
-    StyledCommentVideo,
 } from './styles'
+import { VideoRoom } from '../VideoRoom'
 import { Comment } from '../Comment'
 
 const handleEmojiHover = (arrayEmojis, urlEmoji) => {
@@ -27,15 +28,14 @@ const Main = ({ params }) => {
     const dispatch = useDispatch()
     const storedChannelTitle = useSelector(state => state.app.channel)
     const storedUserMenu = useSelector(state => state.app.userMenu)
-    const showHeaderAndComments = useSelector(
-        state => state.app.showHeaderAndComments
+    const showChnlCmntsToggleMenu = useSelector(
+        state => state.app.showChnlCmntsToggleMenu
     )
     const { data, loading } = useChannelComment(server, channel)
 
     const [urlEmoji, setUrlEmoji] = useState(
         'https://res.cloudinary.com/ivanrice-c/image/upload/v1642795216/discord-clone/fonts/emojis/05_Laugh_rzq4mh.png'
     )
-
     const [arrayEmojis, setArrayEmojis] = useState([])
     /*
      *Al click on the blocked comments:
@@ -44,12 +44,13 @@ const Main = ({ params }) => {
      * para que se muestren los comentarios y el header por completo de nuevo
      */
     const handleClickEnableComments = useCallback(() => {
-        dispatch(setShowHeaderAndComments(!showHeaderAndComments))
+        dispatch(setChnlCmntsToggleMenu(!showChnlCmntsToggleMenu))
         if (storedUserMenu) dispatch(setUserMenu(!storedUserMenu))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch])
 
     // preload and store an emojis array
+    // refct: make a service.
     useEffect(() => {
         const rootPath =
             'https://res.cloudinary.com/ivanrice-c/image/upload/v1642795216/discord-clone/fonts/emojis/'
@@ -73,131 +74,113 @@ const Main = ({ params }) => {
         setArrayEmojis(imgEmoji)
     }, [])
 
-    if (channel && server && data) {
-        let AccDate = 0
-        return (
-            <StyledMain
-                showHeaderAndComments={showHeaderAndComments}
-                storedUserMenu={storedUserMenu}
-            >
-                <div
-                    role="button"
-                    aria-label="Enable comments"
-                    className="main__wrapper-enable"
-                    onClick={handleClickEnableComments}
-                    onKeyDown={handleClickEnableComments}
-                    tabIndex={0}
-                />
-
-                <StyledCommentList>
-                    {loading || data.findComment === null ? (
-                        <StyledIntroduction channelTitle={storedChannelTitle} />
-                    ) : (
-                        // eslint-disable-next-line react/jsx-no-useless-fragment
-                        <>
-                            {data.findComment.title === 'video/audio' ? (
-                                <StyledCommentVideo />
-                            ) : (
-                                <>
-                                    <div>
-                                        <StyledIntroduction
-                                            channelTitle={storedChannelTitle}
+    if (!channel && !server && !data) return <div>Loading channel</div>
+    let AccDate = 0
+    return (
+        <StyledMain
+            showChnlCmntsToggleMenu={showChnlCmntsToggleMenu}
+            storedUserMenu={storedUserMenu}
+        >
+            <div
+                role="button"
+                aria-label="Enable comments"
+                className="main__mobile-shadow-wrapper"
+                onClick={handleClickEnableComments}
+                onKeyDown={handleClickEnableComments}
+                tabIndex={0}
+            />
+            <StyledCommentList>
+                {loading || data.findComment === null ? (
+                    <StyledIntroduction channelTitle={storedChannelTitle} />
+                ) : (
+                    // eslint-disable-next-line react/jsx-no-useless-fragment
+                    <>
+                        {data.findComment.title === 'video/audio' ? (
+                            <Portal>
+                                <VideoRoom channelTitle={storedChannelTitle} />
+                            </Portal>
+                        ) : (
+                            <div>
+                                <StyledIntroduction
+                                    channelTitle={storedChannelTitle}
+                                />
+                                {data.findComment.comments.map(comment => {
+                                    let showLine = true
+                                    const dateFormat = new Date(comment.date)
+                                    if (AccDate !== 0) {
+                                        if (
+                                            dateFormat.getTime() >
+                                            AccDate.getTime()
+                                        ) {
+                                            AccDate = new Date(comment.date)
+                                            showLine = true
+                                        } else {
+                                            showLine = false
+                                        }
+                                    } else {
+                                        AccDate = new Date(comment.date)
+                                        showLine = true
+                                    }
+                                    return (
+                                        <Comment
+                                            key={comment._id}
+                                            date={{
+                                                dateFormat,
+                                                showLine,
+                                            }}
+                                            img={comment.img}
+                                            url={comment.url}
+                                            texto={comment.texto}
+                                            react={comment.react}
+                                            reply={comment.comment_reply}
+                                            nombre={comment.user.name}
+                                            userImg={comment.user.img}
+                                            role={comment.user.role}
                                         />
-                                        {data.findComment.comments.map(
-                                            comment => {
-                                                let showLine = true
-                                                const dateFormat = new Date(
-                                                    comment.date
-                                                )
-                                                if (AccDate !== 0) {
-                                                    if (
-                                                        dateFormat.getTime() >
-                                                        AccDate.getTime()
-                                                    ) {
-                                                        AccDate = new Date(
-                                                            comment.date
-                                                        )
-                                                        showLine = true
-                                                    } else {
-                                                        showLine = false
-                                                    }
-                                                } else {
-                                                    AccDate = new Date(
-                                                        comment.date
-                                                    )
-                                                    showLine = true
-                                                }
-                                                return (
-                                                    <Comment
-                                                        key={comment._id}
-                                                        date={{
-                                                            dateFormat,
-                                                            showLine,
-                                                        }}
-                                                        img={comment.img}
-                                                        url={comment.url}
-                                                        texto={comment.texto}
-                                                        react={comment.react}
-                                                        reply={
-                                                            comment.comment_reply
-                                                        }
-                                                        nombre={
-                                                            comment.user.name
-                                                        }
-                                                        userImg={
-                                                            comment.user.img
-                                                        }
-                                                        role={comment.user.role}
-                                                    />
-                                                )
-                                            }
-                                        )}
-                                    </div>
-                                    <h1>sdfds</h1>
-                                </>
-                            )}
-                        </>
-                    )}
-                </StyledCommentList>
-                <StyledFooter>
-                    <StyledInputWrapper>
-                        <div>
-                            <i className="ico-addFile" />
-                        </div>
-                        <div>
-                            <input
-                                type="text"
-                                id="comment"
-                                name="comment"
-                                placeholder={`Enviar mensaje a #${storedChannelTitle}`}
-                            />
-                        </div>
-                        <div>
-                            <i className="ico-gift" />
-                            <i className="ico-gif" />
-                            <i className="ico-sticker" />
-                            <i
-                                className="ico-Grin"
-                                onMouseOver={() =>
-                                    setUrlEmoji(
-                                        handleEmojiHover(arrayEmojis, urlEmoji)
                                     )
-                                }
-                                onFocus={() =>
-                                    setUrlEmoji(
-                                        handleEmojiHover(arrayEmojis, urlEmoji)
-                                    )
-                                }
-                            >
-                                <img src={urlEmoji} alt="emoji" />
-                            </i>
-                        </div>
-                    </StyledInputWrapper>
-                </StyledFooter>
-            </StyledMain>
-        )
-    }
-    return <div>Loading channel</div>
+                                })}
+                            </div>
+                        )}
+                    </>
+                )}
+            </StyledCommentList>
+            <StyledFooter>
+                <StyledInputWrapper>
+                    <div>
+                        <i className="ico-addFile" />
+                    </div>
+                    <div>
+                        <input
+                            type="text"
+                            id="comment"
+                            name="comment"
+                            placeholder={`Enviar mensaje a #${storedChannelTitle}`}
+                        />
+                    </div>
+                    <div>
+                        <i className="ico-gift" />
+                        <i className="ico-gif" />
+                        <i className="ico-sticker" />
+                        <i
+                            className="ico-Grin"
+                            onMouseOver={() =>
+                                setUrlEmoji(
+                                    handleEmojiHover(arrayEmojis, urlEmoji)
+                                )
+                            }
+                            onFocus={() =>
+                                setUrlEmoji(
+                                    handleEmojiHover(arrayEmojis, urlEmoji)
+                                )
+                            }
+                        >
+                            <img src={urlEmoji} alt="emoji" />
+                        </i>
+                    </div>
+                </StyledInputWrapper>
+            </StyledFooter>
+        </StyledMain>
+    )
 }
 
 export default Main

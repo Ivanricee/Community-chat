@@ -55,8 +55,15 @@ module.exports = (env, argv) => {
             ? 'https://community-chat-api.vercel.app/graphql'
             : 'http://localhost:4000/graphql'
         ),
+        'process.env.REACT_TWILIO_VIDEO': JSON.stringify(
+          isProduction
+            ? 'https://community-chat-api.vercel.app/video/token'
+            : 'http://localhost:4000/video/token'
+        ),
       }),
-      new Dotenv()
+      new Dotenv({
+        systemvars: true,
+      }),
     ],
     devServer: {
       open: true,

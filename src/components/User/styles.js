@@ -8,7 +8,8 @@ export const StyledUser = styled.aside`
   background-color: ${p => p.theme.black1};
   overflow: auto;
   scrollbar-width: thin; /* Firefox */
-  z-index: 3;
+  //z-index: 3;
+  z-index: 1;
   &::-webkit-scrollbar {
     width: 0.35em;
     background-color: ${p => p.theme.black2};
@@ -217,7 +218,6 @@ export const StyledUserProfileItem = styled(UserProfileItem)`
     font-size: 0.85rem;
     color: ${p => p.theme.colorRole(p.role)};
   }
-
   :hover {
     background-color: ${p => p.theme.blackHover};
     border-radius: 0.2rem;

@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import { Introduction } from './Indroduction'
-import { VideoRoom } from './Video'
 
 export const StyledMain = styled.main`
   grid-area: main;
@@ -9,15 +8,15 @@ export const StyledMain = styled.main`
   background-color: ${props => props.theme.bg};
 
   @media ${p => p.theme.breakPointsDevice.tablet} {
-    ${p => p.showHeaderAndComments && 'transform: translateX(-19.5rem);'}
+    ${p => p.showChnlCmntsToggleMenu && 'transform: translateX(-19.5rem);'}
     ${p => p.storedUserMenu && 'transform: translateX(-34.5rem);'}
-    ${p => p.showHeaderAndComments && 'transform: translateX(-19.5rem);'}
+    ${p => p.showChnlCmntsToggleMenu && 'transform: translateX(-19.5rem);'}
     inline-size: 100vw;
-    & .main__wrapper-enable {
+    & .main__mobile-shadow-wrapper {
       position: absolute;
       inset: 0;
       background: rgba(19, 18, 21, 0.87);
-      ${p => p.showHeaderAndComments && 'display: none;'}
+      ${p => p.showChnlCmntsToggleMenu && 'display: none;'}
       ${p => p.storedUserMenu && 'display: block;'}
       z-index: 1;
     }
@@ -39,15 +38,6 @@ export const StyledCommentList = styled.section`
     background: ${p => p.theme.black};
   }
   overflow-y: scroll;
-`
-export const StyledCommentVideo = styled(VideoRoom)`
-  background-color: chartreuse;
-  display: flex;
-  position: absolute;
-  inset: 0;
-  inset-block-start: -3rem;
-  inset-inline-end: -15rem;
-  z-index: inherit;
 `
 export const StyledFooter = styled.footer`
   block-size: 4rem;
