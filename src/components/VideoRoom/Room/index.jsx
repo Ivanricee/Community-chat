@@ -23,12 +23,13 @@ export const Room = ({ channelTitle, token, identity, roomName }) => {
 
     const remoteParticipants = participants.map(participant => (
         <Participant
+            key={participant.sid}
+            participant={participant}
             channelTitle={channelTitle}
             token={token}
             identity={identity}
             roomName={roomName}
-            key={participant.sid}
-            participant={participant}
+            itemInlineSize={itemInlineSize}
         />
     ))
     const handleFullscreen = () => {
