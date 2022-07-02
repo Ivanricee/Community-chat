@@ -9,7 +9,7 @@ export const StyledUserInvite = styled.section`
   position: absolute;
   inset: 0;
   z-index: 3;
-  & > div {
+  & > aside {
     background-color: ${p => p.theme.bg};
     padding: 0.85rem;
     box-sizing: border-box;

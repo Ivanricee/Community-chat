@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { IoCloseSharp } from 'react-icons/io5'
 import { GiSpeaker } from 'react-icons/gi'
 import { useSelector } from 'react-redux'
@@ -8,11 +8,17 @@ import { Portal } from '../../Portal'
 import { ImgContainer } from '../../ImgContainer'
 import { debounce } from '../../../utils'
 
-export const UserInvite = ({ channelTitle }) => {
+export const UserInvite = ({
+    channelTitle,
+    clickUserInvite,
+    role,
+    keyDownUserInvite,
+}) => {
     const [clipbboard, setClipbboard] = useState(false)
     const storedServerTitle = useSelector(state => state.app.server)
+    const closeBtnRef = useRef(null)
+    const modalBox = useRef(null)
     const { location } = window
-
     const handleClipboard = e => {
         e.preventDefault()
         if (!clipbboard) setClipbboard(true)
@@ -29,14 +35,55 @@ export const UserInvite = ({ channelTitle }) => {
         }, 700)
         if (!clipbboard) debFunct()
     }
+    const closeUserInvite = event => {
+        clickUserInvite(event)
+    }
+    const keyDowncloseUserInvite = event => {
+        keyDownUserInvite(event)
+    }
+    useEffect(() => {
+        closeBtnRef.current.focus()
+    }, [])
+    useEffect(() => {
+        const handleOutsideClick = e => {
+            if (modalBox.current) {
+                const isOutside = !modalBox.current.contains(e.target)
+                if (isOutside) closeUserInvite()
+            }
+        }
+        document.addEventListener('click', handleOutsideClick, false)
+        return () => {
+            document.removeEventListener('click', handleOutsideClick)
+        }
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     return (
         <Portal>
-            <StyledUserInvite clipbboard={clipbboard}>
-                <div>
-                    <header>
+            <StyledUserInvite
+                clipbboard={clipbboard}
+                aria-label="Invitar usuarios"
+                tabIndex="-1"
+                ref={closeBtnRef}
+                onKeyDown={keyDowncloseUserInvite}
+            >
+                <aside
+                    tabIndex="-1"
+                    aria-label="dialog "
+                    aria-modal="true"
+                    role={role}
+                    ref={modalBox}
+                >
+                    <header role="heading" aria-level="1">
                         <h1>Invitar amigos a {storedServerTitle}</h1>
-                        <IoCloseSharp />
+                        <button
+                            type="button"
+                            aria-label="Close Modal"
+                            onClick={closeUserInvite}
+                            tabIndex="0"
+                        >
+                            <IoCloseSharp />
+                        </button>
                     </header>
                     <main>
                         <div className="invite__channel">
@@ -94,7 +141,7 @@ export const UserInvite = ({ channelTitle }) => {
                             <span>Más información</span>
                         </div>
                     </footer>
-                </div>
+                </aside>
             </StyledUserInvite>
         </Portal>
     )

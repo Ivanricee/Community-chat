@@ -2,6 +2,63 @@ import styled from 'styled-components'
 
 export const StyledRoom = styled.div`
   block-size: 100%;
+  .video__wrapper-participant {
+    background-color: #0d0f12;
+    height: 100%;
+    inline-size: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    overflow: hidden;
+    & .video_welcome {
+      transition: inline-size 0.15s;
+      inline-size: ${p => p.itemInlineSize || 0}px;
+      padding: 0.25rem;
+      box-sizing: border-box;
+      aspect-ratio: 16/9;
+      & > div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: ${p => p.theme.black1};
+        font: ${p => p.theme.body2Semibold};
+        color: ${p => p.theme.white};
+        padding: 0 1.5rem;
+        block-size: 100%;
+        border-radius: 0.5rem;
+
+        .video_content {
+          text-align: center;
+          img {
+            display: ${p => (p.itemInlineSize > '450' ? 'inline' : 'none')};
+          }
+          p {
+            inline-size: 100%;
+            margin-block-start: 0;
+            text-align: center;
+          }
+          button {
+            background-color: ${p => p.theme.greyBtn};
+            border-radius: 5rem;
+            display: inline-block;
+            cursor: pointer;
+            color: ${p => p.theme.white};
+            font-family: Arial;
+            font-size: 1rem;
+            font: ${p => p.theme.body2Semibold};
+            padding: 0.6rem 1.2rem;
+            border: none;
+            :hover {
+              background-color: ${p => p.theme.greyBtnHover};
+            }
+          }
+        }
+      }
+    }
+  }
   & .video_settings {
     position: absolute;
     display: block;

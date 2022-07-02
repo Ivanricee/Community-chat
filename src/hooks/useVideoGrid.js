@@ -7,10 +7,12 @@ const setGrid = elementRef => {
   const containerInline = elementRef.current.offsetWidth
   const containerBlock = elementRef.current.offsetHeight
   const itemGrid = renderGrid(totalItems, containerInline, containerBlock)
+
   return itemGrid.itemInlineSize
 }
 export function useVideoGrid() {
   const [itemInlineSize, setItemInlineSize] = useState(null)
+  const [reloadEl, setReloadEl] = useState(1)
   const elementRef = useRef(null)
 
   useEffect(() => {
@@ -27,8 +29,9 @@ export function useVideoGrid() {
   }, [elementRef])
 
   useEffect(() => {
+    console.log('reloaded ')
     setItemInlineSize(setGrid(elementRef))
-  }, [elementRef])
+  }, [elementRef, reloadEl])
 
-  return [itemInlineSize, elementRef]
+  return [itemInlineSize, reloadEl, setReloadEl, elementRef]
 }

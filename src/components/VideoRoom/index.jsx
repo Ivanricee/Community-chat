@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 
 import { UserRegister } from './UserRegister'
 import { StyledVideoRoom } from './styles'
-// import { Video } from './Video'
 import { Room } from './Room'
 
 export const VideoRoom = ({ channelTitle }) => {
@@ -33,12 +32,6 @@ export const VideoRoom = ({ channelTitle }) => {
                     identity={tokenBody.identity}
                     roomName={tokenBody.room}
                 />
-                /* <Video
-                    channelTitle={channelTitle}
-                    token={tokenBody.token}
-                    identity={tokenBody.identity}
-                    room={tokenBody.room}
-                /> */
             )}
         </StyledVideoRoom>
     )

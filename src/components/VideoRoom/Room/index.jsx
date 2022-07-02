@@ -11,6 +11,7 @@ import Participant from './Participant'
 import { StyledRoom } from './styles'
 import { useFullscreen } from '../../../hooks/useFullscreen'
 import { UserInvite } from '../UserInvite'
+import { useVideoGrid } from '../../../hooks/useVideoGrid'
 
 export const Room = ({ channelTitle, token, identity, roomName }) => {
     const [elementFullsc, isFullscreen, setFullscreen] = useFullscreen()
@@ -18,6 +19,7 @@ export const Room = ({ channelTitle, token, identity, roomName }) => {
     const [openUserInvite, setOpenUserInvite] = useState(false)
     const [isMPhoneOn, setIsMPhoneOn] = useState(false)
     const [participants, setParticipants] = useState([])
+    const [itemInlineSize, reloadEl, setReloadEl, elementGrid] = useVideoGrid()
 
     const remoteParticipants = participants.map(participant => (
         <Participant
@@ -32,12 +34,21 @@ export const Room = ({ channelTitle, token, identity, roomName }) => {
     const handleFullscreen = () => {
         setFullscreen()
     }
-    const handleUserInvite = () => {
+    const clickUserInvite = event => {
         // sale de fullscreen para abrir el modal
         if (isFullscreen) handleFullscreen()
         setOpenUserInvite(!openUserInvite)
     }
+    const keyDownUserInvite = event => {
+        if (event.keyCode === 27) {
+            // sale de fullscreen para abrir el modal
+            if (isFullscreen) handleFullscreen()
+            setOpenUserInvite(!openUserInvite)
+        }
+    }
+
     useEffect(() => {
+        // para testear solo comentar useEffect
         const participantConnected = participant => {
             setParticipants(prevParticipants => [
                 ...prevParticipants,
@@ -72,34 +83,59 @@ export const Room = ({ channelTitle, token, identity, roomName }) => {
                     prevRoom.disconnect()
                     return null
                 }
+                console.log('unmounted video')
                 return prevRoom
             })
         }
     }, [roomName, token])
-
+    useEffect(() => {
+        if (room) setReloadEl(reloadEl + 1)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [room, setReloadEl])
     return (
-        <StyledRoom ref={elementFullsc}>
+        <StyledRoom ref={elementFullsc} itemInlineSize={itemInlineSize}>
             <div className="video_settings top">
                 <div>
                     <GiSpeaker />
                     <span>{channelTitle}</span>
                 </div>
             </div>
-            {room && (
-                <Participant
-                    key={room.localParticipant.sid}
-                    participant={room.localParticipant}
-                    channelTitle={channelTitle}
-                    token={token}
-                    identity={identity}
-                    roomName={roomName}
-                />
-            )}
+            <div className="video__wrapper-participant" ref={elementGrid}>
+                {
+                    // poner un loader mientras carga el video
+                }
+                {room && (
+                    <Participant
+                        key={room.localParticipant.sid}
+                        participant={room.localParticipant}
+                        channelTitle={channelTitle}
+                        token={token}
+                        identity={identity}
+                        roomName={roomName}
+                        itemInlineSize={itemInlineSize}
+                    />
+                )}
+                {remoteParticipants}
+                <div className="video_welcome">
+                    <div>
+                        <div className="video_content">
+                            <img
+                                alt="Enviar invitacion para unirse"
+                                src="https://res.cloudinary.com/ivanrice-c/image/upload/v1655315312/discord-clone/icons8-agregar-usuario-masculino-100_bqg1ab.png"
+                            />
+                            <p>
+                                Todavía no hay nadie. Invita a gente para que se
+                                una a ti!
+                            </p>
+                            <button type="button">Invitación </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            {remoteParticipants}
             <div className="video_settings down">
                 <div>
-                    <FaUserPlus onClick={handleUserInvite} />
+                    <FaUserPlus onClick={clickUserInvite} />
                 </div>
                 <div>
                     <IoMdVideocam />
@@ -118,7 +154,14 @@ export const Room = ({ channelTitle, token, identity, roomName }) => {
                         <FiMaximize onClick={handleFullscreen} />
                     )}
                 </div>
-                {openUserInvite && <UserInvite channelTitle={channelTitle} />}
+                {openUserInvite && (
+                    <UserInvite
+                        clickUserInvite={clickUserInvite}
+                        keyDownUserInvite={keyDownUserInvite}
+                        channelTitle={channelTitle}
+                        role="dialog"
+                    />
+                )}
             </div>
         </StyledRoom>
     )

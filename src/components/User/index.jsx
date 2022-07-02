@@ -22,7 +22,6 @@ const User = ({ server }) => {
         <h2>Loading</h2>
     ) : (
         <StyledUser showUserMenu={storedUserMenu}>
-            <button type="button">boton 222</button>
             <StyledUserList>
                 {data.findUsersRoles.map(usersRole => {
                     return (

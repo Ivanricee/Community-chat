@@ -5,10 +5,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { FaUserPlus, FaMicrophoneSlash, FaMicrophone } from 'react-icons/fa'
 import { StyledParticipant } from './styles'
-import { useVideoGrid } from '../../../../hooks/useVideoGrid'
 
-const Participant = ({ participant, identity }) => {
-    const [itemInlineSize, elementGrid] = useVideoGrid()
+const Participant = ({ participant, identity, itemInlineSize }) => {
     const [videoTracks, setVideoTracks] = useState([])
     const [audioTracks, setAudioTracks] = useState([])
     const [isMPhoneOn, setIsMPhoneOn] = useState(false)
@@ -74,10 +72,10 @@ const Participant = ({ participant, identity }) => {
         }
     }, [audioTracks])
     return (
-        <StyledParticipant ref={elementGrid} itemInlineSize={itemInlineSize}>
+        <StyledParticipant itemInlineSize={itemInlineSize}>
             <div>
                 <div className="video_participant">
-                    {videoTracks ? (
+                    {videoTracks.length !== 0 ? (
                         <>
                             <video ref={videoRef} autoPlay />
                             <audio ref={audioRef} autoPlay muted />
@@ -101,20 +99,6 @@ const Participant = ({ participant, identity }) => {
                             )}
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div>
-                <div className="video_welcome">
-                    <img
-                        alt="Enviar invitacion para unirse"
-                        src="https://res.cloudinary.com/ivanrice-c/image/upload/v1655315312/discord-clone/icons8-agregar-usuario-masculino-100_bqg1ab.png"
-                    />
-                    <p>
-                        Todavía no hay nadie. Invita a gente para que se una a
-                        ti!
-                    </p>
-                    <button type="button">Invitación </button>
                 </div>
             </div>
         </StyledParticipant>
