@@ -17,7 +17,10 @@ export const VideoRoom = ({ channelTitle }) => {
             ...form,
         })
     }
-
+    const userLogout = () => {
+        // eslint-disable-next-line no-shadow
+        setTokenBody(tokenBody => ({ ...tokenBody, token: null }))
+    }
     return (
         <StyledVideoRoom>
             {tokenBody.token === null ? (
@@ -31,6 +34,7 @@ export const VideoRoom = ({ channelTitle }) => {
                     token={tokenBody.token}
                     identity={tokenBody.identity}
                     roomName={tokenBody.room}
+                    userLogout={userLogout}
                 />
             )}
         </StyledVideoRoom>

@@ -29,7 +29,6 @@ export function useVideoGrid() {
   }, [elementRef])
 
   useEffect(() => {
-    console.log('reloaded ')
     setItemInlineSize(setGrid(elementRef))
   }, [elementRef, reloadEl])
 

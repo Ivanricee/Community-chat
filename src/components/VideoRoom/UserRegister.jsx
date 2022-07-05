@@ -16,8 +16,12 @@ export const UserRegister = ({ userRegisterToken, channelTitle }) => {
 
     const handleUserRegister = async e => {
         e.preventDefault()
-        const token = await getTwilioToken(form.identity, form.room)
-        userRegisterToken(token, form)
+        try {
+            const token = await getTwilioToken(form.identity, form.room)
+            userRegisterToken(token, form)
+        } catch (err) {
+            throw new Error('err: ', err)
+        }
     }
     const handleUserChange = e => {
         // eslint-disable-next-line no-shadow

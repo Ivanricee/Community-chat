@@ -48,8 +48,9 @@ export const Room = ({ channelTitle, token, identity, roomName }) => {
         }
     }
 
+    // para testear solo comentar useEffect
     useEffect(() => {
-        // para testear solo comentar useEffect
+        let isVideoConnected = true
         const participantConnected = participant => {
             setParticipants(prevParticipants => [
                 ...prevParticipants,
@@ -61,34 +62,50 @@ export const Room = ({ channelTitle, token, identity, roomName }) => {
                 prevParticipants.filter(p => p !== participant)
             )
         }
-        Video.connect(token, {
-            name: roomName,
-        }).then(responseRoom => {
-            setRoom(responseRoom)
-            responseRoom.on('participantConnected', participantConnected)
-            responseRoom.on('participantDisconnected', participantDisconnected)
-            // que hace y para que?
-            responseRoom.participants.forEach(participantConnected)
-        })
-        return () => {
-            setRoom(prevRoom => {
-                if (
-                    prevRoom &&
-                    prevRoom.localParticipant.state === 'connected'
-                ) {
-                    prevRoom.localParticipant.tracks.forEach(
-                        trackPublication => {
-                            trackPublication.track.stop()
-                        }
-                    )
-                    prevRoom.disconnect()
-                    return null
-                }
-                console.log('unmounted video')
-                return prevRoom
+        const videoDisconnect = roomDisconnect => {
+            roomDisconnect.localParticipant.tracks.forEach(trackPublication => {
+                trackPublication.track.stop()
             })
+            roomDisconnect.disconnect()
+            return null
+            // eslint-disable-next-line no-else-return
         }
-    }, [roomName, token])
+
+        if (!room && isVideoConnected)
+            Video.connect(token, {
+                name: roomName,
+            }).then(responseRoom => {
+                if (isVideoConnected) {
+                    responseRoom.on(
+                        'participantConnected',
+                        participantConnected
+                    )
+                    responseRoom.on(
+                        'participantDisconnected',
+                        participantDisconnected
+                    )
+                    responseRoom.participants.forEach(participantConnected)
+                    // console.log('responseRoom mount', responseRoom.localParticipant.state)
+                    setRoom(responseRoom)
+                } else if (
+                    responseRoom &&
+                    responseRoom.localParticipant.state === 'connected'
+                ) {
+                    videoDisconnect(responseRoom)
+                }
+            })
+        return () => {
+            isVideoConnected = false
+
+            if (!isVideoConnected)
+                if (room && room.localParticipant.state === 'connected') {
+                    room.localParticipant.tracks.forEach(trackPublication => {
+                        trackPublication.track.stop()
+                    })
+                    room.disconnect()
+                }
+        }
+    }, [roomName, token, room])
     useEffect(() => {
         if (room) setReloadEl(reloadEl + 1)
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -116,22 +133,25 @@ export const Room = ({ channelTitle, token, identity, roomName }) => {
                         itemInlineSize={itemInlineSize}
                     />
                 )}
-                {remoteParticipants}
-                <div className="video_welcome">
-                    <div>
-                        <div className="video_content">
-                            <img
-                                alt="Enviar invitacion para unirse"
-                                src="https://res.cloudinary.com/ivanrice-c/image/upload/v1655315312/discord-clone/icons8-agregar-usuario-masculino-100_bqg1ab.png"
-                            />
-                            <p>
-                                Todavía no hay nadie. Invita a gente para que se
-                                una a ti!
-                            </p>
-                            <button type="button">Invitación </button>
+                {participants.length > 0 ? (
+                    remoteParticipants
+                ) : (
+                    <div className="video_welcome">
+                        <div>
+                            <div className="video_content">
+                                <img
+                                    alt="Enviar invitacion para unirse"
+                                    src="https://res.cloudinary.com/ivanrice-c/image/upload/v1655315312/discord-clone/icons8-agregar-usuario-masculino-100_bqg1ab.png"
+                                />
+                                <p>
+                                    Todavía no hay nadie. Invita a gente para
+                                    que se una a ti!
+                                </p>
+                                <button type="button">Invitación </button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
             </div>
 
             <div className="video_settings down">
