@@ -9,6 +9,7 @@ export const VideoRoom = ({ channelTitle }) => {
         token: null,
         identity: '',
         room: '',
+        message: '',
     })
 
     const userRegisterToken = (token, form) => {
@@ -17,22 +18,34 @@ export const VideoRoom = ({ channelTitle }) => {
             ...form,
         })
     }
-    const userLogout = () => {
+    const userLogout = (unmount, message) => {
         // eslint-disable-next-line no-shadow
-        setTokenBody(tokenBody => ({ ...tokenBody, token: null }))
+        if (!unmount)
+            setTokenBody(prevTokenBody => ({
+                ...prevTokenBody,
+                token: null,
+                message,
+            }))
+    }
+    const userCloseMessage = () => {
+        setTokenBody(prevTokenBody => ({
+            ...prevTokenBody,
+            message: '',
+        }))
     }
     return (
         <StyledVideoRoom>
             {tokenBody.token === null ? (
                 <UserRegister
+                    message={tokenBody.message}
                     channelTitle={channelTitle}
                     userRegisterToken={userRegisterToken}
+                    userCloseMessage={userCloseMessage}
                 />
             ) : (
                 <Room
                     channelTitle={channelTitle}
                     token={tokenBody.token}
-                    identity={tokenBody.identity}
                     roomName={tokenBody.room}
                     userLogout={userLogout}
                 />

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { IoCloseSharp } from 'react-icons/io5'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { GiSpeaker } from 'react-icons/gi'
@@ -6,7 +7,12 @@ import { BsSearch } from 'react-icons/bs'
 import { StyledUserRegister } from './styles'
 import { getTwilioToken } from '../../utils'
 
-export const UserRegister = ({ userRegisterToken, channelTitle }) => {
+export const UserRegister = ({
+    userRegisterToken,
+    channelTitle,
+    message,
+    userCloseMessage,
+}) => {
     const location = useLocation()
     const storedServerTitle = useSelector(state => state.app.server)
     const [form, setForm] = useState({
@@ -31,47 +37,57 @@ export const UserRegister = ({ userRegisterToken, channelTitle }) => {
         })
     }
     return (
-        <StyledUserRegister>
-            <div>
-                <header>
-                    <h1>Registro en {storedServerTitle}</h1>
-                </header>
-                <main>
-                    <div className="register__channel">
-                        <GiSpeaker />
-                        <h2>{channelTitle}</h2>
-                    </div>
-                    <form onSubmit={handleUserRegister}>
-                        <div className="register__input-search">
-                            <input
-                                name="identity"
-                                placeholder={
-                                    form.identity === ''
-                                        ? 'Nombre de usuario'
-                                        : form.identity
-                                }
-                                type="text"
-                                pattern="[a-zA-Z0-9_&-]+([ ]?[a-zA-Z0-9_&-]+)*"
-                                minLength="3"
-                                maxLength="20"
-                                required
-                                onChange={handleUserChange}
-                            />
-                            <BsSearch />
+        <StyledUserRegister message={message}>
+            <div className="register__wrapper">
+                <div className="register__message">
+                    <small>{message}</small>
+                    <button type="button" onClick={userCloseMessage}>
+                        <IoCloseSharp />
+                    </button>
+                </div>
+                <div>
+                    <header>
+                        <h1>Registro en {storedServerTitle}</h1>
+                    </header>
+                    <main>
+                        <div className="register__channel">
+                            <GiSpeaker />
+                            <h2>{channelTitle}</h2>
                         </div>
-                        <hr />
-                        <div className="register__user-found">
-                            <div>
-                                <div className="video__img">
-                                    {form.identity.charAt(0).toUpperCase()}
-                                </div>
-                                <p>{form.identity}</p>
+                        <form onSubmit={handleUserRegister}>
+                            <div className="register__input-search">
+                                <input
+                                    name="identity"
+                                    placeholder={
+                                        form.identity === ''
+                                            ? 'Nombre de usuario'
+                                            : form.identity
+                                    }
+                                    type="text"
+                                    pattern="[a-zA-Z0-9_&-]+([ ]?[a-zA-Z0-9_&-]+)*"
+                                    minLength="3"
+                                    maxLength="20"
+                                    required
+                                    onChange={handleUserChange}
+                                />
+                                <span>
+                                    <BsSearch />
+                                </span>
                             </div>
-                            <button type="submit">Entrar</button>
-                        </div>
-                    </form>
-                    <hr />
-                </main>
+                            <hr />
+                            <div className="register__user-found">
+                                <div>
+                                    <div className="video__img">
+                                        {form.identity.charAt(0).toUpperCase()}
+                                    </div>
+                                    <p>{form.identity}</p>
+                                </div>
+                                <button type="submit">Entrar</button>
+                            </div>
+                        </form>
+                        <hr />
+                    </main>
+                </div>
             </div>
         </StyledUserRegister>
     )

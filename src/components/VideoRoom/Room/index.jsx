@@ -13,29 +13,18 @@ import { useFullscreen } from '../../../hooks/useFullscreen'
 import { UserInvite } from '../UserInvite'
 import { useVideoGrid } from '../../../hooks/useVideoGrid'
 
-export const Room = ({ channelTitle, token, identity, roomName }) => {
+export const Room = ({ channelTitle, token, roomName, userLogout }) => {
     const [elementFullsc, isFullscreen, setFullscreen] = useFullscreen()
     const [room, setRoom] = useState(null)
     const [openUserInvite, setOpenUserInvite] = useState(false)
-    const [isMPhoneOn, setIsMPhoneOn] = useState(false)
+    const [isMPhoneOn, setIsMPhoneOn] = useState(true)
     const [participants, setParticipants] = useState([])
     const [itemInlineSize, reloadEl, setReloadEl, elementGrid] = useVideoGrid()
 
-    const remoteParticipants = participants.map(participant => (
-        <Participant
-            key={participant.sid}
-            participant={participant}
-            channelTitle={channelTitle}
-            token={token}
-            identity={identity}
-            roomName={roomName}
-            itemInlineSize={itemInlineSize}
-        />
-    ))
     const handleFullscreen = () => {
         setFullscreen()
     }
-    const clickUserInvite = event => {
+    const clickUserInvite = () => {
         // sale de fullscreen para abrir el modal
         if (isFullscreen) handleFullscreen()
         setOpenUserInvite(!openUserInvite)
@@ -47,11 +36,47 @@ export const Room = ({ channelTitle, token, identity, roomName }) => {
             setOpenUserInvite(!openUserInvite)
         }
     }
-
+    const handleEnableAudio = (roomAudio = null) => {
+        roomAudio.localParticipant.audioTracks.forEach(track => {
+            track.track.enable()
+            setIsMPhoneOn(true)
+        })
+    }
+    const handleDisableAudio = (roomAudio = null) => {
+        roomAudio.localParticipant.audioTracks.forEach(track => {
+            track.track.disable()
+            setIsMPhoneOn(false)
+        })
+        // console.log('room.localParticipant ', room.localParticipant)
+    }
+    const videoDisconnect = (roomDisconnect, unmount = false) => {
+        const message = 'Hasta la proxima'
+        userLogout(unmount, message)
+        if (roomDisconnect !== null) {
+            roomDisconnect.localParticipant.tracks.forEach(trackPublication => {
+                trackPublication.track.stop()
+                trackPublication.unpublish()
+            })
+            roomDisconnect.disconnect()
+        }
+    }
+    const remoteParticipants = participants.map(participant => (
+        <Participant
+            key={participant.sid}
+            type="remote"
+            participant={participant}
+            channelTitle={channelTitle}
+            token={token}
+            identity={participant.identity}
+            roomName={roomName}
+            itemInlineSize={itemInlineSize}
+        />
+    ))
     // para testear solo comentar useEffect
     useEffect(() => {
         let isVideoConnected = true
         const participantConnected = participant => {
+            console.log('tracks conected? ', participant.tracks)
             setParticipants(prevParticipants => [
                 ...prevParticipants,
                 participant,
@@ -62,49 +87,46 @@ export const Room = ({ channelTitle, token, identity, roomName }) => {
                 prevParticipants.filter(p => p !== participant)
             )
         }
-        const videoDisconnect = roomDisconnect => {
-            roomDisconnect.localParticipant.tracks.forEach(trackPublication => {
-                trackPublication.track.stop()
-            })
-            roomDisconnect.disconnect()
-            return null
-            // eslint-disable-next-line no-else-return
-        }
 
         if (!room && isVideoConnected)
             Video.connect(token, {
                 name: roomName,
-            }).then(responseRoom => {
-                if (isVideoConnected) {
-                    responseRoom.on(
-                        'participantConnected',
-                        participantConnected
-                    )
-                    responseRoom.on(
-                        'participantDisconnected',
-                        participantDisconnected
-                    )
-                    responseRoom.participants.forEach(participantConnected)
-                    // console.log('responseRoom mount', responseRoom.localParticipant.state)
-                    setRoom(responseRoom)
-                } else if (
-                    responseRoom &&
-                    responseRoom.localParticipant.state === 'connected'
-                ) {
-                    videoDisconnect(responseRoom)
-                }
             })
+                .then(responseRoom => {
+                    if (isVideoConnected) {
+                        responseRoom.on(
+                            'participantConnected',
+                            participantConnected
+                        )
+                        responseRoom.on(
+                            'participantDisconnected',
+                            participantDisconnected
+                        )
+                        responseRoom.participants.forEach(participantConnected)
+                        setRoom(responseRoom)
+                    } else if (
+                        responseRoom &&
+                        responseRoom.localParticipant.state === 'connected'
+                    ) {
+                        const unmount = true
+                        videoDisconnect(responseRoom, unmount)
+                    }
+                })
+                .catch(error => {
+                    // eslint-disable-next-line no-console
+                    const unmount = false
+                    userLogout(unmount, error.message)
+                })
         return () => {
             isVideoConnected = false
 
             if (!isVideoConnected)
                 if (room && room.localParticipant.state === 'connected') {
-                    room.localParticipant.tracks.forEach(trackPublication => {
-                        trackPublication.track.stop()
-                    })
-                    room.disconnect()
+                    const unmount = true
+                    videoDisconnect(room, unmount)
                 }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roomName, token, room])
     useEffect(() => {
         if (room) setReloadEl(reloadEl + 1)
@@ -121,14 +143,17 @@ export const Room = ({ channelTitle, token, identity, roomName }) => {
             <div className="video__wrapper-participant" ref={elementGrid}>
                 {
                     // poner un loader mientras carga el video
+                    // room && console.log('participant ', room.localParticipant)
                 }
                 {room && (
                     <Participant
                         key={room.localParticipant.sid}
+                        type="local"
                         participant={room.localParticipant}
+                        isMPhoneOn={isMPhoneOn}
                         channelTitle={channelTitle}
                         token={token}
-                        identity={identity}
+                        identity={room.localParticipant.identity}
                         roomName={roomName}
                         itemInlineSize={itemInlineSize}
                     />
@@ -162,11 +187,19 @@ export const Room = ({ channelTitle, token, identity, roomName }) => {
                     <IoMdVideocam />
                     <MdScreenShare />
                     {isMPhoneOn ? (
-                        <FaMicrophone />
+                        <FaMicrophone
+                            onClick={() => handleDisableAudio(room)}
+                        />
                     ) : (
-                        <FaMicrophoneSlash className="isActive" />
+                        <FaMicrophoneSlash
+                            className="isActive"
+                            onClick={() => handleEnableAudio(room)}
+                        />
                     )}
-                    <HiPhoneMissedCall className="call" />
+                    <HiPhoneMissedCall
+                        className="call"
+                        onClick={() => videoDisconnect(room)}
+                    />
                 </div>
                 <div>
                     {isFullscreen ? (

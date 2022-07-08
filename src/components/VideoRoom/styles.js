@@ -23,14 +23,46 @@ export const StyledUserRegister = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+  align-content: center;
   block-size: 100%;
-  & > div {
-    background-color: ${p => p.theme.bg};
-    padding: 0.85rem;
-    box-sizing: border-box;
-    inline-size: 27.5rem;
-    block-size: auto;
-    border-radius: 0.3rem;
+  flex-wrap: wrap;
+  .register__wrapper {
+    & > div {
+      background-color: ${p => p.theme.bg};
+      padding: 0.85rem;
+      box-sizing: border-box;
+      inline-size: 27.5rem;
+      block-size: auto;
+      border-radius: 0.3rem;
+      transition: display 1s;
+    }
+    .register__message {
+      ${p => console.log('mensaje: ', p.message.length)}
+      display: ${p => (p.message.length > 0 ? 'flex' : 'none')};
+      margin-block-end: 1rem;
+      justify-content: space-between;
+      align-items: center;
+      small {
+        margin: 0;
+        inline-size: calc(100% - 2rem);
+        font: ${p => p.theme.body2Semibold};
+        font-size: 0.75rem;
+      }
+      button {
+        cursor: pointer;
+        color: ${p => p.theme.grey};
+        background: transparent;
+        border: 0px;
+        border-radius: 0.3rem;
+        :hover {
+          color: ${p => p.theme.white};
+          background: ${p => p.theme.bgReact};
+        }
+      }
+      svg {
+        font-size: 2.5rem;
+      }
+    }
   }
   header {
     display: flex;
