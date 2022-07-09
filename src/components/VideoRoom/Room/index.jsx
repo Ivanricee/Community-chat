@@ -13,9 +13,8 @@ import { useFullscreen } from '../../../hooks/useFullscreen'
 import { UserInvite } from '../UserInvite'
 import { useVideoGrid } from '../../../hooks/useVideoGrid'
 
-export const Room = ({ channelTitle, token, roomName, userLogout }) => {
+export const Room = ({ channelTitle, roomName, room, userLogout }) => {
     const [elementFullsc, isFullscreen, setFullscreen] = useFullscreen()
-    const [room, setRoom] = useState(null)
     const [openUserInvite, setOpenUserInvite] = useState(false)
     const [isMPhoneOn, setIsMPhoneOn] = useState(true)
     const [participants, setParticipants] = useState([])
@@ -66,7 +65,6 @@ export const Room = ({ channelTitle, token, roomName, userLogout }) => {
             type="remote"
             participant={participant}
             channelTitle={channelTitle}
-            token={token}
             identity={participant.identity}
             roomName={roomName}
             itemInlineSize={itemInlineSize}
@@ -76,7 +74,6 @@ export const Room = ({ channelTitle, token, roomName, userLogout }) => {
     useEffect(() => {
         let isVideoConnected = true
         const participantConnected = participant => {
-            console.log('tracks conected? ', participant.tracks)
             setParticipants(prevParticipants => [
                 ...prevParticipants,
                 participant,
@@ -88,35 +85,15 @@ export const Room = ({ channelTitle, token, roomName, userLogout }) => {
             )
         }
 
-        if (!room && isVideoConnected)
-            Video.connect(token, {
-                name: roomName,
-            })
-                .then(responseRoom => {
-                    if (isVideoConnected) {
-                        responseRoom.on(
-                            'participantConnected',
-                            participantConnected
-                        )
-                        responseRoom.on(
-                            'participantDisconnected',
-                            participantDisconnected
-                        )
-                        responseRoom.participants.forEach(participantConnected)
-                        setRoom(responseRoom)
-                    } else if (
-                        responseRoom &&
-                        responseRoom.localParticipant.state === 'connected'
-                    ) {
-                        const unmount = true
-                        videoDisconnect(responseRoom, unmount)
-                    }
-                })
-                .catch(error => {
-                    // eslint-disable-next-line no-console
-                    const unmount = false
-                    userLogout(unmount, error.message)
-                })
+        if (room && isVideoConnected) {
+            room.on('participantConnected', participantConnected)
+            room.on('participantDisconnected', participantDisconnected)
+            room.participants.forEach(participantConnected)
+        } /* else if (room && room.localParticipant.state === 'connected') {
+            const unmount = true
+            videoDisconnect(room, unmount)
+        } */
+
         return () => {
             isVideoConnected = false
 
@@ -127,7 +104,7 @@ export const Room = ({ channelTitle, token, roomName, userLogout }) => {
                 }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [roomName, token, room])
+    }, [roomName, room])
     useEffect(() => {
         if (room) setReloadEl(reloadEl + 1)
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,10 +118,6 @@ export const Room = ({ channelTitle, token, roomName, userLogout }) => {
                 </div>
             </div>
             <div className="video__wrapper-participant" ref={elementGrid}>
-                {
-                    // poner un loader mientras carga el video
-                    // room && console.log('participant ', room.localParticipant)
-                }
                 {room && (
                     <Participant
                         key={room.localParticipant.sid}
@@ -152,7 +125,6 @@ export const Room = ({ channelTitle, token, roomName, userLogout }) => {
                         participant={room.localParticipant}
                         isMPhoneOn={isMPhoneOn}
                         channelTitle={channelTitle}
-                        token={token}
                         identity={room.localParticipant.identity}
                         roomName={roomName}
                         itemInlineSize={itemInlineSize}

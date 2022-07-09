@@ -37,8 +37,7 @@ export const StyledUserRegister = styled.section`
       transition: display 1s;
     }
     .register__message {
-      ${p => console.log('mensaje: ', p.message.length)}
-      display: ${p => (p.message.length > 0 ? 'flex' : 'none')};
+      display: ${p => (p.message && p.message.length > 0 ? 'flex' : 'none')};
       margin-block-end: 1rem;
       justify-content: space-between;
       align-items: center;
@@ -54,9 +53,9 @@ export const StyledUserRegister = styled.section`
         background: transparent;
         border: 0px;
         border-radius: 0.3rem;
+        transition: color 0.5s;
         :hover {
           color: ${p => p.theme.white};
-          background: ${p => p.theme.bgReact};
         }
       }
       svg {
