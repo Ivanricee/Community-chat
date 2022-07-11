@@ -3,6 +3,7 @@ import Video from 'twilio-video'
 
 export const useVideoConnect = (roomName, token, userLogout) => {
   const [room, setRoom] = useState(null)
+  const [isRoomLoading, setIsRoomLoading] = useState(false)
   const cleanRoom = () => {
     setRoom(null)
   }
@@ -20,12 +21,14 @@ export const useVideoConnect = (roomName, token, userLogout) => {
       }
     }
 
-    if (!room && isVideoConnected && token !== null)
+    if (!room && isVideoConnected && token !== null) {
+      setIsRoomLoading(true)
       Video.connect(token, {
         name: roomName,
       })
         .then(responseRoom => {
           if (isVideoConnected && responseRoom) {
+            setIsRoomLoading(false)
             setRoom(responseRoom)
           } else if (
             responseRoom &&
@@ -40,6 +43,7 @@ export const useVideoConnect = (roomName, token, userLogout) => {
           const unmount = false
           userLogout(unmount, error.message)
         })
+    }
 
     return () => {
       isVideoConnected = false
@@ -51,5 +55,5 @@ export const useVideoConnect = (roomName, token, userLogout) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, room])
-  return [room, cleanRoom]
+  return [room, isRoomLoading, cleanRoom]
 }

@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
-import Video from 'twilio-video'
 import { IoMdVideocam } from 'react-icons/io'
 import { MdScreenShare } from 'react-icons/md'
 import { FaUserPlus, FaMicrophoneSlash, FaMicrophone } from 'react-icons/fa'
@@ -18,7 +17,8 @@ export const Room = ({ channelTitle, roomName, room, userLogout }) => {
     const [openUserInvite, setOpenUserInvite] = useState(false)
     const [isMPhoneOn, setIsMPhoneOn] = useState(true)
     const [participants, setParticipants] = useState([])
-    const [itemInlineSize, reloadEl, setReloadEl, elementGrid] = useVideoGrid()
+    const [itemInlineSize, reloadEl, setReloadEl, elementGrid] =
+        useVideoGrid(room)
 
     const handleFullscreen = () => {
         setFullscreen()
@@ -89,11 +89,7 @@ export const Room = ({ channelTitle, roomName, room, userLogout }) => {
             room.on('participantConnected', participantConnected)
             room.on('participantDisconnected', participantDisconnected)
             room.participants.forEach(participantConnected)
-        } /* else if (room && room.localParticipant.state === 'connected') {
-            const unmount = true
-            videoDisconnect(room, unmount)
-        } */
-
+        }
         return () => {
             isVideoConnected = false
 
@@ -106,7 +102,7 @@ export const Room = ({ channelTitle, roomName, room, userLogout }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roomName, room])
     useEffect(() => {
-        if (room) setReloadEl(reloadEl + 1)
+        // if (room) setReloadEl(reloadEl + 1)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [room, setReloadEl])
     return (
@@ -150,7 +146,6 @@ export const Room = ({ channelTitle, roomName, room, userLogout }) => {
                     </div>
                 )}
             </div>
-
             <div className="video_settings down">
                 <div>
                     <FaUserPlus onClick={clickUserInvite} />

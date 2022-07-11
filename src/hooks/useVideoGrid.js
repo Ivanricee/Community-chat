@@ -10,7 +10,7 @@ const setGrid = elementRef => {
 
   return itemGrid.itemInlineSize
 }
-export function useVideoGrid() {
+export function useVideoGrid(room) {
   const [itemInlineSize, setItemInlineSize] = useState(null)
   const [reloadEl, setReloadEl] = useState(1)
   const elementRef = useRef(null)
@@ -30,7 +30,7 @@ export function useVideoGrid() {
 
   useEffect(() => {
     setItemInlineSize(setGrid(elementRef))
-  }, [elementRef, reloadEl])
+  }, [elementRef, room])
 
   return [itemInlineSize, reloadEl, setReloadEl, elementRef]
 }

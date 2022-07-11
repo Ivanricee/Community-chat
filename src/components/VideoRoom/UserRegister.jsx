@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { GiSpeaker } from 'react-icons/gi'
 import { BsSearch } from 'react-icons/bs'
+import { ThreeDots } from 'react-loader-spinner'
 import { StyledUserRegister } from './styles'
 import { getTwilioToken } from '../../utils'
 
@@ -11,6 +12,7 @@ export const UserRegister = ({
     userRegisterToken,
     channelTitle,
     message,
+    isRoomLoading,
     userCloseMessage,
 }) => {
     const location = useLocation()
@@ -22,8 +24,13 @@ export const UserRegister = ({
 
     const handleUserRegister = async e => {
         e.preventDefault()
+        const submitButton = Array.from(e.target).find(
+            elemnt => elemnt.type === 'submit'
+        )
+        submitButton.disabled = true
         try {
             const token = await getTwilioToken(form.identity, form.room)
+            submitButton.disabled = true
             userRegisterToken(token, form)
         } catch (err) {
             throw new Error('err: ', err)
@@ -54,37 +61,50 @@ export const UserRegister = ({
                             <GiSpeaker />
                             <h2>{channelTitle}</h2>
                         </div>
-                        <form onSubmit={handleUserRegister}>
-                            <div className="register__input-search">
-                                <input
-                                    name="identity"
-                                    placeholder={
-                                        form.identity === ''
-                                            ? 'Nombre de usuario'
-                                            : form.identity
-                                    }
-                                    type="text"
-                                    pattern="[a-zA-Z0-9_&-]+([ ]?[a-zA-Z0-9_&-]+)*"
-                                    minLength="3"
-                                    maxLength="20"
-                                    required
-                                    onChange={handleUserChange}
+                        {isRoomLoading ? (
+                            <div className="register_loading-room">
+                                <ThreeDots
+                                    color="#dfe3e0"
+                                    height={60}
+                                    width={70}
+                                    ariaLabel="Loading Room"
                                 />
-                                <span>
-                                    <BsSearch />
-                                </span>
                             </div>
-                            <hr />
-                            <div className="register__user-found">
-                                <div>
-                                    <div className="video__img">
-                                        {form.identity.charAt(0).toUpperCase()}
-                                    </div>
-                                    <p>{form.identity}</p>
+                        ) : (
+                            <form onSubmit={handleUserRegister}>
+                                <div className="register__input-search">
+                                    <input
+                                        name="identity"
+                                        placeholder={
+                                            form.identity === ''
+                                                ? 'Nombre de usuario'
+                                                : form.identity
+                                        }
+                                        type="text"
+                                        pattern="[a-zA-Z0-9_&-]+([ ]?[a-zA-Z0-9_&-]+)*"
+                                        minLength="3"
+                                        maxLength="20"
+                                        required
+                                        onChange={handleUserChange}
+                                    />
+                                    <span>
+                                        <BsSearch />
+                                    </span>
                                 </div>
-                                <button type="submit">Entrar</button>
-                            </div>
-                        </form>
+                                <hr />
+                                <div className="register__user-found">
+                                    <div>
+                                        <div className="video__img">
+                                            {form.identity
+                                                .charAt(0)
+                                                .toUpperCase()}
+                                        </div>
+                                        <p>{form.identity}</p>
+                                    </div>
+                                    <button type="submit">Entrar</button>
+                                </div>
+                            </form>
+                        )}
                         <hr />
                     </main>
                 </div>

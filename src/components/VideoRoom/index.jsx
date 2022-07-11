@@ -6,15 +6,16 @@ import { Room } from './Room'
 import { useVideoConnect } from '../../hooks/useVideoConnect'
 
 export const VideoRoom = ({ channelTitle }) => {
-    const [tokenBody, setTokenBody] = useState({
+    const [videoOptions, setVideoOptions] = useState({
         token: null,
         identity: '',
-        room: '',
+        room: {},
+        roomLoading: false,
         message: '',
     })
-    const [room, cleanRoom] = useVideoConnect(
-        tokenBody.room,
-        tokenBody.token,
+    const [room, isRoomLoading, cleanRoom] = useVideoConnect(
+        videoOptions.room,
+        videoOptions.token,
         // eslint-disable-next-line no-use-before-define
         userLogout
     )
@@ -22,8 +23,8 @@ export const VideoRoom = ({ channelTitle }) => {
         // eslint-disable-next-line no-shadow
         if (!unmount) {
             cleanRoom()
-            setTokenBody(prevTokenBody => ({
-                ...prevTokenBody,
+            setVideoOptions(prevVideoOptions => ({
+                ...prevVideoOptions,
                 token: null,
                 message,
             }))
@@ -31,32 +32,33 @@ export const VideoRoom = ({ channelTitle }) => {
     }
 
     const userRegisterToken = (token, form) => {
-        setTokenBody({
+        setVideoOptions({
             token,
             ...form,
         })
     }
     const userCloseMessage = () => {
-        setTokenBody(prevTokenBody => ({
-            ...prevTokenBody,
+        setVideoOptions(prevVideoOptions => ({
+            ...prevVideoOptions,
             message: '',
         }))
     }
+
     return (
         <StyledVideoRoom>
-            {console.log('room register ', room)}
-            {tokenBody.token === null || room === null ? (
+            {videoOptions.token === null || room === null ? (
                 <UserRegister
-                    message={tokenBody.message}
+                    message={videoOptions.message}
                     channelTitle={channelTitle}
                     userRegisterToken={userRegisterToken}
+                    isRoomLoading={isRoomLoading}
                     userCloseMessage={userCloseMessage}
                 />
             ) : (
                 <Room
                     channelTitle={channelTitle}
-                    token={tokenBody.token}
-                    roomName={tokenBody.room}
+                    token={videoOptions.token}
+                    roomName={videoOptions.room}
                     room={room}
                     // eslint-disable-next-line react/jsx-no-bind
                     userLogout={userLogout}

@@ -32,6 +32,7 @@ export const StyledUserRegister = styled.section`
       padding: 0.85rem;
       box-sizing: border-box;
       inline-size: 27.5rem;
+      block-size: 14rem;
       block-size: auto;
       border-radius: 0.3rem;
       transition: display 1s;
@@ -169,7 +170,17 @@ export const StyledUserRegister = styled.section`
         :active {
           opacity: 0.8;
         }
+        :disabled {
+          border-color: ${p => p.theme.grey2};
+          color: ${p => p.theme.grey2};
+          background-color: transparent;
+        }
       }
+    }
+    & .register_loading-room {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 `
