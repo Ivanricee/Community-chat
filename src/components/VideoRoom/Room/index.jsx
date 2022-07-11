@@ -17,8 +17,7 @@ export const Room = ({ channelTitle, roomName, room, userLogout }) => {
     const [openUserInvite, setOpenUserInvite] = useState(false)
     const [isMPhoneOn, setIsMPhoneOn] = useState(true)
     const [participants, setParticipants] = useState([])
-    const [itemInlineSize, reloadEl, setReloadEl, elementGrid] =
-        useVideoGrid(room)
+    const [itemInlineSize, elementGrid] = useVideoGrid(room)
 
     const handleFullscreen = () => {
         setFullscreen()
@@ -101,10 +100,7 @@ export const Room = ({ channelTitle, roomName, room, userLogout }) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roomName, room])
-    useEffect(() => {
-        // if (room) setReloadEl(reloadEl + 1)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [room, setReloadEl])
+
     return (
         <StyledRoom ref={elementFullsc} itemInlineSize={itemInlineSize}>
             <div className="video_settings top">
