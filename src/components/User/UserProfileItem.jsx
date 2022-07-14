@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { ImgContainer } from '../ImgContainer'
 import { Portal } from '../Portal'
@@ -11,6 +11,7 @@ export const UserProfileItem = ({ className, user, userRoleName }) => {
         showDetail: false,
     })
     const userItemModal = useSelector(state => state.app.userItemModal)
+    const menuUserStore = useSelector(state => state.app.userMenu)
 
     const handleUserItemClick = useCallback(
         e => {
@@ -61,14 +62,21 @@ export const UserProfileItem = ({ className, user, userRoleName }) => {
                 showDetail: false,
             }))
     }
-    const handleOutsideClickClose = () => {
+    const handleClickClose = () => {
         if (insetBlockSizeState.showDetail)
             setInsetBlockSizeState(prevInsetBlockSizeState => ({
                 ...prevInsetBlockSizeState,
                 showDetail: false,
             }))
     }
-
+    useEffect(() => {
+        if (!menuUserStore && insetBlockSizeState.showDetail)
+            setInsetBlockSizeState(prevInsetBlockSizeState => ({
+                ...prevInsetBlockSizeState,
+                showDetail: false,
+            }))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [menuUserStore])
     return (
         <>
             <div
@@ -90,7 +98,7 @@ export const UserProfileItem = ({ className, user, userRoleName }) => {
                 </div>
                 <span>{user.name}</span>
             </div>
-            {insetBlockSizeState.showDetail && (
+            {insetBlockSizeState.showDetail && menuUserStore && (
                 <Portal>
                     <UserDetail
                         tabIndex={-1}
@@ -104,7 +112,7 @@ export const UserProfileItem = ({ className, user, userRoleName }) => {
                         insetBlockStart={insetBlockSizeState.blockStart}
                         insetBlockEnd={insetBlockSizeState.blockEnd}
                         onKeyDownCloseModal={onKeyDownCloseModal}
-                        handleOutsideClickClose={handleOutsideClickClose}
+                        handleClickClose={handleClickClose}
                     />
                 </Portal>
             )}

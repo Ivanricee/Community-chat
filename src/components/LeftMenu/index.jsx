@@ -24,36 +24,40 @@ const LeftMenu = () => {
         )
 
     return (
-        <StyledLeftMenu aria-label="primary" storedUserMenu={storedUserMenu}>
+        <StyledLeftMenu aria-label="Server" storedUserMenu={storedUserMenu}>
             {loading ? (
                 <p>Loading...</p>
             ) : (
-                data.servers.map(item => {
-                    const redBullet = setBullet(item.content)
-                    return (
-                        <StyledNavlinkServerItem
-                            aria-label={item.alt}
-                            role="menuitem"
-                            key={item._id}
-                            to={item.path}
-                            className={`${
-                                item.path === `/${server}/1` ? 'active' : ''
-                            }`}
-                        >
-                            <StyledItemWrapper>
-                                <ImgContainer
-                                    img={item.img}
-                                    alt={item.alt}
-                                    content={redBullet.content}
-                                    inlineSize={redBullet.inlineSize}
-                                    translateX={redBullet.translateX}
-                                    display={redBullet.display}
-                                    borderColor="black"
-                                />
-                            </StyledItemWrapper>
-                        </StyledNavlinkServerItem>
-                    )
-                })
+                <ul>
+                    {data.servers.map(item => {
+                        const redBullet = setBullet(item.content)
+                        return (
+                            <li key={item._id}>
+                                <StyledNavlinkServerItem
+                                    aria-label={item.alt}
+                                    to={item.path}
+                                    className={`${
+                                        item.path === `/${server}/1`
+                                            ? 'active'
+                                            : ''
+                                    }`}
+                                >
+                                    <StyledItemWrapper>
+                                        <ImgContainer
+                                            img={item.img}
+                                            alt={item.alt}
+                                            content={redBullet.content}
+                                            inlineSize={redBullet.inlineSize}
+                                            translateX={redBullet.translateX}
+                                            display={redBullet.display}
+                                            borderColor="black"
+                                        />
+                                    </StyledItemWrapper>
+                                </StyledNavlinkServerItem>
+                            </li>
+                        )
+                    })}
+                </ul>
             )}
         </StyledLeftMenu>
     )

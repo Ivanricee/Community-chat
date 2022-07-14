@@ -7,6 +7,9 @@ export const StyledLeftMenu = styled.nav`
   grid-area: left-menu;
   background-color: ${props => props.theme.black};
   overflow-x: hidden;
+  ul {
+    padding: 0;
+  }
   &::-webkit-scrollbar {
     display: none;
   }

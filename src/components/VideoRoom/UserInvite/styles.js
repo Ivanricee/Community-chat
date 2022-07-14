@@ -27,6 +27,16 @@ export const StyledUserInvite = styled.section`
       font: ${p => p.theme.body1Bold};
       margin: 0;
     }
+    button {
+      cursor: pointer;
+      color: ${p => p.theme.grey};
+      background: transparent;
+      border: 0;
+      font-size: 1.5rem;
+      :hover {
+        color: ${p => p.theme.white};
+      }
+    }
   }
   main {
     & input {

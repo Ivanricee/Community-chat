@@ -20,6 +20,20 @@ export const StyledUserDetail = styled.aside`
         & .user__detail-header-banner {
             background-color: ${p => p.theme.colorRole(p.roleUser)};
             block-size: 3.75rem;
+            text-align: end;
+            padding-inline-end: 0.5rem;
+            padding-block-start: 0.5rem;
+            box-sizing: border-box;
+            button {
+                cursor: pointer;
+                color: ${p => p.theme.black};
+                background: transparent;
+                border: 0;
+                font-size: 1.5rem;
+                :hover {
+                    color: ${p => p.theme.blackHover};
+                }
+            }
         }
         & .user__detail-header-info {
             padding-inline-start: 1rem;
@@ -133,6 +147,7 @@ export const StyledUserDetail = styled.aside`
         }
     }
     @media ${p => p.theme.breakPointsDevice.tablet} {
-        inline-size: calc(100vw - 15rem);
+        inline-size: auto;
+        inset: 0rem;
     }
 `

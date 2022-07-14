@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react'
+import { IoCloseSharp } from 'react-icons/io5'
 import { StyledUserDetail } from './styles'
 import { ImgContainer } from '../../ImgContainer'
 
@@ -12,7 +13,7 @@ export const UserDetail = ({
     insetBlockEnd,
     userItemModalOpen,
     onKeyDownCloseModal,
-    handleOutsideClickClose,
+    handleClickClose,
 }) => {
     const refElement = useRef(null)
     useEffect(() => {
@@ -22,7 +23,7 @@ export const UserDetail = ({
         const handleOutsideClick = e => {
             if (refElement.current) {
                 const isOutside = !refElement.current.contains(e.target)
-                if (isOutside) handleOutsideClickClose()
+                if (isOutside) handleClickClose()
             }
         }
         document.addEventListener('click', handleOutsideClick, false)
@@ -47,7 +48,16 @@ export const UserDetail = ({
             onKeyDown={onKeyDownCloseModal}
         >
             <header>
-                <div className="user__detail-header-banner" />
+                <div className="user__detail-header-banner">
+                    <button
+                        type="button"
+                        aria-label="Close Modal"
+                        onClick={handleClickClose}
+                        tabIndex="0"
+                    >
+                        <IoCloseSharp />
+                    </button>
+                </div>
                 <div className="user__detail-header-info">
                     <div className="user__detail-wrapper-img">
                         <ImgContainer

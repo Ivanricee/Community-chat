@@ -45,7 +45,7 @@ export const UserRegister = ({
     }
     return (
         <StyledUserRegister message={message}>
-            <div className="register__wrapper">
+            <section className="register__wrapper" aria-label="register form">
                 <div className="register__message">
                     <small>{message}</small>
                     <button type="button" onClick={userCloseMessage}>
@@ -108,7 +108,7 @@ export const UserRegister = ({
                         <hr />
                     </main>
                 </div>
-            </div>
+            </section>
         </StyledUserRegister>
     )
 }

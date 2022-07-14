@@ -68,7 +68,7 @@ export const Room = ({ channelTitle, roomName, room, userLogout }) => {
             itemInlineSize={itemInlineSize}
         />
     ))
-    // para testear solo comentar useEffect
+
     useEffect(() => {
         let isVideoConnected = true
         const participantConnected = participant => {
