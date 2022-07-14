@@ -1,27 +1,26 @@
-import React, { useState, useCallback /* , useRef */ } from 'react'
+import React, { useState, useCallback } from 'react'
+import { useSelector } from 'react-redux'
 import { ImgContainer } from '../ImgContainer'
+import { Portal } from '../Portal'
+import { UserDetail } from './UserDetail'
 
-export const UserProfileItem = ({
-    className,
-    StyledUserDetail,
-    user,
-    userRoleName,
-    /* handleCloseDetailUser, */
-}) => {
-    const [insetBlockStart, setInsetBlockStart] = useState({
-        blockStart: 0,
+export const UserProfileItem = ({ className, user, userRoleName }) => {
+    const [insetBlockSizeState, setInsetBlockSizeState] = useState({
+        blockStart: null,
+        blockEnd: null,
         showDetail: false,
     })
-    const [closeUserDetail, setCloseUserDetail] = useState(null)
+    const userItemModal = useSelector(state => state.app.userItemModal)
+
     const handleUserItemClick = useCallback(
         e => {
-            const minBlockSize = 376
+            const itemBlockSize = 376
             const remSize = 16
             const itemTopDistance = e.target.getBoundingClientRect().top
-            const totalBlockSize = minBlockSize + itemTopDistance
+            const endItemBlockSize = itemBlockSize + itemTopDistance
             const { body } = document
             const html = document.documentElement
-            let detailData = {}
+
             const documentBlockSize = Math.max(
                 body.scrollHeight,
                 body.offsetHeight,
@@ -30,113 +29,85 @@ export const UserProfileItem = ({
                 html.offsetHeight
             )
 
-            if (totalBlockSize > documentBlockSize) {
-                detailData = { blockStart: 0, showDetail: true }
+            let blockStart = null
+            let blockEnd = null
+            // si el modal es mas largo que la pantalla
+            if (endItemBlockSize > documentBlockSize) {
+                blockEnd = 0
             } else {
-                detailData = {
-                    blockStart: itemTopDistance / remSize,
-                    showDetail: true,
-                }
+                blockStart = itemTopDistance / remSize
             }
-            setInsetBlockStart({
-                ...insetBlockStart,
-                ...detailData,
-            })
-            if (closeUserDetail) setCloseUserDetail(false)
+            setInsetBlockSizeState(prevInsetBlockSizeState => ({
+                ...prevInsetBlockSizeState,
+                blockEnd,
+                blockStart,
+                showDetail: !prevInsetBlockSizeState.showDetail,
+            }))
         },
 
-        [closeUserDetail, insetBlockStart]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        []
     )
 
-    const handleCloseDetailClick = e => {
-        e.stopPropagation()
-        // handleCloseDetailUser()
+    const keyDownUserItemClick = event => {
+        if (event.keyCode === 13) {
+            handleUserItemClick(event)
+        }
     }
-    return (
-        <div
-            role="button"
-            tabIndex={0}
-            className={className}
-            onKeyDown={e => {
-                e.stopPropagation()
-                handleUserItemClick(e)
-            }}
-            onFocus={e => {
-                e.stopPropagation()
-                handleUserItemClick(e)
-            }}
-        >
-            <StyledUserDetail
-                displayShow={insetBlockStart.showDetail}
-                insetBlockStart={insetBlockStart.blockStart}
-                role="button"
-                roleUser={user.role}
-                tabIndex={-1}
-                onFocus={e => {
-                    e.stopPropagation()
-                }}
-            >
-                <button onClick={handleCloseDetailClick} type="button">
-                    boton
-                </button>
-                <header>
-                    <div className="user__detail-header-banner" />
-                    <div className="user__detail-header-info">
-                        <div className="user__detail-wrapper-img">
-                            <ImgContainer
-                                img={user.img}
-                                greenBullet="2"
-                                content=""
-                                inlineSize={1.1}
-                                blockSize={1.1}
-                                borderColor="black"
-                            />
-                        </div>
-                        <h1>
-                            {user.name}
+    const onKeyDownCloseModal = event => {
+        if (event.keyCode === 27 && insetBlockSizeState.showDetail)
+            setInsetBlockSizeState(prevInsetBlockSizeState => ({
+                ...prevInsetBlockSizeState,
+                showDetail: false,
+            }))
+    }
+    const handleOutsideClickClose = () => {
+        if (insetBlockSizeState.showDetail)
+            setInsetBlockSizeState(prevInsetBlockSizeState => ({
+                ...prevInsetBlockSizeState,
+                showDetail: false,
+            }))
+    }
 
-                            <span>#{user.hash}</span>
-                        </h1>
-                        <hr />
-                    </div>
-                </header>
-                <section>
-                    <h2>ROL</h2>
-                    <div className="user__detail-roles">
-                        <span>{userRoleName}</span>
-                    </div>
-                    <h2>NOTA</h2>
-                    <div
-                        className="user__detail-note-wrapper"
-                        role="button"
-                        tabIndex="-1"
-                        htmlFor="iNotes"
-                    >
-                        <input
-                            id="iNotes"
-                            type="text"
-                            placeholder="Haz clic para añadir una nota"
-                        />
-                    </div>
-                </section>
-                <footer>
-                    <input
-                        type="text"
-                        placeholder={`Enviar mensaje a @${user.userName}`}
+    return (
+        <>
+            <div
+                role="button"
+                tabIndex={0}
+                className={className}
+                onClick={handleUserItemClick}
+                onKeyDown={keyDownUserItemClick}
+            >
+                <div className="user__image-wrapper" tabIndex="-1">
+                    <ImgContainer
+                        img={user.img}
+                        greenBullet="1"
+                        content=""
+                        inlineSize={0.58}
+                        blockSize={0.58}
+                        borderColor="black2"
                     />
-                </footer>
-            </StyledUserDetail>
-            <div className="user__image-wrapper" tabIndex="-1">
-                <ImgContainer
-                    img={user.img}
-                    greenBullet="1"
-                    content=""
-                    inlineSize={0.58}
-                    blockSize={0.58}
-                    borderColor="black2"
-                />
+                </div>
+                <span>{user.name}</span>
             </div>
-            <span>{user.name}</span>
-        </div>
+            {insetBlockSizeState.showDetail && (
+                <Portal>
+                    <UserDetail
+                        tabIndex={-1}
+                        img={user.img}
+                        userName={user.name}
+                        userHash={user.hash}
+                        userRoleName={userRoleName}
+                        roleUser={user.role}
+                        displayShow={insetBlockSizeState.showDetail}
+                        userItemModalOpen={userItemModal}
+                        insetBlockStart={insetBlockSizeState.blockStart}
+                        insetBlockEnd={insetBlockSizeState.blockEnd}
+                        onKeyDownCloseModal={onKeyDownCloseModal}
+                        handleOutsideClickClose={handleOutsideClickClose}
+                    />
+                </Portal>
+            )}
+        </>
     )
 }

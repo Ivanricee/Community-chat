@@ -137,7 +137,6 @@ export const StyledUserInvite = styled.section`
             flex: 1;
           }
           button {
-            //${p => console.log('clipbboard ', p.clipbboard)}
             color: ${p => p.theme.white};
             font: ${p => p.theme.button};
             block-size: 1.5rem;

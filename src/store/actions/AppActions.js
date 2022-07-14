@@ -19,3 +19,7 @@ export const setChnlCmntsToggleMenu = payload => ({
   type: '@header-comments/showFullLength',
   payload,
 })
+export const setUserItemModal = payload => ({
+  type: '@user/itemModal',
+  payload,
+})

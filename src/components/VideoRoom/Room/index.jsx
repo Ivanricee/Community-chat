@@ -45,7 +45,6 @@ export const Room = ({ channelTitle, roomName, room, userLogout }) => {
             track.track.disable()
             setIsMPhoneOn(false)
         })
-        // console.log('room.localParticipant ', room.localParticipant)
     }
     const videoDisconnect = (roomDisconnect, unmount = false) => {
         const message = 'Hasta la proxima'

@@ -3,6 +3,7 @@ const INITIAL_STATE = {
   server: '',
   channel: '',
   userMenu: true,
+  userItemModal: false,
   showChnlCmntsToggleMenu: false,
 }
 
@@ -17,6 +18,8 @@ export const appReducer = (state = INITIAL_STATE, action) => {
       return { ...state, channel: action.payload }
     case '@user/userMenu':
       return { ...state, userMenu: action.payload }
+    case '@user/itemModal':
+      return { ...state, userItemModal: action.payload }
     case '@header-comments/showFullLength':
       return { ...state, showChnlCmntsToggleMenu: action.payload }
     case '@server/name':

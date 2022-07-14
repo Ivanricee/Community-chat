@@ -69,7 +69,7 @@ export const UserInvite = ({
             >
                 <aside
                     tabIndex="-1"
-                    aria-label="dialog "
+                    aria-label="dialog"
                     aria-modal="true"
                     role={role}
                     ref={modalBox}
