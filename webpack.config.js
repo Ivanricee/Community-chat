@@ -3,6 +3,8 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
+const CompressionPlugin = require('compression-webpack-plugin')
+const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer')
 
 module.exports = (env, argv) => {
   const { mode } = argv
@@ -12,7 +14,7 @@ module.exports = (env, argv) => {
     output: {
       path: path.resolve(__dirname, 'dist'),
       publicPath: '/',
-      filename: isProduction ? '[name].[contenthash].js' : 'main.js',
+      filename: isProduction ? '[name].[contenthash].js' : '[main].js',
       clean: true,
     },
     resolve: {
@@ -64,6 +66,8 @@ module.exports = (env, argv) => {
       new Dotenv({
         systemvars: true,
       }),
+      new CompressionPlugin(),
+      new BundleAnalyzerPlugin(),
     ],
     devServer: {
       open: true,
@@ -76,6 +80,14 @@ module.exports = (env, argv) => {
       compress: true,
       historyApiFallback: true,
       port: 3100,
+    },
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          defaultVendors: false,
+        },
+      },
     },
   }
 }

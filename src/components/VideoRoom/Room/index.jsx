@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { IoMdVideocam } from 'react-icons/io'
 import { MdScreenShare } from 'react-icons/md'
 import { FaUserPlus, FaMicrophoneSlash, FaMicrophone } from 'react-icons/fa'
@@ -9,10 +9,12 @@ import { FiMaximize, FiMinimize } from 'react-icons/fi'
 import Participant from './Participant'
 import { StyledRoom } from './styles'
 import { useFullscreen } from '../../../hooks/useFullscreen'
-import { UserInvite } from '../UserInvite'
 import { useVideoGrid } from '../../../hooks/useVideoGrid'
+import { Loader } from '../../Loader'
 
-export const Room = ({ channelTitle, roomName, room, userLogout }) => {
+const UserInvite = React.lazy(() => import('../UserInvite'))
+
+const Room = ({ channelTitle, roomName, room, userLogout }) => {
     const [elementFullsc, isFullscreen, setFullscreen] = useFullscreen()
     const [openUserInvite, setOpenUserInvite] = useState(false)
     const [isMPhoneOn, setIsMPhoneOn] = useState(true)
@@ -171,14 +173,24 @@ export const Room = ({ channelTitle, roomName, room, userLogout }) => {
                     )}
                 </div>
                 {openUserInvite && (
-                    <UserInvite
-                        clickUserInvite={clickUserInvite}
-                        keyDownUserInvite={keyDownUserInvite}
-                        channelTitle={channelTitle}
-                        role="dialog"
-                    />
+                    <Suspense
+                        fallback={
+                            <Loader
+                                justifyContent="center"
+                                alignItems="center"
+                            />
+                        }
+                    >
+                        <UserInvite
+                            clickUserInvite={clickUserInvite}
+                            keyDownUserInvite={keyDownUserInvite}
+                            channelTitle={channelTitle}
+                            role="dialog"
+                        />
+                    </Suspense>
                 )}
             </div>
         </StyledRoom>
     )
 }
+export default Room

@@ -4,22 +4,14 @@ import { BsSearch, BsFillPinAngleFill, BsFillBellFill } from 'react-icons/bs'
 import { FaHashtag, FaUserFriends } from 'react-icons/fa'
 import { CgInbox } from 'react-icons/cg'
 import { IoMdHelpCircle } from 'react-icons/io'
-import {
-    setUserMenu,
-    // setShowHeaderAndComments,
-} from '../../store/actions/AppActions'
-/*
- * headerResponsive, userResponsive, desk
- */
-export const HeaderSearchHelp = (/* { headerItems } */) => {
-    // headerItems.hash
+import { setUserMenu } from '../../store/actions/AppActions'
+
+export const HeaderSearchHelp = () => {
     const dispatch = useDispatch()
-    // const storedChannelTitle = useSelector(state => state.app.channel)
+
     const storedUserMenu = useSelector(state => state.app.userMenu)
     const refSearch = useRef([])
-    // const userMobileOrDesk = headerItems === 'headerDesk'
 
-    // console.log('comp search', headerItems)
     return (
         <>
             <div className="header__icons">

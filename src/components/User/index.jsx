@@ -2,17 +2,17 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { StyledUser, StyledUserProfileItem, StyledUserList } from './styles'
 import { useUsersInRoles } from '../../graphql/custom-hook'
+import { Loader } from '../Loader'
 
 const User = ({ server }) => {
     const { loading, data, error } = useUsersInRoles(server)
     const storedUserMenu = useSelector(state => state.app.userMenu)
 
-    // setUserItemModal
     if (error) {
         return <h1>Sin conexión.</h1>
     }
     return loading ? (
-        <h2>Loading users.</h2>
+        <Loader justifyContent="center" alignItems="center" />
     ) : (
         <StyledUser showUserMenu={storedUserMenu}>
             <StyledUserList>

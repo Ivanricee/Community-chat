@@ -183,4 +183,11 @@ export const StyledUserRegister = styled.section`
       align-items: center;
     }
   }
+  @media ${p => p.theme.breakPointsDevice.mobileL} {
+    .register__wrapper {
+      & > div {
+        inline-size: 100vw;
+      }
+    }
+  }
 `

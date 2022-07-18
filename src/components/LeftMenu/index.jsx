@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { Loader } from '../Loader'
 import {
     StyledLeftMenu,
     StyledNavlinkServerItem,
@@ -26,7 +27,7 @@ const LeftMenu = () => {
     return (
         <StyledLeftMenu aria-label="Server" storedUserMenu={storedUserMenu}>
             {loading ? (
-                <p>Loading...</p>
+                <Loader justifyContent="center" alignItems="center" />
             ) : (
                 <ul>
                     {data.servers.map(item => {

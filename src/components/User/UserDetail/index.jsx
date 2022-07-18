@@ -3,7 +3,7 @@ import { IoCloseSharp } from 'react-icons/io5'
 import { StyledUserDetail } from './styles'
 import { ImgContainer } from '../../ImgContainer'
 
-export const UserDetail = ({
+const UserDetail = ({
     img,
     userName,
     userHash,
@@ -104,3 +104,4 @@ export const UserDetail = ({
         </StyledUserDetail>
     )
 }
+export default UserDetail

@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useRef, useState } from 'react'
 import { BsFillReplyFill, BsThreeDots, BsFillImageFill } from 'react-icons/bs'
+import { Loader } from '../Loader'
 import {
     StyledComment,
     StyledMediaImg,
@@ -85,7 +86,7 @@ const styleTextMarks = (texto, data, replyClass) => {
         return texto
     }
 
-    return 'loading comment..'
+    return <Loader justifyContent="start" alignItems="center" />
 }
 const dateFormatted = (date, type) => {
     let options = {}

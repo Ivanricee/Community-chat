@@ -1,13 +1,12 @@
-/* eslint-disable no-shadow */
-
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { IoMdMenu } from 'react-icons/io'
 import { HeaderSearchHelp } from '../HeaderSearchHelp'
 import { setChnlCmntsToggleMenu } from '../../store/actions/AppActions'
 import { StyledHeader, StyledHeaderSearchHelp } from './styles'
+import { Loader } from '../Loader'
 
-export const Header = () => {
+const Header = () => {
     const dispatch = useDispatch()
     const storedChannelTitle = useSelector(state => state.app.channel)
     const storedUserMenu = useSelector(state => state.app.userMenu)
@@ -29,7 +28,11 @@ export const Header = () => {
                         )
                     }
                 />
-                {storedChannelTitle ? `# ${storedChannelTitle}` : 'Loading...'}
+                {storedChannelTitle ? (
+                    `# ${storedChannelTitle}`
+                ) : (
+                    <Loader justifyContent="start" alignItems="center" />
+                )}
             </div>
             <StyledHeaderSearchHelp>
                 <HeaderSearchHelp
@@ -41,3 +44,4 @@ export const Header = () => {
         </StyledHeader>
     )
 }
+export default Header

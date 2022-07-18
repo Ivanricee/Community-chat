@@ -8,7 +8,7 @@ import { Portal } from '../../Portal'
 import { ImgContainer } from '../../ImgContainer'
 import { debounce } from '../../../utils'
 
-export const UserInvite = ({
+const UserInvite = ({
     channelTitle,
     clickUserInvite,
     role,
@@ -146,3 +146,4 @@ export const UserInvite = ({
         </Portal>
     )
 }
+export default UserInvite

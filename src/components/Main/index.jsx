@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, Suspense } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Portal } from '../Portal'
+import { Loader } from '../Loader'
 import { useChannelComment } from '../../graphql/custom-hook'
 import {
     setChnlCmntsToggleMenu,
@@ -13,8 +14,9 @@ import {
     StyledInputWrapper,
     StyledIntroduction,
 } from './styles'
-import { VideoRoom } from '../VideoRoom'
 import { Comment } from '../Comment'
+
+const VideoRoom = React.lazy(() => import('../VideoRoom'))
 
 const handleEmojiHover = (arrayEmojis, urlEmoji) => {
     let randomEmoji = Math.floor(Math.random() * arrayEmojis.length)
@@ -74,7 +76,8 @@ const Main = ({ params }) => {
         setArrayEmojis(imgEmoji)
     }, [])
 
-    if (!channel && !server && !data) return <div>Loading channel</div>
+    if (!channel && !server && !data)
+        return <Loader justifyContent="center" alignItems="center" />
     let AccDate = 0
     return (
         <StyledMain
@@ -96,9 +99,20 @@ const Main = ({ params }) => {
                     // eslint-disable-next-line react/jsx-no-useless-fragment
                     <>
                         {data.findComment.title === 'video/audio' ? (
-                            <Portal>
-                                <VideoRoom channelTitle={storedChannelTitle} />
-                            </Portal>
+                            <Suspense
+                                fallback={
+                                    <Loader
+                                        justifyContent="center"
+                                        alignItems="center"
+                                    />
+                                }
+                            >
+                                <Portal>
+                                    <VideoRoom
+                                        channelTitle={storedChannelTitle}
+                                    />
+                                </Portal>
+                            </Suspense>
                         ) : (
                             <div>
                                 <StyledIntroduction

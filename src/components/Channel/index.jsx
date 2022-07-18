@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { Loader } from '../Loader'
 import {
     setChnlCmntsToggleMenu,
     getChannel,
@@ -73,7 +74,11 @@ const Channel = () => {
     return (
         <StyledChannel aria-label="channel" storedUserMenu={storedUserMenu}>
             <StyledHeader>
-                {loading ? 'Loading' : data.findServer.title}
+                {loading ? (
+                    <Loader justifyContent="start" alignItems="center" />
+                ) : (
+                    data.findServer.title
+                )}
             </StyledHeader>
             <StyledChannelDetails
                 aria-label="channel-details"
@@ -81,7 +86,7 @@ const Channel = () => {
                 ref={channelDetailsRef}
             >
                 {loading ? (
-                    <p>Loading...</p>
+                    <Loader justifyContent="center" alignItems="center" />
                 ) : (
                     <div>
                         {data.findServer.channels.map(detail => (

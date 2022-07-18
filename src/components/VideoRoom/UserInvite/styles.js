@@ -189,4 +189,9 @@ export const StyledUserInvite = styled.section`
       color: ${p => p.theme.blue};
     }
   }
+  @media ${p => p.theme.breakPointsDevice.mobileL} {
+    & > aside {
+      inline-size: 100vw;
+    }
+  }
 `

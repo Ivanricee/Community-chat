@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { GiSpeaker } from 'react-icons/gi'
 import { BsSearch } from 'react-icons/bs'
-import { ThreeDots } from 'react-loader-spinner'
+import { Loader } from '../Loader'
 import { StyledUserRegister } from './styles'
 import { getTwilioToken } from '../../utils'
 
@@ -63,11 +63,9 @@ export const UserRegister = ({
                         </div>
                         {isRoomLoading ? (
                             <div className="register_loading-room">
-                                <ThreeDots
-                                    color="#dfe3e0"
-                                    height={60}
-                                    width={70}
-                                    ariaLabel="Loading Room"
+                                <Loader
+                                    justifyContent="center"
+                                    alignItems="center"
                                 />
                             </div>
                         ) : (

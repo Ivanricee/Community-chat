@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 
 import { UserRegister } from './UserRegister'
 import { StyledVideoRoom } from './styles'
-import { Room } from './Room'
+import { Loader } from '../Loader'
 import { useVideoConnect } from '../../hooks/useVideoConnect'
+// import  Room  from './Room'
+const Room = React.lazy(() => import('./Room'))
 
-export const VideoRoom = ({ channelTitle }) => {
+const VideoRoom = ({ channelTitle }) => {
     const [videoOptions, setVideoOptions] = useState({
         token: null,
         identity: '',
@@ -55,15 +57,22 @@ export const VideoRoom = ({ channelTitle }) => {
                     userCloseMessage={userCloseMessage}
                 />
             ) : (
-                <Room
-                    channelTitle={channelTitle}
-                    token={videoOptions.token}
-                    roomName={videoOptions.room}
-                    room={room}
-                    // eslint-disable-next-line react/jsx-no-bind
-                    userLogout={userLogout}
-                />
+                <Suspense
+                    fallback={
+                        <Loader justifyContent="center" alignItems="center" />
+                    }
+                >
+                    <Room
+                        channelTitle={channelTitle}
+                        token={videoOptions.token}
+                        roomName={videoOptions.room}
+                        room={room}
+                        // eslint-disable-next-line react/jsx-no-bind
+                        userLogout={userLogout}
+                    />
+                </Suspense>
             )}
         </StyledVideoRoom>
     )
 }
+export default VideoRoom

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Loader } from '../Loader'
 
 const styleTextMarks = (texto, dataUsers) => {
     const regex = /@.[a-zA-Z\u00C0-\u00FF\s]{1,32}/gi
@@ -45,7 +46,7 @@ const styleTextMarks = (texto, dataUsers) => {
         return texto
     }
 
-    return 'loading comment..'
+    return <Loader justifyContent="start" alignItems="center" />
 }
 export const Text = ({ texto, dataUsers, nombre }) => {
     return (

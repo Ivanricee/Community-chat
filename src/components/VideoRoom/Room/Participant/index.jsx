@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable consistent-return */
-/* eslint-disable no-shadow */
+/* eslint-disable jsx-a11y/media-has-caption */
 import React, { useState, useEffect, useRef } from 'react'
-import { FaUserPlus, FaMicrophoneSlash, FaMicrophone } from 'react-icons/fa'
+import { FaMicrophoneSlash, FaMicrophone } from 'react-icons/fa'
 import { StyledParticipant } from './styles'
 
 const Participant = ({
@@ -36,9 +34,9 @@ const Participant = ({
     useEffect(() => {
         const trackSubscribed = track => {
             if (track.kind === 'video') {
-                setVideoTracks(videoTracks => [...videoTracks, track])
+                setVideoTracks(prevVideoTracks => [...prevVideoTracks, track])
             } else {
-                setAudioTracks(audioTracks => [...audioTracks, track])
+                setAudioTracks(prevAudioTracks => [...prevAudioTracks, track])
                 track.on('disabled', () => {
                     if (isMPhoneOn === null) setIsAudioRemote(false)
                 })
@@ -50,12 +48,12 @@ const Participant = ({
 
         const trackUnsubscribed = track => {
             if (track.kind === 'video') {
-                setVideoTracks(videoTracks =>
-                    videoTracks.filter(v => v !== track)
+                setVideoTracks(prevVideoTracks =>
+                    prevVideoTracks.filter(v => v !== track)
                 )
             } else {
-                setAudioTracks(audioTracks =>
-                    audioTracks.filter(a => a !== track)
+                setAudioTracks(prevAudioTracks =>
+                    prevAudioTracks.filter(a => a !== track)
                 )
             }
         }
@@ -83,15 +81,14 @@ const Participant = ({
         }
     }, [videoTracks])
     useEffect(() => {
-        const audioTrack = audioTracks[0]
+        const audioTrackLoc = audioTracks[0]
 
-        if (audioTrack) {
-            audioTrack.attach(audioRef.current)
+        if (audioTrackLoc) {
+            audioTrackLoc.attach(audioRef.current)
             return () => {
-                audioTrack.detach()
+                audioTrackLoc.detach()
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [audioTracks])
     return (
         <StyledParticipant itemInlineSize={itemInlineSize}>
@@ -115,7 +112,6 @@ const Participant = ({
                         </div>
                         <div>
                             {audioTrack() ? (
-                                // audioTracks[0]?.isEnabled
                                 <FaMicrophone />
                             ) : (
                                 <FaMicrophoneSlash className="isActive" />

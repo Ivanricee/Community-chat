@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { ImgContainer } from '../ImgContainer'
 import { Portal } from '../Portal'
-import { UserDetail } from './UserDetail'
+import UserDetail from './UserDetail'
 
 export const UserProfileItem = ({ className, user, userRoleName }) => {
     const [insetBlockSizeState, setInsetBlockSizeState] = useState({
