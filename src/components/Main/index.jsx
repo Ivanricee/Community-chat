@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, Suspense } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Helmet } from 'react-helmet'
 import { Portal } from '../Portal'
 import { Loader } from '../Loader'
 import { useChannelComment } from '../../graphql/custom-hook'
@@ -29,6 +30,7 @@ const Main = ({ params }) => {
     const { server, channel } = params
     const dispatch = useDispatch()
     const storedChannelTitle = useSelector(state => state.app.channel)
+    const storedServerTitle = useSelector(state => state.app.server)
     const storedUserMenu = useSelector(state => state.app.userMenu)
     const showChnlCmntsToggleMenu = useSelector(
         state => state.app.showChnlCmntsToggleMenu
@@ -84,6 +86,15 @@ const Main = ({ params }) => {
             showChnlCmntsToggleMenu={showChnlCmntsToggleMenu}
             storedUserMenu={storedUserMenu}
         >
+            <Helmet>
+                <title>
+                    {storedServerTitle}, {storedChannelTitle}{' '}
+                </title>
+                <meta
+                    name="description"
+                    content={`${(storedServerTitle, storedChannelTitle)}`}
+                />
+            </Helmet>
             <div
                 role="button"
                 aria-label="Enable comments"

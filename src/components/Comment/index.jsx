@@ -5,7 +5,6 @@ import { Loader } from '../Loader'
 import {
     StyledComment,
     StyledMediaImg,
-    StyledDialogImg,
     StyledUrl,
     StyledReact,
     StyledDate,
@@ -13,6 +12,7 @@ import {
 } from './style'
 import { ImgContainer } from '../ImgContainer'
 import { useUsers } from '../../graphql/custom-hook'
+import ImageComment from './ImageComment'
 
 const handleImgDimension = (width, height) => {
     let isInline = true
@@ -122,6 +122,13 @@ export const Comment = ({
     })
 
     const { data } = useUsers()
+    const handleClickClose = () => {
+        setShowDialogImg(prevShowDialogImg => ({
+            ...prevShowDialogImg,
+            isOpen: false,
+        }))
+    }
+
     return (
         <>
             {showLine && (
@@ -225,19 +232,13 @@ export const Comment = ({
                     </div>
                 </div>
                 {showDialogImg.isOpen && (
-                    <StyledDialogImg
-                        onClick={() =>
-                            setShowDialogImg({
-                                ...showDialogImg,
-                                isOpen: false,
-                            })
-                        }
+                    <ImageComment
                         isInline={showDialogImg.isInline}
                         inline={showDialogImg.widthSize}
                         block={showDialogImg.heightSize}
-                    >
-                        {imgRef.current !== null && <img src={img} alt="" />}
-                    </StyledDialogImg>
+                        img={img}
+                        handleClickClose={handleClickClose}
+                    />
                 )}
             </StyledComment>
         </>

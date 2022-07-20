@@ -1,7 +1,8 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { IoCloseSharp } from 'react-icons/io5'
 import { StyledUserDetail } from './styles'
 import { ImgContainer } from '../../ImgContainer'
+import { useCloseOnClickOutside } from '../../../hooks/useCloseOnClickOutside'
 
 const UserDetail = ({
     img,
@@ -15,28 +16,18 @@ const UserDetail = ({
     onKeyDownCloseModal,
     handleClickClose,
 }) => {
-    const refElement = useRef(null)
+    const [refClickElement, isOutside] = useCloseOnClickOutside()
     useEffect(() => {
-        refElement.current.focus()
-    }, [])
-    useEffect(() => {
-        const handleOutsideClick = e => {
-            if (refElement.current) {
-                const isOutside = !refElement.current.contains(e.target)
-                if (isOutside) handleClickClose()
-            }
-        }
-        document.addEventListener('click', handleOutsideClick, false)
-        return () => {
-            document.removeEventListener('click', handleOutsideClick)
-        }
+        refClickElement.current.focus()
+    }, [refClickElement])
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    useEffect(() => {
+        if (isOutside) handleClickClose()
+    }, [handleClickClose, isOutside])
 
     return (
         <StyledUserDetail
-            ref={refElement}
+            ref={refClickElement}
             role="dialog"
             tabIndex={-1}
             aria-label="Info user"

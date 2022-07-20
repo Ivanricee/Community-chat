@@ -4,7 +4,7 @@ import { UserRegister } from './UserRegister'
 import { StyledVideoRoom } from './styles'
 import { Loader } from '../Loader'
 import { useVideoConnect } from '../../hooks/useVideoConnect'
-// import  Room  from './Room'
+
 const Room = React.lazy(() => import('./Room'))
 
 const VideoRoom = ({ channelTitle }) => {
