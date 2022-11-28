@@ -14,8 +14,12 @@ export const Home = () => {
     return (
         <>
             <Helmet>
-                <title> Home </title>
-                <meta name="description" content="Home de discord" />
+                <title> Discord Home </title>
+                <meta
+                    name="description"
+                    content="Discord home"
+                    data-react-helmet="true"
+                />
             </Helmet>
             <Outlet />
             <Suspense

@@ -88,11 +88,14 @@ const Main = ({ params }) => {
         >
             <Helmet>
                 <title>
-                    {storedServerTitle}, {storedChannelTitle}{' '}
+                    Discord {storedServerTitle}, {storedChannelTitle}{' '}
                 </title>
                 <meta
                     name="description"
-                    content={`${(storedServerTitle, storedChannelTitle)}`}
+                    content={`Discord ${
+                        (storedServerTitle, storedChannelTitle)
+                    }`}
+                    data-react-helmet="true"
                 />
             </Helmet>
             <div
