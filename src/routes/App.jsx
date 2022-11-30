@@ -14,15 +14,13 @@ import { NotFound } from '../pages/NotFound'
 import { Layout } from '../components/Layout'
 // import Channel from '../components/Channel'
 const Channel = React.lazy(() => import('../components/Channel'))
-
 const client = new ApolloClient({
     connectToDevTools: true,
     cache: new InMemoryCache(),
     link: new HttpLink({
-        uri: process.env.URL_API,
+        uri: import.meta.env.VITE_APOLO_API_URL,
     }),
 })
-
 export const App = () => {
     return (
         <ApolloProvider client={client}>

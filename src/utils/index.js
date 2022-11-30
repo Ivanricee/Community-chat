@@ -185,7 +185,7 @@ export const deactivateFullscreen = () => {
  */
 
 export const getTwilioToken = async (identity, room) => {
-  const data = await fetch(process.env.REACT_TWILIO_VIDEO, {
+  const data = await fetch(import.meta.env.VITE_TWILIO_VIDEO, {
     method: 'POST',
     body: JSON.stringify({
       identity,
