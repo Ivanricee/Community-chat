@@ -58,7 +58,9 @@ typings/
 
 # dotenv environment variables file
 .env
-
+.env.development
+.env.production
+.en
 # IDE
 .idea/*
 *.iml
