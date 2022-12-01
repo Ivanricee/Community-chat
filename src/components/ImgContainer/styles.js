@@ -13,14 +13,15 @@ export const StyledImgContainer = styled.div`
       p.greenBullet === '1'
         ? props => props.theme.green
         : props => props.theme.red};
+
     border-color: ${p =>
       p.borderColor === 'black'
         ? props => props.theme.black
         : props => props.theme.black2};
-    ${p => p.greenBullet === '1' && `inset-block-start: 1.21rem;`}
-    ${p => p.greenBullet === '1' && `inset-inline-start: 1.23rem;`}
-    ${p => p.greenBullet === '2' && `inset-block-start: 3.3rem;`}
-    ${p => p.greenBullet === '2' && `inset-inline-start: 3.3rem;`}
+    ${p => p.greenBullet === '1' && 'inset-block-start: 1.21rem;'}
+    ${p => p.greenBullet === '1' && 'inset-inline-start: 1.23rem;'}
+    ${p => p.greenBullet === '2' && 'inset-block-start: 3.3rem;'}
+    ${p => p.greenBullet === '2' && 'inset-inline-start: 3.3rem;'}
     content: ${p => `"${p.content}"`};
     inline-size: ${p => p.inlineSize}rem;
     block-size: ${p => p.blockSize}rem;

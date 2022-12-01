@@ -3,7 +3,7 @@ import { UserProfileItem } from './UserProfileItem'
 
 export const StyledUser = styled.aside`
   grid-area: user;
-  ${p => !p.showUserMenu && `display:none;`}
+  ${p => !p.showUserMenu && 'display:none;'}
   background-color: ${p => p.theme.black1};
   overflow: auto;
   scrollbar-width: thin; /* Firefox */
@@ -26,7 +26,7 @@ export const StyledUser = styled.aside`
   @media ${p => p.theme.breakPointsDevice.tablet} {
     display: block;
     z-index: 0;
-    ${p => p.showUserMenu && `z-index: 2;`}
+    ${p => p.showUserMenu && 'z-index: 2;'}
   }
 `
 export const StyledUserHeader = styled.header`

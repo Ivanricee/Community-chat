@@ -22,7 +22,7 @@ body{
   grid-template-rows:  3rem 1fr ;
   grid-template-areas: "left-menu channel top-menu top-menu"
                        "left-menu channel   main     ${p =>
-                         p.showUserMenu ? `user` : `main`}"
+                         p.showUserMenu ? 'user' : 'main'}"
 
 }
 
@@ -42,7 +42,7 @@ body{
     grid-template-columns: 4.5rem 15rem minmax(0rem, calc(100vw - 34.5rem)) 15rem;
      ${p =>
        p.showUserMenu &&
-       `grid-template-areas:"top-menu  top-menu top-menu   user" "main main   main     user"`}
+       'grid-template-areas:"top-menu  top-menu top-menu   user" "main main   main     user"'}
   }
 }
 

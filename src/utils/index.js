@@ -17,7 +17,12 @@ export const setBullet = contenido => {
     translateX = contenido.length * 0.5 - 0.5
     display = ''
   }
-  return { content, inlineSize, translateX, display }
+  return {
+    content,
+    inlineSize,
+    translateX,
+    display,
+  }
 }
 // Debounce
 export const debounce = (callback, delay = 100) => {
@@ -133,7 +138,12 @@ export const renderGrid = (totalItems, containerInline, containerBlock) => {
           const containerItemBlockSize = containerBlock / rows
           preItemInlineSize = getAspectRatioWidth(containerItemBlockSize)
         }
-        data = { ...data, itemInlineSize: preItemInlineSize, columns, rows }
+        data = {
+          ...data,
+          itemInlineSize: preItemInlineSize,
+          columns,
+          rows,
+        }
       }
       break
     }
@@ -144,14 +154,11 @@ export const renderGrid = (totalItems, containerInline, containerBlock) => {
 /*
  * Fullscreen API support
  */
-export const detectFullScreen = () => {
-  return (
-    document.fullscreenElement ||
-    document.webkitFullscreenElement ||
-    document.mozFullScreenElement ||
-    document.msFullscreenElement
-  )
-}
+export const detectFullScreen = () =>
+  document.fullscreenElement ||
+  document.webkitFullscreenElement ||
+  document.mozFullScreenElement ||
+  document.msFullscreenElement
 export const getFullscreen = element => {
   if (element.requestFullscreen) {
     return element.requestFullscreen() // W3C spec

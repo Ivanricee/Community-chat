@@ -61,7 +61,7 @@ export const StyledChannelDetails = styled.section`
   overflow-x: overlay;
   block-size: calc(100vh - 6rem);
   & ${StyledDetails} {
-    padding-inline-end: ${p => (p.paddingLeft === 0 ? `0.55rem` : '0.1rem')};
+    padding-inline-end: ${p => (p.paddingLeft === 0 ? '0.55rem' : '0.1rem')};
     transition: 0.15s padding-inline-end ease-out;
   }
 `
@@ -75,7 +75,7 @@ export const StyledLink = styled.a`
   margin-block-end: 0.08rem;
   display: flex;
   position: relative;
-  color: ${p => (p.color_active ? p.theme.white : `inherit`)};
+  color: ${p => (p.color_active ? p.theme.white : 'inherit')};
 
   &:hover {
     color: ${p => p.theme.white};

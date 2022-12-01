@@ -9,12 +9,8 @@ import {
   FIND_USERS_AND_USERS_IN_ROLES,
 } from './queries'
 
-export const useServers = () => {
-  return useQuery(SERVERS)
-}
-export const useUsers = () => {
-  return useQuery(USERS)
-}
+export const useServers = () => useQuery(SERVERS)
+export const useUsers = () => useQuery(USERS)
 export const useServer = (idServer, clientCache) => {
   if (clientCache) {
     const serverCached = clientCache.readQuery({
