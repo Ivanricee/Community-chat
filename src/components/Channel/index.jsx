@@ -1,12 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { Loader } from '../Loader'
-import {
-  setChnlCmntsToggleMenu,
-  getChannel,
-  getServer,
-} from '../../store/actions/AppActions'
+import { setChannel } from '../../store/actions/AppActions'
+import { useToggleChannel } from '../../hooks/useToggleChannel'
 import {
   StyledChannel,
   StyledHeader,
@@ -17,62 +14,62 @@ import {
 } from './styles'
 import { setBullet } from '../../utils'
 import { ImgContainer } from '../ImgContainer'
-
 import { useServer } from '../../graphql/custom-hook'
 
 const Channel = () => {
-  const params = useParams()
-  const showHeaderAndComments = useSelector(
-    state => state.app.showHeaderAndComments
-  )
-  const storedUserMenu = useSelector(state => state.app.userMenu)
+  const { server, channel } = useParams()
+  const [showChannel, setShowChannel] = useToggleChannel()
+  const { data, error, loading } = useServer(server)
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { server, channel } = params
 
   const channelDetailsRef = useRef(null)
+  const channelActive = useRef('')
   const [detailListPadding, setDetailListPadding] = useState(0)
-  let channelTitle = ''
-  let serverName = ''
 
-  // graphql hook
-  const { data, error, loading } = useServer(server)
-  // onToggle datail, arregla la longituz del element
-  const handleResize = () => {
+  // onToggle datail, fix width when scroll is overflowing
+  const handleChnnlWidth = () => {
     const { scrollHeight, clientHeight } = channelDetailsRef.current
-    if (scrollHeight > clientHeight) {
-      setDetailListPadding(1)
-    } else {
-      setDetailListPadding(0)
-    }
+    if (scrollHeight > clientHeight) return setDetailListPadding(1)
+    return setDetailListPadding(0)
   }
-  // setbullet
-  const greenBullet = setBullet('1')
+  const handleNewChannel = titleChannel => {
+    // if mobile, hide channel/header and set new channel
+    setShowChannel(false)
+    dispatch(setChannel(titleChannel))
+  }
+  const channelList = detail => {
+    const channelListRender = detail.summary.map(channelItem => {
+      const redBullet = setBullet(channelItem.notification)
+      const hasNotif = channelItem.notification !== '0' ? 'notification' : ''
 
-  // navigate on click
-  const handleNavigation = (e, idChannel, titleChannel, nameServer) => {
-    e.preventDefault()
-    // enable Comments and header
-    dispatch(setChnlCmntsToggleMenu(!showHeaderAndComments))
-    // then display comments
-    dispatch(getChannel(titleChannel))
-    dispatch(getServer(nameServer))
-    navigate(`/${server}/${idChannel}`)
+      if (channelItem._id === channel) channelActive.current = channelItem.title
+
+      return (
+        <li key={channelItem._id}>
+          <StyledLink
+            to={channelItem.to}
+            className={hasNotif}
+            inlinesize={redBullet.inlineSize}
+            onClick={() => handleNewChannel(channelItem.title)}
+            color_active={channelItem.notification !== '0' ? 'isWhite' : null}
+          >
+            <span>{channelItem.title}</span>
+            <span>{redBullet.content}</span>
+          </StyledLink>
+        </li>
+      )
+    })
+    return channelListRender
   }
-  // Navigate on refresh
+
   useEffect(() => {
-    // if (channel === undefined) navigate('1')
-    if (channelTitle) {
-      dispatch(getChannel(channelTitle))
-      dispatch(getServer(serverName))
-    }
+    if (channelActive.current) dispatch(setChannel(channelActive.current))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading])
 
   if (error) return <span>Error de conexión</span>
-
   return (
-    <StyledChannel aria-label="channel" storedUserMenu={storedUserMenu}>
+    <StyledChannel aria-label="channel" showChannel={showChannel}>
       <StyledHeader>
         {loading ? (
           <Loader justifyContent="start" alignItems="center" />
@@ -88,52 +85,16 @@ const Channel = () => {
         {loading ? (
           <Loader justifyContent="center" alignItems="center" />
         ) : (
-          <div>
+          <>
             {data.findServer.channels.map(detail => (
-              <StyledDetails open key={detail._id} onToggle={handleResize}>
+              <StyledDetails open key={detail._id} onToggle={handleChnnlWidth}>
                 <summary id="summary">{detail.title}</summary>
                 <nav aria-label={detail.title}>
-                  <ul>
-                    {detail.summary.map(channelItem => {
-                      const redBullet = setBullet(channelItem.notification)
-                      const classNotification =
-                        channelItem.notification !== '0' ? 'notification' : ''
-                      let classActive = ''
-                      if (channelItem._id === channel) {
-                        classActive = 'active'
-                        channelTitle = channelItem.title
-                        serverName = data.findServer.title
-                      }
-                      const className = `${classNotification} ${classActive}`
-                      return (
-                        <li key={channelItem._id}>
-                          <StyledLink
-                            href={channelItem.to}
-                            className={className}
-                            inlinesize={redBullet.inlineSize}
-                            onClick={e =>
-                              handleNavigation(
-                                e,
-                                channelItem._id,
-                                channelItem.title,
-                                data.findServer.title
-                              )
-                            }
-                            color_active={
-                              channelItem.notification !== '0' ? true : ''
-                            }
-                          >
-                            <span>{channelItem.title}</span>
-                            <span>{redBullet.content}</span>
-                          </StyledLink>
-                        </li>
-                      )
-                    })}
-                  </ul>
+                  <ul>{channelList(detail)}</ul>
                 </nav>
               </StyledDetails>
             ))}
-          </div>
+          </>
         )}
       </StyledChannelDetails>
       <StyledFooter>
@@ -145,9 +106,8 @@ const Channel = () => {
               content=""
               inlineSize="0.58"
               blockSize="0.58"
-              greenBullet="1"
+              greenBulletType="1"
               borderColor="black2"
-              display={greenBullet.display}
             />
           </div>
           <div>
@@ -155,7 +115,6 @@ const Channel = () => {
             <p>#5463</p>
           </div>
         </div>
-
         <div className="footer-tools" aria-label="tools, audio controls">
           <div>
             <i className="ico-mute" />
