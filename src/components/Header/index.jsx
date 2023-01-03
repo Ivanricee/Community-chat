@@ -1,30 +1,26 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { IoMdMenu } from 'react-icons/io'
-import { HeaderSearchHelp } from '../HeaderSearchHelp'
-import { setChnlCmntsToggleMenu } from '../../store/actions/AppActions'
+import { HeaderSearchHelp } from './HeaderSearchHelp'
 import { StyledHeader, StyledHeaderSearchHelp } from './styles'
 import { Loader } from '../Loader'
+import { useToggleChannel } from '../../hooks/useToggleChannel'
+import { useToggleUserList } from '../../hooks/useToggleUserList'
 
 const Header = () => {
-  const dispatch = useDispatch()
+  const [showChannel, setShowChannel] = useToggleChannel()
+  const [showUserList] = useToggleUserList()
   const storedChannelTitle = useSelector(state => state.app.channel)
-  const storedUserMenu = useSelector(state => state.app.userMenu)
-  const showChnlCmntsToggleMenu = useSelector(
-    state => state.app.showChnlCmntsToggleMenu
-  )
 
   return (
     <StyledHeader
-      showChnlCmntsToggleMenu={showChnlCmntsToggleMenu}
-      storedUserMenu={storedUserMenu}
+      showChnlCmntsToggleMenu={showChannel}
+      showUserList={showUserList}
     >
       <div className="haeder__title">
         <IoMdMenu
           ismenu="hamburg"
-          onClick={() =>
-            dispatch(setChnlCmntsToggleMenu(!showChnlCmntsToggleMenu))
-          }
+          onClick={() => setShowChannel(!showChannel)}
         />
         {storedChannelTitle ? (
           `# ${storedChannelTitle}`
@@ -34,7 +30,7 @@ const Header = () => {
       </div>
       <StyledHeaderSearchHelp>
         <HeaderSearchHelp
-          headerItems={showChnlCmntsToggleMenu ? 'headerDesk' : 'userMobile'}
+          headerItems={showChannel ? 'headerDesk' : 'userMobile'}
         />
       </StyledHeaderSearchHelp>
     </StyledHeader>
