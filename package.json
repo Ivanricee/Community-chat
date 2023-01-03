@@ -11,12 +11,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "prettier --write {*.js,src/**/*.{js,jsx}}",
     "lint": "eslint src/ --ext jsx,js --fix",
-    "prepare": "npx simple-pre-commit"
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "ivanrice",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.20.7",
     "@babel/eslint-parser": "^7.19.1",
     "@babel/preset-react": "^7.18.6",
     "@vitejs/plugin-react": "^2.2.0",
@@ -32,7 +33,6 @@
     "husky": "^7.0.0",
     "lint-staged": "^11.2.6",
     "prettier": "^2.4.1",
-    "simple-pre-commit": "^1.2.1",
     "vite": "^3.2.4"
   },
   "dependencies": {
@@ -51,12 +51,5 @@
     "redux-thunk": "^2.4.0",
     "styled-components": "^5.3.3",
     "twilio-video": "^2.25.0"
-  },
-  "lint-staged": {
-    "src/**/*.{html,js,jsx,json}": [
-      "eslint --cache --fix",
-      "prettier --write"
-    ]
-  },
-  "simple-pre-commit": "npx lint-staged"
+  }
 }
