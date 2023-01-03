@@ -1,8 +1,8 @@
 /**
  * Return
- * content: contenido
- * inlinesize: si es menor de 3 digitos establece una longitud del contenedor
- * translatex: segun crece la longitud el contenido se centra
+ * content: number count string
+ * inlinesize: si es menor de 3 digitos establece un width con base al string numerico
+ * translatex: segun crece la longitud el bullet se va centrando
  * En caso de no necesitar el bullet se usa el display none
  */
 export const setBullet = contenido => {
@@ -26,23 +26,24 @@ export const setBullet = contenido => {
 }
 // Debounce
 export const debounce = (callback, delay = 100) => {
-  let timerId
-  return event => {
+  let timerId = null
+  return (...args) => {
     if (timerId) clearTimeout(timerId)
-    timerId = setTimeout(callback, delay, event)
+    timerId = setTimeout(() => callback(...args), delay)
   }
 }
 // Throtle
-export const throttle = (callback, interval) => {
-  let shouldFire = true
-  return () => {
-    if (shouldFire) {
-      callback()
-      shouldFire = false
-      setTimeout(() => {
-        shouldFire = true
-      }, interval)
-    }
+export const throttle = (callback, delay) => {
+  let throtle = false
+  return (...args) => {
+    const [event] = args
+    if (event.target) event.preventDefault()
+    if (throtle) return
+    callback(...args)
+    throtle = true
+    setTimeout(() => {
+      throtle = false
+    }, delay)
   }
 }
 
@@ -208,4 +209,37 @@ export const getTwilioToken = async (identity, room) => {
   // const room =
   // response: obj Room, participant list (change with time)
   // const participants =
+}
+
+/**
+ * comments
+ */
+export const resizeOnLoadImg = (width, height) => {
+  let isInline = true
+  let widthSize = 25
+  let heightSize = 19
+  const remWidth = width / 16
+  const remHeight = height / 16
+
+  if (remHeight >= remWidth) isInline = false
+  if (remWidth < widthSize) widthSize = remWidth
+  if (remHeight < heightSize) heightSize = remWidth
+
+  return { isInline, widthSize, heightSize }
+}
+export const resizeFullScreenImg = imgDimensionSize => {
+  const actualWidth = imgDimensionSize.widthSize
+  const actualHeight = imgDimensionSize.heightSize
+  const widthSize = actualWidth === 25 ? 37.5 : actualWidth
+  const heightSize = actualHeight === 19 ? 35 : actualHeight
+  return {
+    isOpen: true,
+    isInline: imgDimensionSize.isInline,
+    widthSize,
+    heightSize,
+  }
+}
+export const dateFormatted = (date, month) => {
+  const options = { year: 'numeric', month, day: 'numeric' }
+  return date.toLocaleDateString(navigator.language, options)
 }
