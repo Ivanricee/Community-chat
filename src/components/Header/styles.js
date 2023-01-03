@@ -33,18 +33,18 @@ export const StyledHeader = styled.header`
   }
   @media ${p => p.theme.breakPointsDevice.tablet} {
     ${p =>
-      p.showChnlCmntsToggleMenu
+      !p.showChnlCmntsToggleMenu
         ? 'transform: translateX(-19.5rem);'
         : 'transform: translateX(0rem);'}
-    ${p => p.storedUserMenu && 'transform: translateX(-34.5rem);'}
+    ${p => p.showUserList && 'transform: translateX(-34.5rem);'}
     inline-size: 100vw;
     .header__icons-shift {
       display: none;
     }
   }
   @media ${p => p.theme.breakPointsDevice.mobileL} {
-    ${p => p.storedUserMenu && 'transform: translateX(-2rem);'}
-    ${p => p.storedUserMenu && 'inline-size: calc(100% + 2rem);'}
+    ${p => p.showUserList && 'transform: translateX(-2rem);'}
+    ${p => p.showUserList && 'inline-size: calc(100% + 2rem);'}
   }
 `
 export const StyledHeaderSearchHelp = styled.div`

@@ -10,7 +10,7 @@ export const StyledImgContainer = styled.div`
     //red/green-bullet
     ${p => p.theme.redBullet}
     background-color: ${p =>
-      p.greenBullet === '1'
+      p.greenBulletType === '1'
         ? props => props.theme.green
         : props => props.theme.red};
 
@@ -18,10 +18,10 @@ export const StyledImgContainer = styled.div`
       p.borderColor === 'black'
         ? props => props.theme.black
         : props => props.theme.black2};
-    ${p => p.greenBullet === '1' && 'inset-block-start: 1.21rem;'}
-    ${p => p.greenBullet === '1' && 'inset-inline-start: 1.23rem;'}
-    ${p => p.greenBullet === '2' && 'inset-block-start: 3.3rem;'}
-    ${p => p.greenBullet === '2' && 'inset-inline-start: 3.3rem;'}
+    ${p => p.greenBulletType === '1' && 'inset-block-start: 1.21rem;'}
+    ${p => p.greenBulletType === '1' && 'inset-inline-start: 1.23rem;'}
+    ${p => p.greenBulletType === '2' && 'inset-block-start: 3.3rem;'}
+    ${p => p.greenBulletType === '2' && 'inset-inline-start: 3.3rem;'}
     content: ${p => `"${p.content}"`};
     inline-size: ${p => p.inlineSize}rem;
     block-size: ${p => p.blockSize}rem;

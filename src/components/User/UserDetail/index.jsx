@@ -53,7 +53,7 @@ const UserDetail = ({
           <div className="user__detail-wrapper-img">
             <ImgContainer
               img={img}
-              greenBullet="2"
+              greenBulletType="2"
               content=""
               inlineSize={1.1}
               blockSize={1.1}

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { NavLink } from 'react-router-dom'
 
 export const StyledChannel = styled.section`
   grid-area: channel;
@@ -6,7 +7,7 @@ export const StyledChannel = styled.section`
   background-color: ${p => p.theme.black1};
   inline-size: 100%;
   @media ${p => p.theme.breakPointsDevice.mobileL} {
-    ${p => p.storedUserMenu && 'display: none;'}
+    ${p => !p.showChannel && 'display: none;'}
   }
 `
 export const StyledHeader = styled.header`
@@ -65,7 +66,7 @@ export const StyledChannelDetails = styled.section`
     transition: 0.15s padding-inline-end ease-out;
   }
 `
-export const StyledLink = styled.a`
+export const StyledLink = styled(NavLink)`
   padding: 0.3rem;
   padding-inline-start: 0.5rem;
   padding-inline-end: 0.5rem;

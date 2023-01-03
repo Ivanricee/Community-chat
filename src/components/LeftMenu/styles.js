@@ -17,11 +17,8 @@ export const StyledLeftMenu = styled.nav`
     color: white;
   }
   scrollbar-width: none; /* Firefox */
-  @media ${p => p.theme.breakPointsDevice.mobileL} {
-    ${p => p.storedUserMenu && 'display: none;'}
-  }
 `
-export const StyledItemWrapper = styled(ItemWrapper)`
+export const StyledServerImg = styled(ItemWrapper)`
   margin: 0 auto;
   inline-size: 3rem;
   block-size: 3rem;
@@ -52,7 +49,7 @@ export const StyledNavlinkServerItem = styled(NavLink)`
   &:first-child {
     margin-block-start: 1rem;
   }
-  &.active ${StyledItemWrapper} {
+  &.active ${StyledServerImg} {
     &:before {
       inset-block-start: 0rem;
       inset-block-end: 0rem;

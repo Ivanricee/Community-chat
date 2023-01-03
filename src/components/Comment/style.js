@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 export const StyledDate = styled.div`
-  //position: relative;
   border-block-start: 1px solid ${p => p.theme.separatorDate};
   margin-block-start: 0.5rem;
   text-align: center;
@@ -26,7 +25,7 @@ export const StyledReply = styled.div`
     margin: 0;
     font: ${p => p.theme.body2Bold};
     font-size: 0.8rem;
-    color: ${p => p.theme.colorRole(p.role)};
+    color: ${p => p.theme.colorRole(p.colorRole)};
     cursor: pointer;
     padding: 0;
     flex: 1;
@@ -78,7 +77,6 @@ export const StyledComment = styled.div`
     margin-inline-end: 4.5rem;
     padding-block-end: 0.28rem;
     span {
-      //font: ${p => p.theme.body2Semibold};
       padding-inline-start: 0.2rem;
       padding-inline-end: 0.2rem;
 
@@ -141,7 +139,7 @@ export const StyledComment = styled.div`
           margin: 0;
           margin-inline-end: 0.25rem;
           font: ${p => p.theme.body2Bold};
-          color: ${p => p.theme.colorRole(p.role)};
+          color: ${p => p.theme.colorRole(p.colorRole)};
           cursor: pointer;
           :hover {
             text-decoration: underline;

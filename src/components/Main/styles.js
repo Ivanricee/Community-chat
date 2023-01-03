@@ -8,22 +8,22 @@ export const StyledMain = styled.main`
   background-color: ${props => props.theme.bg};
 
   @media ${p => p.theme.breakPointsDevice.tablet} {
-    ${p => p.showChnlCmntsToggleMenu && 'transform: translateX(-19.5rem);'}
-    ${p => p.storedUserMenu && 'transform: translateX(-34.5rem);'}
-    ${p => p.showChnlCmntsToggleMenu && 'transform: translateX(-19.5rem);'}
+    ${p => !p.showChannel && 'transform: translateX(-19.5rem);'}
+    ${p => p.showUserList && 'transform: translateX(-34.5rem);'}
+    ${p => !p.showChannel && 'transform: translateX(-19.5rem);'}
     inline-size: 100vw;
     & .main__mobile-shadow-wrapper {
       position: absolute;
       inset: 0;
       background: rgba(19, 18, 21, 0.87);
-      ${p => p.showChnlCmntsToggleMenu && 'display: none;'}
-      ${p => p.storedUserMenu && 'display: block;'}
+      ${p => !p.showChannel && 'display: none;'}
+      ${p => p.showUserList && 'display: block;'}
       z-index: 1;
     }
   }
   @media ${p => p.theme.breakPointsDevice.mobileL} {
-    ${p => p.storedUserMenu && 'transform: translateX(-2rem);'}
-    ${p => p.storedUserMenu && 'inline-size: calc(100% + 2rem);'}
+    ${p => p.showUserList && 'transform: translateX(-2rem);'}
+    ${p => p.showUserList && 'inline-size: calc(100% + 2rem);'}
   }
 `
 export const StyledCommentList = styled.section`

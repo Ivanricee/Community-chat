@@ -26,6 +26,7 @@ export const StyledUser = styled.aside`
   @media ${p => p.theme.breakPointsDevice.tablet} {
     display: block;
     z-index: 0;
+    ${p => !p.showUserMenu && 'display:none;'}
     ${p => p.showUserMenu && 'z-index: 2;'}
   }
 `

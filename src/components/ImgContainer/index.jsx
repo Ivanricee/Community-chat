@@ -9,7 +9,7 @@ export const ImgContainer = ({
   blockSize,
   translateX,
   display,
-  greenBullet,
+  greenBulletType,
   borderColor,
 }) => {
   return (
@@ -19,7 +19,7 @@ export const ImgContainer = ({
       blockSize={blockSize}
       translateX={translateX}
       display={display}
-      greenBullet={greenBullet}
+      greenBulletType={greenBulletType}
       borderColor={borderColor}
     >
       <div className="item-cover">
