@@ -13,58 +13,37 @@ import {
 import { ImgContainer } from '../ImgContainer'
 import { useUsers } from '../../graphql/custom-hook'
 import ImageComment from './ImageComment'
+import {
+  resizeOnLoadImg,
+  resizeFullScreenImg,
+  dateFormatted,
+} from '../../utils'
 
-const handleImgDimension = (width, height) => {
-  let isInline = true
-  let widthSize = 25
-  let heightSize = 19
-  if (height >= width) {
-    isInline = false
-  }
-  if (width < 400) {
-    widthSize = width / 16
-  }
-  if (height < 304) {
-    heightSize = height / 16
-  }
-  return { isInline, widthSize, heightSize }
-}
-const handleShowDialog = imgDimensionSize => {
-  const widthSize =
-    imgDimensionSize.widthSize === 25 ? 37.5 : imgDimensionSize.widthSize
-  const heightSize =
-    imgDimensionSize.heightSize === 19 ? 35 : imgDimensionSize.heightSize
-  return {
-    isOpen: true,
-    isInline: imgDimensionSize.isInline,
-    widthSize,
-    heightSize,
-  }
-}
-const styleTextMarks = (texto, data, replyClass) => {
+const styleTextMarks = (texto, userListData, replyClass) => {
   const regex = /@.[a-zA-Z\u00C0-\u00FF\s]{1,32}/gi
   const usersRaw = texto.match(regex)
-  if (usersRaw !== null) {
-    let usersFiltered = []
-    // let regexFilter = ""
-    if (data) {
-      for (let j = 0; j < usersRaw.length; j += 1) {
-        const matchedusersk = data.getUsers.filter(user => {
-          // eslint-disable-next-line prefer-regex-literals
-          const regexMatch = new RegExp(`@${user.name}`, 'i').test(usersRaw[j])
-          return regexMatch
-        })
-
-        if (matchedusersk.length === 1) {
-          usersFiltered = [...usersFiltered, `@${matchedusersk[0].name}`]
-        }
-      }
-
+  if (usersRaw) {
+    if (userListData) {
+      const usersFiltered = []
+      usersRaw.forEach(userRaw => {
+        const usersFound = userListData.getUsers.filter(user =>
+          new RegExp(`@${user.name}`, 'i').test(userRaw)
+        )
+        if (usersFound.length) usersFiltered.push(`@${usersFound[0].name}`)
+      })
       // Nuevo regex para los usuarios encontrados
       const regexFilter = usersFiltered.join('|')
       const regexDos = new RegExp(`^${regexFilter}`, 'gi')
-      const usersInText = texto.match(regexDos)
       const textArraySplit = texto.split(regexDos)
+
+      const usersInText = texto.match(regexDos)
+      console.log({
+        usersFiltered,
+        regexFilter,
+        regexDos,
+        usersInText,
+        textArraySplit,
+      })
 
       return textArraySplit.map((mark, i) => (
         <React.Fragment key={i}>
@@ -83,15 +62,7 @@ const styleTextMarks = (texto, data, replyClass) => {
 
   return <Loader justifyContent="start" alignItems="center" />
 }
-const dateFormatted = (date, type) => {
-  let options = {}
-  if (type === 'long') {
-    options = { year: 'numeric', month: 'long', day: 'numeric' }
-  } else {
-    options = { year: 'numeric', month: 'numeric', day: 'numeric' }
-  }
-  return date.toLocaleDateString(navigator.language, options)
-}
+
 export const Comment = ({
   img,
   url,
@@ -101,7 +72,7 @@ export const Comment = ({
   nombre,
   date: { dateFormat, showLine },
   userImg,
-  role,
+  roleNo,
 }) => {
   const imgRef = useRef(null)
   const [imgDimensionSize, setImgDimensionSize] = useState({
@@ -116,14 +87,57 @@ export const Comment = ({
     heightSize: 31,
   })
 
-  const { data } = useUsers()
+  const { data: userListData } = useUsers()
   const handleClickClose = () => {
     setShowDialogImg(prevShowDialogImg => ({
       ...prevShowDialogImg,
       isOpen: false,
     }))
   }
-
+  const loadImg = () => {
+    return (
+      <StyledMediaImg
+        isInline={imgDimensionSize.isInline}
+        inline={imgDimensionSize.widthSize}
+        block={imgDimensionSize.heightSize}
+      >
+        <img
+          ref={imgRef}
+          src={img}
+          alt=""
+          onClick={() =>
+            setShowDialogImg(resizeFullScreenImg(imgDimensionSize))
+          }
+          role="presentation"
+          onLoad={() =>
+            setImgDimensionSize(
+              resizeOnLoadImg(
+                imgRef.current.naturalWidth,
+                imgRef.current.naturalHeight
+              )
+            )
+          }
+        />
+      </StyledMediaImg>
+    )
+  }
+  const replyComment = () => {
+    return (
+      <StyledReply role={reply.role}>
+        <div className="comment__message">
+          <div>
+            <p className="comment__reply-user">{reply.nombre}</p>
+            {styleTextMarks(reply.texto, userListData, 'reply')}
+          </div>
+          {reply.img && (
+            <div className="comment__reply-img">
+              <BsFillImageFill />
+            </div>
+          )}
+        </div>
+      </StyledReply>
+    )
+  }
   return (
     <>
       {showLine && (
@@ -132,7 +146,7 @@ export const Comment = ({
         </StyledDate>
       )}
 
-      <StyledComment role={role}>
+      <StyledComment colorRole={roleNo}>
         <div className="comment__submenu">
           <div>
             <i className="ico-add ico-select" />
@@ -140,21 +154,7 @@ export const Comment = ({
             <BsThreeDots />
           </div>
         </div>
-        {reply._id !== null && (
-          <StyledReply role={reply.role}>
-            <div className="comment__message">
-              <div>
-                <p className="comment__reply-user">{reply.nombre}</p>
-                {styleTextMarks(reply.texto, data, 'reply')}
-              </div>
-              {reply.img && (
-                <div className="comment__reply-img">
-                  <BsFillImageFill />
-                </div>
-              )}
-            </div>
-          </StyledReply>
-        )}
+        {reply._id && replyComment()}
         <div className="comment__wrapper">
           <div className="comment__perfil-wrapper">
             <div className="comment__perfil">
@@ -166,38 +166,14 @@ export const Comment = ({
             <div className="comment__user-date">
               <p type="button">{nombre}</p>
               <span>
-                <small>{dateFormatted(dateFormat, 'short')}</small>
+                <small>{dateFormatted(dateFormat, 'numeric')}</small>
               </span>
             </div>
             <div className="comment__message">
-              {styleTextMarks(texto, data)}
+              {styleTextMarks(texto, userListData)}
             </div>
 
-            {img !== '' && (
-              <StyledMediaImg
-                isInline={imgDimensionSize.isInline}
-                inline={imgDimensionSize.widthSize}
-                block={imgDimensionSize.heightSize}
-              >
-                <img
-                  ref={imgRef}
-                  src={img}
-                  alt=""
-                  onClick={() =>
-                    setShowDialogImg(handleShowDialog(imgDimensionSize))
-                  }
-                  role="presentation"
-                  onLoad={() =>
-                    setImgDimensionSize(
-                      handleImgDimension(
-                        imgRef.current.naturalWidth,
-                        imgRef.current.naturalHeight
-                      )
-                    )
-                  }
-                />
-              </StyledMediaImg>
-            )}
+            {img !== '' && loadImg()}
             {url !== '' && (
               <StyledUrl>
                 <a href={url} target="_blank" rel="noreferrer">
