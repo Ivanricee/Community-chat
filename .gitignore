@@ -80,3 +80,6 @@ dist/
 src/server/public
 
 .vercel
+
+# lint staged
+.lintstagedrc
