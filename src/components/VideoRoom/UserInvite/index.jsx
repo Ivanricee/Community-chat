@@ -3,6 +3,7 @@ import { IoCloseSharp } from 'react-icons/io5'
 import { GiSpeaker } from 'react-icons/gi'
 import { useSelector } from 'react-redux'
 import { BsSearch } from 'react-icons/bs'
+import { useParams } from 'react-router-dom'
 import { StyledUserInvite } from './styles'
 import { Portal } from '../../Portal'
 import { ImgContainer } from '../../ImgContainer'
@@ -15,7 +16,9 @@ const UserInvite = ({
   keyDownUserInvite,
 }) => {
   const [clipbboard, setClipbboard] = useState(false)
+  const { server } = useParams()
   const storedServerTitle = useSelector(state => state.app.server)
+  const serverTitle = () => storedServerTitle[server] || 'No title'
   const closeBtnRef = useRef(null)
   const modalBox = useRef(null)
   const { location } = window
@@ -75,7 +78,7 @@ const UserInvite = ({
           ref={modalBox}
         >
           <header role="heading" aria-level="1">
-            <h1>Invitar amigos a{storedServerTitle}</h1>
+            <h1>Invitar amigos a {serverTitle()}</h1>
             <button
               type="button"
               aria-label="Close Modal"

@@ -12,7 +12,7 @@ import { Loader } from '../components/Loader'
 import { Home } from '../pages/Home'
 import { NotFound } from '../pages/NotFound'
 import { Layout } from '../components/Layout'
-// import Channel from '../components/Channel'
+
 const Channel = React.lazy(() => import('../components/Channel'))
 const client = new ApolloClient({
   connectToDevTools: true,

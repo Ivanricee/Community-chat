@@ -2,12 +2,12 @@ export const action = {
   type: '@app/init',
   payload: [],
 }
-export const getChannel = payload => ({
+export const setChannel = payload => ({
   type: '@channel/title',
   payload,
 })
-export const getServer = payload => ({
-  type: '@server/name',
+export const setServer = payload => ({
+  type: '@server/map',
   payload,
 })
 export const setUserMenu = payload => ({
@@ -15,8 +15,8 @@ export const setUserMenu = payload => ({
   payload,
 })
 
-export const setChnlCmntsToggleMenu = payload => ({
-  type: '@header-comments/showFullLength',
+export const setToggleChannel = payload => ({
+  type: '@channel/toggle',
   payload,
 })
 export const setUserItemModal = payload => ({

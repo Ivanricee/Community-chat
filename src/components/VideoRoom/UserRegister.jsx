@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { IoCloseSharp } from 'react-icons/io5'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { GiSpeaker } from 'react-icons/gi'
 import { BsSearch } from 'react-icons/bs'
 import { Loader } from '../Loader'
@@ -16,10 +16,12 @@ export const UserRegister = ({
   userCloseMessage,
 }) => {
   const location = useLocation()
+  const { server } = useParams()
   const storedServerTitle = useSelector(state => state.app.server)
+  const serverTitle = () => storedServerTitle[server] || 'No title'
   const [form, setForm] = useState({
     identity: 'Nombre de usuario',
-    room: `${storedServerTitle}${channelTitle}${location.pathname}`,
+    room: `${serverTitle()}${channelTitle}${location.pathname}`,
   })
 
   const handleUserRegister = async e => {
@@ -54,7 +56,7 @@ export const UserRegister = ({
         </div>
         <div>
           <header>
-            <h1>Registro en{storedServerTitle}</h1>
+            <h1>Registro en {serverTitle()}</h1>
           </header>
           <main>
             <div className="register__channel">
