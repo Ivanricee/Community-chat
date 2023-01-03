@@ -1,15 +1,12 @@
 import React, { useRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import { BsSearch, BsFillPinAngleFill, BsFillBellFill } from 'react-icons/bs'
 import { FaHashtag, FaUserFriends } from 'react-icons/fa'
 import { CgInbox } from 'react-icons/cg'
 import { IoMdHelpCircle } from 'react-icons/io'
-import { setUserMenu } from '../../store/actions/AppActions'
+import { useToggleUserList } from '../../../hooks/useToggleUserList'
 
 export const HeaderSearchHelp = () => {
-  const dispatch = useDispatch()
-
-  const storedUserMenu = useSelector(state => state.app.userMenu)
+  const [showUserList, setShowUserList] = useToggleUserList()
   const refSearch = useRef([])
 
   return (
@@ -19,16 +16,14 @@ export const HeaderSearchHelp = () => {
           // Header: En Desk se muestra pero en mobile no
           // Users: en mobile se muestra en Desk no
         }
-
         <div className="header__icons-shift">
           <FaHashtag />
           <BsFillBellFill />
           <BsFillPinAngleFill />
         </div>
-
         <FaUserFriends
           onClick={() => {
-            dispatch(setUserMenu(!storedUserMenu))
+            setShowUserList(!showUserList)
           }}
         />
       </div>

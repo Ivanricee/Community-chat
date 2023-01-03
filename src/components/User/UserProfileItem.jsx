@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { useToggleUserList } from '../../hooks/useToggleUserList'
 import { ImgContainer } from '../ImgContainer'
 import { Portal } from '../Portal'
 import UserDetail from './UserDetail'
@@ -11,8 +12,7 @@ export const UserProfileItem = ({ className, user, userRoleName }) => {
     showDetail: false,
   })
   const userItemModal = useSelector(state => state.app.userItemModal)
-  const menuUserStore = useSelector(state => state.app.userMenu)
-
+  const [showUserList] = useToggleUserList()
   const handleUserItemClick = useCallback(
     e => {
       const itemBlockSize = 376
@@ -70,13 +70,13 @@ export const UserProfileItem = ({ className, user, userRoleName }) => {
       }))
   }
   useEffect(() => {
-    if (!menuUserStore && insetBlockSizeState.showDetail)
+    if (!showUserList && insetBlockSizeState.showDetail)
       setInsetBlockSizeState(prevInsetBlockSizeState => ({
         ...prevInsetBlockSizeState,
         showDetail: false,
       }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [menuUserStore])
+  }, [showUserList])
   return (
     <>
       <div
@@ -89,7 +89,7 @@ export const UserProfileItem = ({ className, user, userRoleName }) => {
         <div className="user__image-wrapper" tabIndex="-1">
           <ImgContainer
             img={user.img}
-            greenBullet="1"
+            greenBulletType="1"
             content=""
             inlineSize={0.58}
             blockSize={0.58}
@@ -98,7 +98,7 @@ export const UserProfileItem = ({ className, user, userRoleName }) => {
         </div>
         <span>{user.name}</span>
       </div>
-      {insetBlockSizeState.showDetail && menuUserStore && (
+      {insetBlockSizeState.showDetail && showUserList && (
         <Portal>
           <UserDetail
             tabIndex={-1}

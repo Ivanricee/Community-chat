@@ -1,22 +1,20 @@
 import React, { useEffect } from 'react'
 import { ThemeProvider } from 'styled-components'
-import { useDispatch, useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
 import LeftMenu from '../LeftMenu'
 import { GlobalStyles } from './GlobalStyles'
 import { darkTheme } from './theme'
-import { setUserMenu } from '../../store/actions/AppActions'
+import { useToggleUserList } from '../../hooks/useToggleUserList'
 
 export const Layout = () => {
-  const storedUserMenu = useSelector(state => state.app.userMenu)
+  const [showUserList, setShowUserList] = useToggleUserList()
 
-  const dispatch = useDispatch()
   useEffect(() => {
     const firstRenderMatchMQ = window.matchMedia('(max-width: 1023px)').matches
-    if (firstRenderMatchMQ) dispatch(setUserMenu(false))
+    if (firstRenderMatchMQ) setShowUserList(false)
     const handleDevice = e => {
       const isMatchingMQ = e.matches
-      dispatch(setUserMenu(!isMatchingMQ))
+      setShowUserList(!isMatchingMQ)
     }
     window
       .matchMedia('(max-width: 1023px)')
@@ -29,7 +27,7 @@ export const Layout = () => {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <GlobalStyles showUserMenu={storedUserMenu} />
+      <GlobalStyles showUserMenu={showUserList} />
       <LeftMenu />
       <Outlet />
     </ThemeProvider>

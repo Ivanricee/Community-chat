@@ -1,20 +1,24 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { StyledUser, StyledUserProfileItem, StyledUserList } from './styles'
 import { useUsersInRoles } from '../../graphql/custom-hook'
 import { Loader } from '../Loader'
+import { useToggleUserList } from '../../hooks/useToggleUserList'
 
 const User = ({ server }) => {
   const { loading, data, error } = useUsersInRoles(server)
-  const storedUserMenu = useSelector(state => state.app.userMenu)
+  const [showUserList] = useToggleUserList()
 
-  if (error) {
-    return <h1>Sin conexión.</h1>
-  }
+  if (error)
+    return (
+      <StyledUser>
+        <p>Error conexión.</p>
+      </StyledUser>
+    )
+
   return loading ? (
     <Loader justifyContent="center" alignItems="center" />
   ) : (
-    <StyledUser showUserMenu={storedUserMenu}>
+    <StyledUser showUserMenu={showUserList}>
       <StyledUserList>
         {data.findUsersRoles.map(usersRole => (
           <React.Fragment key={usersRole._id}>
