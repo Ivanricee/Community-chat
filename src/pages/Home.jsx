@@ -1,5 +1,4 @@
 import React, { Suspense } from 'react'
-import { Helmet } from 'react-helmet'
 import { Outlet, useParams } from 'react-router-dom'
 import { Loader } from '../components/Loader'
 
@@ -13,14 +12,6 @@ export const Home = () => {
 
   return (
     <>
-      <Helmet>
-        <title> Discord Home </title>
-        <meta
-          name="description"
-          content="Discord home"
-          data-react-helmet="true"
-        />
-      </Helmet>
       <Outlet />
       <Suspense
         fallback={<Loader justifyContent="center" alignItems="center" />}
