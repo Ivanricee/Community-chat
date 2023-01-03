@@ -5,6 +5,7 @@ export const SERVERS = gql`
   query Servers {
     servers {
       _id
+      title
       alt
       content
       img
