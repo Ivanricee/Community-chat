@@ -10,7 +10,6 @@ export const StyledMain = styled.main`
   @media ${p => p.theme.breakPointsDevice.tablet} {
     ${p => !p.showChannel && 'transform: translateX(-19.5rem);'}
     ${p => p.showUserList && 'transform: translateX(-34.5rem);'}
-    ${p => !p.showChannel && 'transform: translateX(-19.5rem);'}
     inline-size: 100vw;
     & .main__mobile-shadow-wrapper {
       position: absolute;
