@@ -17,6 +17,9 @@ export const StyledLeftMenu = styled.nav`
     color: white;
   }
   scrollbar-width: none; /* Firefox */
+  @media ${p => p.theme.breakPointsDevice.tablet} {
+    ${p => (!p.showChannel ? 'display: none;' : 'display: initial;')}
+  }
 `
 export const StyledServerImg = styled(ItemWrapper)`
   margin: 0 auto;

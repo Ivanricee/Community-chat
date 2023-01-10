@@ -6,6 +6,9 @@ export const StyledChannel = styled.section`
   flex-direction: column;
   background-color: ${p => p.theme.black1};
   inline-size: 100%;
+  @media ${p => p.theme.breakPointsDevice.tablet} {
+    ${p => (!p.showChannel ? 'display: none;' : 'display: initial;')}
+  }
   @media ${p => p.theme.breakPointsDevice.mobileL} {
     ${p => !p.showChannel && 'display: none;'}
   }

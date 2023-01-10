@@ -10,10 +10,12 @@ import {
 import { setBullet } from '../../utils'
 import { useServers } from '../../graphql/custom-hook'
 import { setServer } from '../../store/actions/AppActions'
+import { useToggleChannel } from '../../hooks/useToggleChannel'
 
 const LeftMenu = () => {
   const { server } = useParams()
   const { data, error, loading } = useServers()
+  const [showChannel] = useToggleChannel()
   const dispatch = useDispatch()
   const servers = useRef({})
   const severList = () => {
@@ -49,7 +51,7 @@ const LeftMenu = () => {
   if (loading) return <Loader justifyContent="center" alignItems="center" />
 
   return (
-    <StyledLeftMenu aria-label="Server">
+    <StyledLeftMenu aria-label="Server" showChannel={showChannel}>
       <ul>{severList()}</ul>
     </StyledLeftMenu>
   )

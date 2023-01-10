@@ -13,10 +13,7 @@ const Header = () => {
   const storedChannelTitle = useSelector(state => state.app.channel)
 
   return (
-    <StyledHeader
-      showChnlCmntsToggleMenu={showChannel}
-      showUserList={showUserList}
-    >
+    <StyledHeader showChannel={showChannel} showUserList={showUserList}>
       <div className="haeder__title">
         <IoMdMenu
           ismenu="hamburg"

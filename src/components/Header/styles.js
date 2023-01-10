@@ -33,7 +33,7 @@ export const StyledHeader = styled.header`
   }
   @media ${p => p.theme.breakPointsDevice.tablet} {
     ${p =>
-      !p.showChnlCmntsToggleMenu
+      !p.showChannel
         ? 'transform: translateX(-19.5rem);'
         : 'transform: translateX(0rem);'}
     ${p => p.showUserList && 'transform: translateX(-34.5rem);'}
