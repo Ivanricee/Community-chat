@@ -14,6 +14,35 @@ export const StyledVideoRoom = styled.div`
       opacity: 1;
     }
   }
+  .button__back {
+    background: transparent;
+    border: 0;
+    color: ${p => p.theme.white};
+    position: absolute;
+    inset-block-start: 2rem;
+    inset-inline-start: 2rem;
+    font-size: 1.7rem;
+    border-radius: 50%;
+    display: none;
+    aspect-ratio: 1/1;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0.5rem;
+
+    svg {
+      transform: translateX(-6%);
+    }
+    :hover {
+      background-color: ${p => p.theme.gray5};
+    }
+    :active {
+      background-color: ${p => p.theme.greyBtnHover};
+    }
+    @media ${p => p.theme.breakPointsDevice.tablet} {
+      display: flex;
+    }
+  }
   @media ${p => p.theme.breakPointsDevice.tablet} {
     inset-inline-start: 0rem;
   }

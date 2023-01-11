@@ -1,5 +1,6 @@
 import React, { Suspense, useState } from 'react'
-
+import { IoChevronBack } from 'react-icons/io5'
+import { useNavigate } from 'react-router-dom'
 import { UserRegister } from './UserRegister'
 import { StyledVideoRoom } from './styles'
 import { Loader } from '../Loader'
@@ -8,6 +9,7 @@ import { useVideoConnect } from '../../hooks/useVideoConnect'
 const Room = React.lazy(() => import('./Room'))
 
 const VideoRoom = ({ channelTitle }) => {
+  const navigate = useNavigate()
   const [videoOptions, setVideoOptions] = useState({
     token: null,
     identity: '',
@@ -48,6 +50,13 @@ const VideoRoom = ({ channelTitle }) => {
 
   return (
     <StyledVideoRoom>
+      <button
+        type="button"
+        className="button__back"
+        onClick={() => navigate(-1)}
+      >
+        <IoChevronBack />
+      </button>
       {videoOptions.token === null || room === null ? (
         <UserRegister
           message={videoOptions.message}
