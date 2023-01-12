@@ -25,12 +25,14 @@ export const StyledHeader = styled.header`
   vertical-align: middle;
 `
 export const StyledDetails = styled.details`
-  cursor: pointer;
+  cursor: context-menu;
+
   padding-block-start: 0.55rem;
   padding-block-end: 0.55rem;
   padding-inline-start: 0.55rem;
   display: flex;
   width: inherit;
+
   & summary {
     font: ${p => p.theme.body2Semibold};
     font-size: 0.8rem;
