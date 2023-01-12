@@ -165,16 +165,18 @@ export const StyledMediaImg = styled.div`
   }
 `
 export const StyledUrl = styled.div`
-  color: ${p => p.theme.blue};
-  font: ${p => p.theme.captionRegular};
-  font-size: 0.87rem;
-  margin-block-start: 0.25rem;
-  margin-block-end: 0.25rem;
-  margin-inline-end: 4.5rem;
-  overflow-wrap: anywhere;
-  a:visited,
-  a:active {
+  a {
     color: ${p => p.theme.blue};
+    font: ${p => p.theme.captionRegular};
+    font-size: 0.87rem;
+    margin-block-start: 0.25rem;
+    margin-block-end: 0.25rem;
+    margin-inline-end: 4.5rem;
+    overflow-wrap: anywhere;
+    a:visited,
+    a:active {
+      color: ${p => p.theme.blue};
+    }
   }
 `
 export const StyledReact = styled.div`
