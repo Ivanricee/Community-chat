@@ -27,7 +27,8 @@ const Channel = () => {
   const [detailListPadding, setDetailListPadding] = useState(0)
 
   // onToggle datail, fix width when scroll is overflowing
-  const handleChnnlWidth = () => {
+  const handleChnnlWidth = e => {
+    e.stopPropagation()
     const { scrollHeight, clientHeight } = channelDetailsRef.current
     if (scrollHeight > clientHeight) return setDetailListPadding(1)
     return setDetailListPadding(0)
@@ -35,6 +36,7 @@ const Channel = () => {
   const handleNewChannel = titleChannel => {
     // if mobile, hide channel/header and set new channel
     setShowChannel(false)
+
     dispatch(setChannel(titleChannel))
   }
   const channelList = detail => {
@@ -61,33 +63,39 @@ const Channel = () => {
     })
     return channelListRender
   }
-
+  const channelState = () => {
+    if (error) return <span className=".app-error">Error de conexión</span>
+    if (loading && typeof data?.findServer === 'undefined')
+      return <Loader justifyContent="start" alignItems="center" />
+    channelActive.current = null
+    if (data.findServer === null)
+      return <span className=".app-error">Channels not found</span>
+    return null
+  }
   useEffect(() => {
-    if (channelActive.current) dispatch(setChannel(channelActive.current))
+    if (channelActive.current || channelActive.current === null)
+      dispatch(setChannel(channelActive.current))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading])
 
-  if (error) return <span>Error de conexión</span>
   return (
     <StyledChannel aria-label="channel" showChannel={showChannel}>
       <StyledHeader>
-        {loading ? (
-          <Loader justifyContent="start" alignItems="center" />
-        ) : (
-          data.findServer.title
-        )}
+        {channelState() === null ? data.findServer.title : channelState()}
       </StyledHeader>
       <StyledChannelDetails
         aria-label="channel-details"
         paddingLeft={detailListPadding}
         ref={channelDetailsRef}
       >
-        {loading ? (
-          <Loader justifyContent="center" alignItems="center" />
-        ) : (
+        {channelState() === null && (
           <>
             {data.findServer.channels.map(detail => (
-              <StyledDetails open key={detail._id} onToggle={handleChnnlWidth}>
+              <StyledDetails
+                open
+                key={detail._id}
+                onToggleCapture={handleChnnlWidth}
+              >
                 <summary id="summary">{detail.title}</summary>
                 <nav aria-label={detail.title}>
                   <ul>{channelList(detail)}</ul>
