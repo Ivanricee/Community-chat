@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Loader } from '../Loader'
 import {
@@ -18,6 +18,7 @@ const LeftMenu = () => {
   const [showChannel] = useToggleChannel()
   const dispatch = useDispatch()
   const servers = useRef({})
+  const navigate = useNavigate()
   const severList = () => {
     const serverDomList = data.servers.map(item => {
       const redBullet = setBullet(item.content)
@@ -42,9 +43,9 @@ const LeftMenu = () => {
     return serverDomList
   }
   useEffect(() => {
-    if (servers) {
-      dispatch(setServer(servers.current))
-    }
+    if (servers) dispatch(setServer(servers.current))
+    if (typeof server === 'undefined') navigate('1')
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   if (error) return <span>Error</span>
