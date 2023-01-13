@@ -19,10 +19,17 @@ body{
   display: grid;
   overflow: hidden;
   grid-template-columns: 4.5rem 15rem minmax(23rem, calc(100vw - 34.5rem)) 15rem;
-  grid-template-rows:  3rem 1fr ;
+  grid-template-rows:  3rem 1fr;
   grid-template-areas: "left-menu channel top-menu top-menu"
                        "left-menu channel   main     ${p =>
-                         p.showUserMenu ? 'user' : 'main'}"
+                         p.showUserMenu ? 'user' : 'main'}";
+  & .app-error{
+    background: ${p => p.theme.blackHover};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-block:.5rem;
+  }
 
 }
 

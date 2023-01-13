@@ -26,6 +26,16 @@ const Main = ({ params }) => {
   const [showUserList, setShowUserList] = useToggleUserList()
   const { data, error, loading } = useChannelComment(server, channel)
 
+  const mainState = () => {
+    if (error)
+      return (
+        <StyledMain showChannel={showChannel} showUserList={showUserList}>
+          <p>Error de conexión asd</p>
+        </StyledMain>
+      )
+    if (loading) return <Loader justifyContent="center" alignItems="center" />
+    return null
+  }
   const handleEnableMain = () => {
     setShowChannel(false)
     setShowUserList(false)
@@ -33,53 +43,49 @@ const Main = ({ params }) => {
   }
   const commentList = () => {
     let AccDate = 0
-    return (
-      // eslint-disable-next-line react/jsx-no-useless-fragment
-
-      data.findComment.title === 'video/audio' ? (
-        <Suspense
-          fallback={<Loader justifyContent="center" alignItems="center" />}
-        >
-          <Portal>
-            <VideoRoom channelTitle={storedChannelTitle} />
-          </Portal>
-        </Suspense>
-      ) : (
-        <div>
-          {data.findComment.comments.map(comment => {
-            let showLine = true
-            const dateFormat = new Date(comment.date)
-            if (AccDate !== 0) {
-              if (dateFormat.getTime() > AccDate.getTime()) {
-                AccDate = new Date(comment.date)
-                showLine = true
-              } else {
-                showLine = false
-              }
-            } else {
+    return data.findComment.title === 'video/audio' ? (
+      <Suspense
+        fallback={<Loader justifyContent="center" alignItems="center" />}
+      >
+        <Portal>
+          <VideoRoom channelTitle={storedChannelTitle} />
+        </Portal>
+      </Suspense>
+    ) : (
+      <div>
+        {data.findComment.comments.map(comment => {
+          let showLine = true
+          const dateFormat = new Date(comment.date)
+          if (AccDate !== 0) {
+            if (dateFormat.getTime() > AccDate.getTime()) {
               AccDate = new Date(comment.date)
               showLine = true
+            } else {
+              showLine = false
             }
-            return (
-              <Comment
-                key={comment._id}
-                date={{
-                  dateFormat,
-                  showLine,
-                }}
-                img={comment.img}
-                url={comment.url}
-                texto={comment.texto}
-                react={comment.react}
-                reply={comment.comment_reply}
-                nombre={comment.user.name}
-                userImg={comment.user.img}
-                roleNo={comment.user.role}
-              />
-            )
-          })}
-        </div>
-      )
+          } else {
+            AccDate = new Date(comment.date)
+            showLine = true
+          }
+          return (
+            <Comment
+              key={comment._id}
+              date={{
+                dateFormat,
+                showLine,
+              }}
+              img={comment.img}
+              url={comment.url}
+              texto={comment.texto}
+              react={comment.react}
+              reply={comment.comment_reply}
+              nombre={comment.user.name}
+              userImg={comment.user.img}
+              roleNo={comment.user.role}
+            />
+          )
+        })}
+      </div>
     )
   }
 
@@ -88,13 +94,6 @@ const Main = ({ params }) => {
     if (!channel) navigate('1')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  if (error)
-    return (
-      <StyledMain showChannel={showChannel} showUserList={showUserList}>
-        <p>Error de conexión</p>
-      </StyledMain>
-    )
-  if (loading) return <Loader justifyContent="center" alignItems="center" />
 
   return (
     <StyledMain showChannel={showChannel} showUserList={showUserList}>
@@ -107,31 +106,36 @@ const Main = ({ params }) => {
         onKeyDown={handleEnableMain}
         tabIndex={0}
       />
+      {mainState()}
       <StyledCommentList>
-        <StyledIntroduction channelTitle={storedChannelTitle} />
-        {data.findComment !== null && commentList()}
+        {storedChannelTitle !== null && (
+          <StyledIntroduction channelTitle={storedChannelTitle} />
+        )}
+        {data?.findComment !== null && mainState() === null && commentList()}
       </StyledCommentList>
-      <StyledFooter>
-        <StyledInputWrapper>
-          <div>
-            <i className="ico-addFile" />
-          </div>
-          <div>
-            <input
-              type="text"
-              id="comment"
-              name="comment"
-              placeholder={`Enviar mensaje a #${storedChannelTitle}`}
-            />
-          </div>
-          <div>
-            <i className="ico-gift" />
-            <i className="ico-gif" />
-            <i className="ico-sticker" />
-            <EmojiIcon />
-          </div>
-        </StyledInputWrapper>
-      </StyledFooter>
+      {storedChannelTitle !== null && (
+        <StyledFooter>
+          <StyledInputWrapper>
+            <div>
+              <i className="ico-addFile" />
+            </div>
+            <div>
+              <input
+                type="text"
+                id="comment"
+                name="comment"
+                placeholder={`Enviar mensaje a #${storedChannelTitle}`}
+              />
+            </div>
+            <div>
+              <i className="ico-gift" />
+              <i className="ico-gif" />
+              <i className="ico-sticker" />
+              <EmojiIcon />
+            </div>
+          </StyledInputWrapper>
+        </StyledFooter>
+      )}
     </StyledMain>
   )
 }
