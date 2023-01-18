@@ -1,27 +1,18 @@
-# Community chat basado en los proyectos de
-https://leonidasesteban.com/
-## Configuracion básica
-## Installación
 
-- Install vscode prettier, eslint
-- Install Eslint global
 
-```sh
-npm install -g eslint
-```
+<div align="center">
+  <h1> 
+    💬 Community Chat (Discord Clone) 
+    <img src="https://www.freepnglogos.com/uploads/discord-logo-png/concours-discord-cartes-voeux-fortnite-france-6.png" loading="lazy" width='30px' height='30px'>
+  </h1>      
+    
+  <h2>
+  <p>Esta web sólo está creada para fines educativos</p> 
+  <p>Este projecto no tiene el objetivo de replicar todas las funcionalidades de discord, solo las mas resaltantes, como el front end con sus interacciones basicas y algunas funcionalidades del video</p> 
+  </h2>
 
-## GIT pre-commit
+</div>
 
-lint-staged with simple-pre-commit
-https://www.npmjs.com/package/simple-pre-commit
-https://github.com/okonet/lint-staged
 
-## SCRIPTS
-```sh
-    "build"
-    "dev": webpack serve
-    "format": prettier format
-    "lint": eslint
-```
-
+<video class="absolute top-0 left-0 rounded-lg w-full h-full" id="video" playsinline="" src="blob:https://www.tella.tv/ef60d555-def7-4ae8-900b-aaa4966f6802"></video>
 
