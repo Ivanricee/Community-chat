@@ -8,7 +8,7 @@
 
   <h3>
   <p>This website was created for educational purposes</p>
-  <p>This project does not have the objective of replicating all the features of discord, only the most basic ones, such as the front end with its basic interactions and some video features.</p>
+  <p>The goal of this project is not to fully replicate discord, just some basic features like the front-end with basic interactions and some video features.</p>
       Some icons and colors belong to the figma provided by
       
   [leonidasesteban.com](https://leonidasesteban.com/) 
@@ -22,7 +22,7 @@
     
    [](https://user-images.githubusercontent.com/13322969/213342114-77596cff-8822-4192-8d03-7eae11d23b43.mp4)
     
-   []( https://user-images.githubusercontent.com/13322969/213342126-90726d0f-09d6-4677-b3a3-ed38383c1197.mp4)
+   [](https://user-images.githubusercontent.com/13322969/213342126-90726d0f-09d6-4677-b3a3-ed38383c1197.mp4)
     
 </div>
   
@@ -62,7 +62,7 @@ Development
 Production
 
 ```bash
-  npm run dev
+  npm run build
 ```
 
 
