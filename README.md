@@ -9,9 +9,6 @@
   <h3>
   <p>This website was created for educational purposes</p>
   <p>The goal of this project is not to fully replicate discord, just some basic features like the front-end with basic interactions and some video features.</p>
-      Some icons and colors belong to the figma provided by
-      
-  [leonidasesteban.com](https://leonidasesteban.com/) 
   </h3>
 
 [API](https://github.com/Ivanricee/community-chat-api)  |  [WEB](https://community-chat-discord.vercel.app/1/1)
